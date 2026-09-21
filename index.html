@@ -2,128 +2,911 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Farewell 2026 ❤️</title>
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>Farewell 2026 — Our Memories Together</title>
 
 <style>
-* {
-    box-sizing: border-box;
+*{
+  box-sizing:border-box;
 }
 
-html, body {
-    margin: 0;
-    min-height: 100%;
+html,body{
+  margin:0;
+  min-height:100%;
+  font-family:Georgia,"Times New Roman",serif;
 }
 
-body {
-    background:
-        radial-gradient(circle at 50% 20%, #fff8ed 0%, #ead8bd 45%, #c9ad88 100%);
-    color: #3b2a20;
-    font-family: Georgia, "Times New Roman", serif;
-    overflow-x: hidden;
+body{
+  background:
+    radial-gradient(circle at 50% 15%,rgba(255,240,205,.15),transparent 28%),
+    linear-gradient(135deg,#20130e,#3a2115 45%,#160d09);
+  color:#3b281d;
+  overflow:hidden;
 }
+
+/* Subtle background texture */
+body:before{
+  content:"";
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  opacity:.15;
+  background-image:radial-gradient(#fff 0.7px,transparent .7px);
+  background-size:7px 7px;
+}
+
+.stage{
+  height:100vh;
+  display:grid;
+  place-items:center;
+  padding:20px;
+}
+
+.book-area{
+  width:min(94vw,1000px);
+  height:min(78vh,650px);
+  position:relative;
+  perspective:2200px;
+}
+
+.book-shadow{
+  position:absolute;
+  left:6%;
+  right:6%;
+  bottom:-4%;
+  height:12%;
+  background:#000;
+  filter:blur(25px);
+  opacity:.48;
+  border-radius:50%;
+}
+
+/* =========================
+   CLOSED BOOK
+========================= */
+
+.closed-book{
+  position:absolute;
+  inset:0;
+  margin:auto;
+  width:min(72%,500px);
+  height:min(82%,530px);
+
+  border-radius:8px 15px 15px 8px;
+
+  background:
+    linear-gradient(90deg,rgba(0,0,0,.22),transparent 7%),
+    linear-gradient(135deg,#642a24,#3d1717 70%,#2a1010);
+
+  box-shadow:
+    inset 0 0 0 2px #9b6b38,
+    inset 8px 0 12px rgba(0,0,0,.45),
+    12px 20px 35px #0008;
+
+  color:#e8c982;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  text-align:center;
+
+  z-index:20;
+
+  transition:
+    1.15s cubic-bezier(.77,0,.18,1);
+
+  transform-origin:left center;
+}
+
+.closed-book:after{
+  content:"";
+  position:absolute;
+  inset:12px;
+
+  border:1px solid #b98b4b;
+  border-radius:4px;
+
+  box-shadow:
+    inset 0 0 0 3px #4b1b18;
+}
+
+.cover-text{
+  position:relative;
+  z-index:2;
+}
+
+.cover-text .small{
+  font-size:clamp(12px,2vw,17px);
+  letter-spacing:5px;
+}
+
+.cover-text h1{
+  font-size:clamp(34px,6vw,66px);
+  margin:12px 0 4px;
+  letter-spacing:2px;
+}
+
+.cover-text .script{
+  font-size:clamp(20px,3vw,31px);
+  font-style:italic;
+}
+
+.cover-ornament{
+  font-size:28px;
+  margin:22px 0;
+}
+
+.open-btn{
+  position:absolute;
+  left:50%;
+  bottom:-70px;
+
+  transform:translateX(-50%);
+
+  border:0;
+  border-radius:30px;
+
+  padding:14px 28px;
+
+  background:#f5ead4;
+  color:#3b281d;
+
+  font-weight:bold;
+  letter-spacing:1px;
+
+  box-shadow:0 7px 20px #0007;
+
+  cursor:pointer;
+
+  z-index:30;
+}
+
+.open-btn:active{
+  transform:translateX(-50%) scale(.97);
+}
+
+/* =========================
+   OPEN BOOK
+========================= */
+
+.open-book{
+  position:absolute;
+  inset:0;
+
+  opacity:0;
+  visibility:hidden;
+
+  transition:.5s;
+
+  transform-style:preserve-3d;
+}
+
+.open-book.visible{
+  opacity:1;
+  visibility:visible;
+}
+
+.spread{
+  position:absolute;
+
+  left:3%;
+  right:3%;
+  top:7%;
+  bottom:3%;
+
+  display:grid;
+  grid-template-columns:1fr 1fr;
+
+  transform-style:preserve-3d;
+
+  filter:drop-shadow(0 22px 25px #0007);
+}
+
+/* Paper pages */
+
+.page{
+  position:relative;
+  overflow:hidden;
+
+  background:
+    radial-gradient(
+      circle at 20% 20%,
+      rgba(130,90,45,.08),
+      transparent 25%
+    ),
+    linear-gradient(
+      90deg,
+      rgba(90,60,30,.11),
+      transparent 8%,
+      transparent 92%,
+      rgba(90,60,30,.08)
+    ),
+    #f2e5ca;
+
+  box-shadow:
+    inset 0 0 35px rgba(93,61,31,.12);
+
+  padding:clamp(18px,3vw,42px);
+}
+
+.left-page{
+  border-radius:10px 0 0 10px;
+  border-right:1px solid #b99b70;
+}
+
+.right-page{
+  border-radius:0 10px 10px 0;
+}
+
+.spine{
+  position:absolute;
+
+  left:50%;
+  top:6%;
+  bottom:3%;
+
+  width:20px;
+
+  transform:translateX(-50%);
+
+  z-index:10;
+
+  pointer-events:none;
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      #6d4930aa 45%,
+      #fff5 52%,
+      transparent
+    );
+}
+
+.page-content{
+  height:100%;
+
+  display:flex;
+  flex-direction:column;
+
+  align-items:center;
+  justify-content:center;
+
+  text-align:center;
+}
+
+.page-number{
+  font-size:12px;
+  letter-spacing:3px;
+  color:#82684d;
+  margin-bottom:8px;
+}
+
+.page h2{
+  font-size:clamp(24px,4vw,42px);
+  margin:4px 0 14px;
+  font-weight:normal;
+}
+
+.message{
+  font-size:clamp(14px,2vw,19px);
+  line-height:1.65;
+  max-width:420px;
+  color:#574332;
+}
+
+.leaf{
+  margin:14px;
+  font-size:22px;
+  color:#806044;
+}
+
+/* Photo */
+
+.photo{
+  width:min(70%,270px);
+  aspect-ratio:4/5;
+
+  border:10px solid #fffdf5;
+
+  box-shadow:
+    0 8px 20px #3b281d33;
+
+  object-fit:cover;
+
+  transform:rotate(-2deg);
+
+  background:
+    linear-gradient(
+      135deg,
+      #d6c3a3,
+      #a58a69
+    );
+}
+
+.photo.placeholder{
+  display:grid;
+  place-items:center;
+
+  color:#755c45;
+
+  font-size:14px;
+
+  padding:20px;
+}
+
+.video{
+  margin-top:18px;
+
+  border:1px solid #b89d75;
+
+  background:#ead9ba;
+
+  border-radius:5px;
+
+  padding:10px 18px;
+
+  color:#624c36;
+
+  font-size:13px;
+
+  letter-spacing:.4px;
+}
+
+/* =========================
+   REAL PAGE TURN
+========================= */
+
+.turning-page{
+  position:absolute;
+
+  z-index:20;
+
+  left:50%;
+  top:0;
+
+  width:50%;
+  height:100%;
+
+  transform-origin:left center;
+
+  transform-style:preserve-3d;
+
+  transition:
+    transform 1s cubic-bezier(.65,.05,.25,1);
+
+  display:none;
+}
+
+.turning-page.active{
+  display:block;
+  transform:rotateY(-180deg);
+}
+
+.turn-front,
+.turn-back{
+  position:absolute;
+  inset:0;
+
+  backface-visibility:hidden;
+
+  background:#f2e5ca;
+
+  box-shadow:
+    inset 0 0 30px rgba(80,50,25,.13);
+
+  padding:clamp(18px,3vw,42px);
+
+  border-radius:0 10px 10px 0;
+}
+
+.turn-back{
+  transform:rotateY(180deg);
+  border-radius:10px 0 0 10px;
+}
+
+/* =========================
+   CONTROLS
+========================= */
+
+.controls{
+  position:absolute;
+
+  left:0;
+  right:0;
+  bottom:-62px;
+
+  display:flex;
+  justify-content:center;
+
+  gap:12px;
+
+  z-index:40;
+}
+
+.controls button{
+  border:1px solid #b99a70;
+
+  background:#f0dfc0;
+
+  color:#4b3525;
+
+  border-radius:20px;
+
+  padding:9px 16px;
+
+  cursor:pointer;
+
+  box-shadow:0 4px 12px #0004;
+}
+
+/* =========================
+   COVER OPENING
+========================= */
+
+.book-area.opened .closed-book{
+  transform:rotateY(-88deg);
+  opacity:0;
+  pointer-events:none;
+}
+
+.book-area.opened .open-book{
+  transition-delay:.55s;
+}
+
+/* =========================
+   MOBILE
+========================= */
+
+@media(max-width:650px){
+
+  .stage{
+    padding:8px;
+  }
+
+  .book-area{
+    width:98vw;
+    height:74vh;
+  }
+
+  .spread{
+    left:1%;
+    right:1%;
+    top:3%;
+    bottom:1%;
+  }
+
+  .page{
+    padding:13px;
+  }
+
+  .photo{
+    width:78%;
+    border-width:7px;
+  }
+
+  .message{
+    font-size:12px;
+    line-height:1.45;
+  }
+
+  .page h2{
+    font-size:21px;
+  }
+
+  .page-number{
+    font-size:9px;
+  }
+
+  .video{
+    font-size:10px;
+    padding:8px 10px;
+  }
+
+  .open-btn{
+    bottom:-58px;
+    padding:11px 20px;
+  }
+
+  .controls{
+    bottom:-52px;
+  }
+
+  .controls button{
+    padding:7px 11px;
+    font-size:11px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div class="stage">
+
+  <div class="book-area" id="bookArea">
+
+    <div class="book-shadow"></div>
+
+    <!-- =====================
+         CLOSED BOOK COVER
+    ====================== -->
+
+    <section class="closed-book" id="cover">
+
+      <div class="cover-text">
+
+        <div class="small">
+          FAREWELL
+        </div>
+
+        <h1>
+          2026
+        </h1>
+
+        <div class="script">
+          Our Memories Together
+        </div>
+
+        <div class="cover-ornament">
+          ❦ ♥ ❦
+        </div>
+
+      </div>
+
+      <button class="open-btn" id="openBtn">
+        📖 OPEN BOOK
+      </button>
+
+    </section>
+
+
+    <!-- =====================
+         OPEN BOOK
+    ====================== -->
+
+    <section class="open-book" id="openBook">
+
+      <div class="spread" id="spread">
+
+        <div
+          class="page left-page"
+          id="leftPage">
+        </div>
+
+        <div
+          class="page right-page"
+          id="rightPage">
+        </div>
+
+        <div class="spine"></div>
+
+
+        <!-- Page that physically flips -->
+
+        <div
+          class="turning-page"
+          id="turningPage">
+
+          <div
+            class="turn-front"
+            id="turnFront">
+          </div>
+
+          <div
+            class="turn-back"
+            id="turnBack">
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <!-- BOOK CONTROLS -->
+
+      <div class="controls">
+
+        <button id="prevBtn">
+          ← Previous
+        </button>
+
+        <button id="nextBtn">
+          Next →
+        </button>
+
+        <button id="closeBtn">
+          Close book
+        </button>
+
+      </div>
+
+    </section>
+
+  </div>
+
+</div>
+
+
+<script>
 
 /* =====================================================
-   COVER
+   ADD YOUR PEOPLE HERE
 ===================================================== */
 
-.cover-screen {
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 25px;
-}
+const people = [
 
-.book-cover {
-    width: min(430px, 92vw);
-    min-height: 620px;
-    background:
-        linear-gradient(135deg, #4a2d25, #6b4235 50%, #3a231e);
-    color: #f9ead0;
-    border-radius: 8px 18px 18px 8px;
-    box-shadow:
-        0 30px 70px rgba(55, 35, 20, .45),
-        inset 12px 0 20px rgba(0,0,0,.2);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    position: relative;
-    overflow: hidden;
-}
+  {
+    name:"Sai",
 
-.book-cover::before {
-    content: "";
-    position: absolute;
-    inset: 18px;
-    border: 1px solid rgba(255,230,190,.5);
-    border-radius: 4px 12px 12px 4px;
-}
+    photo:"",
 
-.cover-content {
-    position: relative;
-    z-index: 2;
-    padding: 50px 30px;
-}
+    message:
+      "Some people make our journey beautiful simply by being part of it. ❤️"
+  },
 
-.cover-small {
-    font-size: 13px;
-    letter-spacing: 5px;
-    margin-bottom: 28px;
-}
+  {
+    name:"Person 2",
 
-.cover-title {
-    font-size: clamp(48px, 14vw, 78px);
-    line-height: .9;
-    font-weight: normal;
-    letter-spacing: 3px;
-}
+    photo:"",
 
-.cover-subtitle {
-    font-size: 23px;
-    margin-top: 25px;
-    font-style: italic;
-}
+    message:
+      "The memories we created together will always have a special place in our hearts."
+  },
 
-.cover-heart {
-    font-size: 35px;
-    margin: 25px 0;
-}
+  {
+    name:"Person 3",
 
-.open-book {
-    margin-top: 30px;
-    padding: 15px 28px;
-    background: transparent;
-    color: #f9ead0;
-    border: 1px solid #e8cda4;
-    font-family: inherit;
-    letter-spacing: 2px;
-    font-size: 14px;
-    cursor: pointer;
-    transition: .3s;
-}
+    photo:"",
 
-.open-book:hover {
-    background: #f9ead0;
-    color: #4a2d25;
+    message:
+      "Goodbyes are not the end. They are the beginning of a beautiful new journey."
+  },
+
+  {
+    name:"Person 4",
+
+    photo:"",
+
+    message:
+      "Thank you for all the laughter, memories and beautiful moments."
+  }
+
+];
+
+
+/* =====================================================
+   BOOK STATE
+===================================================== */
+
+let current = 0;
+
+
+/* =====================================================
+   ELEMENTS
+===================================================== */
+
+const bookArea =
+  document.getElementById("bookArea");
+
+const openBook =
+  document.getElementById("openBook");
+
+const leftPage =
+  document.getElementById("leftPage");
+
+const rightPage =
+  document.getElementById("rightPage");
+
+const turningPage =
+  document.getElementById("turningPage");
+
+const turnFront =
+  document.getElementById("turnFront");
+
+const turnBack =
+  document.getElementById("turnBack");
+
+
+/* =====================================================
+   PERSON PAGE
+===================================================== */
+
+function pageHTML(person,index){
+
+  const img = person.photo
+
+    ? `
+      <img
+        class="photo"
+        src="${person.photo}"
+        alt="${person.name}">
+      `
+
+    : `
+
+      <div class="photo placeholder">
+
+        📷
+
+        <br><br>
+
+        Photo will be added here
+
+      </div>
+
+      `;
+
+
+  return `
+
+    <div class="page-content">
+
+      <div class="page-number">
+        ${index+1} / ${people.length}
+      </div>
+
+      ${img}
+
+      <h2>
+        ${person.name}
+      </h2>
+
+      <div class="leaf">
+        ❧
+      </div>
+
+      <div class="message">
+        “${person.message}”
+      </div>
+
+      <div class="video">
+        ▶ &nbsp; Video coming soon
+      </div>
+
+    </div>
+
+  `;
 }
 
 
 /* =====================================================
-   BOOK AREA
+   INTRO PAGE
 ===================================================== */
 
-.memory-area {
-    display: none;
-    min-height: 100vh;
-    padding: 35px 15px 60px;
+function introHTML(){
+
+  return `
+
+    <div class="page-content">
+
+      <div class="page-number">
+        OUR STORY
+      </div>
+
+      <div style="font-size:48px">
+        ♥
+      </div>
+
+      <h2>
+        Every chapter<br>
+        has a story...
+      </h2>
+
+      <div class="leaf">
+        ❦
+      </div>
+
+      <div class="message">
+        And you made ours special.
+      </div>
+
+    </div>
+
+  `;
 }
 
-.book-stage {
-    width: min(920px, 96vw);
-    margin: auto;
-    perspective: 2200px;
+
+/* =====================================================
+   END PAGE
+===================================================== */
+
+function endHTML(){
+
+  return `
+
+    <div class="page-content">
+
+      <div class="page-number">
+        THE END
+      </div>
+
+      <div style="font-size:50px">
+        ♥
+      </div>
+
+      <h2>
+        But the memories<br>
+        will stay forever.
+      </h2>
+
+      <div class="leaf">
+        ❦
+      </div>
+
+      <div class="message">
+        Farewell 2026
+      </div>
+
+    </div>
+
+  `;
+}
+
+
+/* =====================================================
+   DISPLAY CURRENT SPREAD
+===================================================== */
+
+function render(){
+
+  /*
+     Opening spread
+  */
+
+  if(current === 0){
+
+    leftPage.innerHTML =
+      introHTML();
+
+    rightPage.innerHTML =
+      pageHTML(
+        people[0],
+        0
+      );
+
+  }
+
+
+  /*
+     Normal spreads
+  */
+
+  else if(current <= people.length - 1){
+
+    leftPage.innerHTML =
+      pageHTML(
+        people[current - 1],
+        current - 1
+      );
+
+    rightPage.innerHTML =
+      pageHTML(
+        people[current],
+        current
+      );
+
+  }
+
+
+  /*
+     Final page
+  */
+
+  else{
+
+    leftPage.innerHTML =
+      pageHTML(
+        people[people.length - 1],
+        people.length - 1
+      );
+
+    rightPage.innerHTML =
+      endHTML();
+
+  }
+
 }
 
 
@@ -131,200 +914,150 @@ body {
    OPEN BOOK
 ===================================================== */
 
-.book {
-    position: relative;
-    width: 100%;
-    min-height: 650px;
-    background: #5b382c;
-    border-radius: 8px;
-    padding: 14px;
-    box-shadow: 0 30px 80px rgba(50,30,15,.35);
-}
+document
+  .getElementById("openBtn")
+  .onclick = function(){
 
-.book-inner {
-    position: relative;
-    min-height: 620px;
-    background: #f6ead8;
-    border-radius: 4px;
-    overflow: hidden;
-    box-shadow: inset 0 0 35px rgba(100,60,30,.18);
-}
+    bookArea.classList.add("opened");
 
+    openBook.classList.add("visible");
 
-/* center spine */
+    current = 0;
 
-.book-inner::after {
-    content: "";
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 50%;
-    width: 2px;
-    background: rgba(100,70,40,.15);
-    box-shadow: 0 0 12px rgba(60,40,20,.15);
-}
+    render();
+
+  };
 
 
 /* =====================================================
-   PAGE
+   NEXT PAGE
 ===================================================== */
 
-.page {
-    position: absolute;
-    inset: 0;
-    padding: 45px 55px;
-    background:
-        repeating-linear-gradient(
-            0deg,
-            rgba(100,70,40,.025),
-            rgba(100,70,40,.025) 1px,
-            transparent 1px,
-            transparent 4px
-        ),
-        #fffaf0;
-    transform-origin: left center;
-    backface-visibility: hidden;
-    transition:
-        transform 1s cubic-bezier(.65,.05,.25,1),
-        box-shadow 1s;
-    box-shadow: 0 0 15px rgba(60,40,20,.12);
-    z-index: 10;
-}
+document
+  .getElementById("nextBtn")
+  .onclick = function(){
 
-.page.turning {
-    transform: rotateY(-180deg);
-    box-shadow: -15px 0 25px rgba(50,30,10,.2);
-}
+    if(current >= people.length){
 
-.page-content {
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-}
+      return;
+
+    }
+
+
+    /*
+       Save current right page
+       for the physical flip
+    */
+
+    const oldRight =
+      rightPage.innerHTML;
+
+
+    const newLeft =
+      rightPage.innerHTML;
+
+
+    current++;
+
+
+    /*
+       Put the old page on
+       the physical turning page
+    */
+
+    turnFront.innerHTML =
+      oldRight;
+
+    turnBack.innerHTML =
+      newLeft;
+
+
+    /*
+       Reset animation
+    */
+
+    turningPage.classList.remove(
+      "active"
+    );
+
+    void turningPage.offsetWidth;
+
+
+    /*
+       Start physical page turn
+    */
+
+    turningPage.classList.add(
+      "active"
+    );
+
+
+    /*
+       After animation,
+       show new spread
+    */
+
+    setTimeout(
+      function(){
+
+        render();
+
+        turningPage.classList.remove(
+          "active"
+        );
+
+      },
+      1000
+    );
+
+  };
 
 
 /* =====================================================
-   PERSON PAGE
+   PREVIOUS
 ===================================================== */
 
-.memory-number {
-    font-size: 12px;
-    letter-spacing: 4px;
-    opacity: .55;
-    margin-bottom: 10px;
-}
+document
+  .getElementById("prevBtn")
+  .onclick = function(){
 
-.person-name {
-    font-size: clamp(32px, 7vw, 52px);
-    font-weight: normal;
-    margin: 0 0 20px;
-}
+    if(current <= 0){
 
-.decorative-line {
-    width: 100px;
-    height: 1px;
-    background: #9b7657;
-    margin-bottom: 25px;
-}
+      return;
 
-.photo-area {
-    width: min(580px, 100%);
-    height: 300px;
-    background: #e9dac6;
-    border: 10px solid #fffdf8;
-    box-shadow: 0 10px 25px rgba(60,40,20,.18);
-    overflow: hidden;
-}
+    }
 
-.photo-area img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
+    current--;
 
-.photo-placeholder {
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 20px;
-    color: #806b58;
-}
+    render();
 
-.message {
-    max-width: 650px;
-    font-size: 18px;
-    line-height: 1.7;
-    font-style: italic;
-    margin: 22px auto 18px;
-}
-
-.video-placeholder {
-    width: min(580px, 100%);
-    padding: 15px;
-    background: #eadcc9;
-    border: 1px dashed #9c8063;
-    color: #725c49;
-}
-
-.video-placeholder .icon {
-    font-size: 27px;
-}
-
-.video-placeholder strong {
-    display: block;
-    margin-top: 4px;
-}
+  };
 
 
 /* =====================================================
-   FINAL PAGE
+   CLOSE BOOK
 ===================================================== */
 
-.final-content {
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-}
+document
+  .getElementById("closeBtn")
+  .onclick = function(){
 
-.final-heart {
-    font-size: 70px;
-    margin-bottom: 20px;
-}
+    bookArea.classList.remove(
+      "opened"
+    );
 
-.final-content h2 {
-    font-size: clamp(38px, 8vw, 65px);
-    font-weight: normal;
-    margin: 0;
-}
+    openBook.classList.remove(
+      "visible"
+    );
 
-.final-content p {
-    font-size: 20px;
-    line-height: 1.7;
-    font-style: italic;
-}
+  };
 
 
-/* =====================================================
-   CONTROLS
-===================================================== */
+/* Initial page */
 
-.controls {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 25px;
-    margin-top: 28px;
-}
+render();
 
-.control-button {
-    border: none;
-    background: #4a3026;
-    color: white;
-    padding: 13px 24px;
-    font-family:
+</script>
+
+</body>
+</html>
