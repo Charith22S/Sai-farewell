@@ -2,979 +2,879 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>Farewell 2026 — Our Memories Together</title>
 
 <style>
-
 *{
-    box-sizing:border-box;
+  box-sizing:border-box;
 }
 
 html,body{
-    margin:0;
-    width:100%;
-    height:100%;
+  margin:0;
+  width:100%;
+  min-height:100%;
 }
 
 body{
-    overflow:hidden;
-    font-family:Georgia,"Times New Roman",serif;
-    color:#4b3524;
-
-    background:
-        linear-gradient(rgba(20,10,5,.45),rgba(20,10,5,.65)),
-        repeating-linear-gradient(
-            90deg,
-            #4a2a17 0,
-            #5b351f 90px,
-            #402313 180px,
-            #59341e 270px
-        );
+  background:
+    radial-gradient(circle at 50% 20%, rgba(255,255,255,.05), transparent 35%),
+    linear-gradient(135deg,#211811,#39271d 45%,#17100c);
+  color:#3c3029;
+  font-family:Georgia,"Times New Roman",serif;
+  overflow-x:hidden;
 }
 
-/* =====================================================
-   DESK
-===================================================== */
+/* WOOD GRAIN */
+body:before{
+  content:"";
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  opacity:.18;
+  background:
+    repeating-linear-gradient(
+      7deg,
+      transparent 0px,
+      transparent 9px,
+      rgba(255,255,255,.025) 10px,
+      transparent 12px
+    );
+}
+
+/* =========================
+   MAIN SCENE
+========================= */
 
 .scene{
-    width:100vw;
-    height:100vh;
-
-    display:flex;
-    align-items:center;
-    justify-content:center;
-
-    padding:25px;
-
-    perspective:2500px;
+  min-height:100vh;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  padding:30px 12px 24px;
 }
-
-/* =====================================================
-   BOOK AREA
-===================================================== */
 
 .book-wrap{
-
-    width:min(1180px,94vw);
-    height:min(720px,78vh);
-
-    position:relative;
-
-    transform-style:preserve-3d;
+  width:min(1100px,96vw);
+  position:relative;
 }
 
+/* shadow under entire book */
 .book-shadow{
-    position:absolute;
-
-    left:4%;
-    right:4%;
-    bottom:-7%;
-
-    height:13%;
-
-    background:#000;
-    border-radius:50%;
-
-    filter:blur(30px);
-    opacity:.65;
+  position:absolute;
+  left:3%;
+  right:3%;
+  bottom:-28px;
+  height:45px;
+  background:rgba(0,0,0,.48);
+  filter:blur(18px);
+  border-radius:50%;
 }
 
-/* =====================================================
-   LEATHER OUTER COVER / BORDER
-===================================================== */
+/* =========================
+   LEATHER BOOK
+========================= */
 
 .book-frame{
+  position:relative;
+  padding:18px;
+  border-radius:12px;
 
-    position:absolute;
+  background:
+    linear-gradient(
+      90deg,
+      #17100d 0%,
+      #4b3022 4%,
+      #241610 9%,
+      #17100d 50%,
+      #241610 91%,
+      #4b3022 96%,
+      #17100d 100%
+    );
 
-    inset:0;
-
-    padding:13px;
-
-    border-radius:15px;
-
-    background:
-        linear-gradient(
-            90deg,
-            #21100c,
-            #54261e 5%,
-            #30130f 50%,
-            #54261e 95%,
-            #1d0d09
-        );
-
-    box-shadow:
-        0 25px 50px rgba(0,0,0,.65),
-        inset 0 0 18px rgba(0,0,0,.6);
-
-    z-index:1;
+  box-shadow:
+    0 22px 45px rgba(0,0,0,.55),
+    inset 0 0 0 2px rgba(255,255,255,.04),
+    inset 0 0 0 5px rgba(0,0,0,.35);
 }
-
-/* =====================================================
-   OPEN BOOK
-===================================================== */
 
 .book{
+  position:relative;
+  width:100%;
+  aspect-ratio:2 / 1.18;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  overflow:hidden;
+  border-radius:5px;
 
-    position:absolute;
+  background:#eee1c5;
 
-    inset:13px;
-
-    display:grid;
-
-    grid-template-columns:1fr 1fr;
-
-    border-radius:8px;
-
-    overflow:hidden;
-
-    box-shadow:
-        inset 0 0 25px rgba(50,25,10,.3);
-
-    background:#ead9b8;
-
-    z-index:5;
+  box-shadow:
+    inset 0 0 20px rgba(70,45,25,.18);
 }
 
-/* =====================================================
-   PAGE
-===================================================== */
+/* =========================
+   PAPER
+========================= */
 
 .page{
+  position:relative;
+  overflow:hidden;
+  min-width:0;
 
-    position:relative;
+  background:
+    radial-gradient(
+      ellipse at center,
+      rgba(255,255,255,.5),
+      transparent 65%
+    ),
+    linear-gradient(90deg,#f1e4c8,#fff9e9 50%,#eee0c1);
 
-    height:100%;
-
-    overflow:hidden;
-
-    background:
-
-        radial-gradient(
-            circle at 25% 20%,
-            rgba(130,90,45,.08),
-            transparent 30%
-        ),
-
-        radial-gradient(
-            circle at 80% 80%,
-            rgba(130,90,45,.06),
-            transparent 30%
-        ),
-
-        linear-gradient(
-            90deg,
-            rgba(100,65,30,.12),
-            transparent 10%,
-            transparent 90%,
-            rgba(100,65,30,.08)
-        ),
-
-        #f3e5c8;
+  box-shadow:
+    inset 0 0 35px rgba(89,61,33,.08);
 }
 
-.left-page{
-
-    border-radius:8px 0 0 8px;
-
-    box-shadow:
-        inset -25px 0 35px rgba(60,35,15,.13);
+/* left/right subtle paper edge */
+.page.left{
+  border-right:1px solid rgba(86,62,40,.08);
 }
 
-.right-page{
-
-    border-radius:0 8px 8px 0;
-
-    box-shadow:
-        inset 25px 0 35px rgba(60,35,15,.13);
+.page.right{
+  border-left:1px solid rgba(86,62,40,.06);
 }
 
-/* =====================================================
-   SOFT BOOK GUTTER
-===================================================== */
+/* =========================
+   CENTER GUTTER
+========================= */
 
 .gutter{
+  position:absolute;
+  top:0;
+  bottom:0;
+  left:50%;
+  width:34px;
+  transform:translateX(-50%);
+  z-index:8;
+  pointer-events:none;
 
-    position:absolute;
+  background:
+    linear-gradient(
+      90deg,
+      rgba(70,45,25,.03),
+      rgba(55,35,20,.15),
+      rgba(255,255,255,.08),
+      rgba(55,35,20,.14),
+      rgba(70,45,25,.03)
+    );
 
-    z-index:20;
-
-    left:50%;
-    top:0;
-    bottom:0;
-
-    width:55px;
-
-    transform:translateX(-50%);
-
-    pointer-events:none;
-
-    background:
-        linear-gradient(
-            90deg,
-            transparent 0%,
-            rgba(70,40,18,.06) 15%,
-            rgba(50,25,10,.24) 45%,
-            rgba(255,255,255,.32) 50%,
-            rgba(50,25,10,.20) 55%,
-            rgba(70,40,18,.05) 85%,
-            transparent
-        );
-
-    filter:blur(1px);
+  filter:blur(.2px);
 }
 
-/* =====================================================
+/* =========================
    PAGE CONTENT
-===================================================== */
+========================= */
 
-.page-content{
-
-    width:100%;
-    height:100%;
-
-    padding:
-        clamp(25px,4vw,55px);
-
-    display:flex;
-
-    flex-direction:column;
-
-    justify-content:center;
-
-    align-items:center;
-
-    text-align:center;
+.page-inner{
+  position:absolute;
+  inset:0;
+  padding:7% 9%;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  text-align:center;
 }
 
-/* =====================================================
+.page-number{
+  position:absolute;
+  bottom:17px;
+  font-size:11px;
+  letter-spacing:2px;
+  color:#9a8972;
+}
+
+.page.left .page-number{
+  left:20px;
+}
+
+.page.right .page-number{
+  right:20px;
+}
+
+/* =========================
+   INTRO
+========================= */
+
+.intro-heading{
+  font-size:clamp(22px,3.2vw,42px);
+  letter-spacing:6px;
+  font-weight:normal;
+  color:#574436;
+  margin:0 0 20px;
+}
+
+.heart{
+  font-size:25px;
+  margin-bottom:18px;
+  color:#9a6f65;
+}
+
+.intro-quote{
+  max-width:390px;
+  font-size:clamp(17px,2vw,27px);
+  line-height:1.65;
+  font-style:italic;
+  color:#604e41;
+}
+
+.intro-small{
+  margin-top:22px;
+  font-size:11px;
+  letter-spacing:3px;
+  color:#9b8974;
+}
+
+/* =========================
    PHOTO
-===================================================== */
+========================= */
+
+.photo-area{
+  width:76%;
+  height:55%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
 
 .polaroid{
+  width:min(300px,78%);
+  height:100%;
+  padding:10px 10px 25px;
 
-    position:relative;
+  background:#fffdf6;
 
-    width:min(62%,360px);
+  box-shadow:
+    0 12px 25px rgba(45,30,20,.20),
+    0 2px 5px rgba(45,30,20,.12);
 
-    height:52%;
+  transform:rotate(-1.5deg);
 
-    min-height:230px;
-
-    max-height:390px;
-
-    padding:10px 10px 34px;
-
-    background:#fffdf8;
-
-    box-shadow:
-        0 12px 25px rgba(40,25,10,.28);
-
-    transform:rotate(-1.5deg);
-
-    flex-shrink:0;
+  position:relative;
 }
 
-.polaroid img{
+.polaroid:before{
+  content:"";
+  position:absolute;
+  top:-11px;
+  left:28%;
+  width:45%;
+  height:24px;
 
-    width:100%;
-    height:100%;
+  background:rgba(220,205,168,.62);
 
-    display:block;
-
-    object-fit:cover;
+  transform:rotate(-3deg);
 }
 
 .photo-placeholder{
+  width:100%;
+  height:100%;
+  min-height:100px;
 
-    width:100%;
-    height:100%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
 
-    display:flex;
+  background:
+    linear-gradient(
+      135deg,
+      #e7ddc9,
+      #f7f0df
+    );
 
-    align-items:center;
-    justify-content:center;
-
-    flex-direction:column;
-
-    background:
-        linear-gradient(
-            135deg,
-            #d9c6a7,
-            #b99d75
-        );
-
-    color:#70573d;
-
-    font-size:15px;
+  color:#9b8d7b;
+  font-size:12px;
+  letter-spacing:2px;
 }
 
-/* =====================================================
-   TAPE
-===================================================== */
-
-.tape{
-
-    position:absolute;
-
-    width:110px;
-    height:25px;
-
-    top:-13px;
-    left:50%;
-
-    transform:
-        translateX(-50%)
-        rotate(-2deg);
-
-    background:rgba(220,202,160,.72);
-
-    z-index:5;
-
-    box-shadow:0 2px 5px rgba(0,0,0,.08);
+/* actual photo */
+.photo-placeholder img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  display:block;
 }
 
-/* =====================================================
-   NAME
-===================================================== */
+/* =========================
+   PERSON NAME
+========================= */
 
 .person-name{
-
-    margin-top:18px;
-
-    font-size:
-        clamp(28px,4vw,48px);
-
-    font-weight:normal;
-
-    line-height:1.1;
+  margin-top:19px;
+  font-size:clamp(22px,3vw,38px);
+  font-weight:normal;
+  color:#46372d;
 }
 
 .heart-line{
+  width:62%;
+  display:flex;
+  align-items:center;
+  gap:10px;
+  margin:13px auto;
+  color:#b09a80;
+}
 
-    margin:10px 0;
+.heart-line:before,
+.heart-line:after{
+  content:"";
+  height:1px;
+  background:#c8b69a;
+  flex:1;
+}
 
-    color:#80654a;
-
-    font-size:16px;
+.heart-line span{
+  font-size:14px;
 }
 
 .tags{
-
-    font-size:11px;
-
-    letter-spacing:3px;
-
-    color:#80684e;
+  font-family:Arial,sans-serif;
+  font-size:9px;
+  letter-spacing:2px;
+  color:#927d66;
+  line-height:1.8;
 }
 
-/* =====================================================
+/* =========================
    RIGHT PAGE MESSAGE
-===================================================== */
+========================= */
 
-.message-page{
-
-    justify-content:center;
-
-    padding:
-        clamp(35px,5vw,75px);
+.message{
+  max-width:430px;
+  font-size:clamp(16px,1.75vw,23px);
+  line-height:1.75;
+  color:#514238;
+  font-style:italic;
 }
 
-.quote{
-
-    max-width:560px;
-
-    font-size:
-        clamp(17px,2vw,25px);
-
-    line-height:1.8;
-
-    margin:0 auto;
-
-    color:#503a29;
+.message:before{
+  content:"“";
+  font-size:46px;
+  color:#b8a287;
+  display:block;
+  line-height:.7;
+  margin-bottom:10px;
 }
 
-.quote-mark{
-
-    font-size:42px;
-
-    color:#9a7954;
-
-    line-height:1;
-
-    margin-bottom:18px;
+.message-divider{
+  width:65px;
+  height:1px;
+  background:#b8a287;
+  margin:20px auto 22px;
 }
 
-/* =====================================================
-   VIDEO
-===================================================== */
+/* =========================
+   VIDEO CARD
+========================= */
 
 .video-card{
+  width:min(430px,88%);
+  height:125px;
 
-    width:min(75%,410px);
+  border:1px solid rgba(119,94,67,.24);
+  border-radius:8px;
 
-    margin-top:28px;
+  background:
+    linear-gradient(
+      135deg,
+      rgba(255,255,255,.7),
+      rgba(236,224,199,.75)
+    );
 
-    border:1px solid #b99a6d;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:15px;
 
-    border-radius:8px;
+  cursor:pointer;
 
-    overflow:hidden;
+  box-shadow:
+    0 8px 20px rgba(70,50,30,.10),
+    inset 0 1px 0 rgba(255,255,255,.7);
 
-    background:#e4d0aa;
-
-    box-shadow:
-        0 8px 18px rgba(70,40,20,.15);
+  transition:
+    transform .2s ease,
+    box-shadow .2s ease;
 }
 
-.video-placeholder{
-
-    height:145px;
-
-    display:flex;
-
-    flex-direction:column;
-
-    justify-content:center;
-
-    align-items:center;
-
-    color:#654a32;
+.video-card:hover{
+  transform:translateY(-2px);
+  box-shadow:
+    0 11px 24px rgba(70,50,30,.16),
+    inset 0 1px 0 rgba(255,255,255,.7);
 }
 
-.play{
+.play-button{
+  width:47px;
+  height:47px;
+  border-radius:50%;
 
-    width:52px;
-    height:52px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
 
-    border-radius:50%;
+  background:#604c3c;
+  color:white;
 
-    display:flex;
-    align-items:center;
-    justify-content:center;
+  font-family:Arial,sans-serif;
+  font-size:17px;
 
-    background:#765638;
+  padding-left:3px;
 
-    color:white;
-
-    font-size:20px;
-
-    margin-bottom:9px;
+  box-shadow:0 5px 12px rgba(50,35,25,.2);
 }
 
-.watch{
-
-    font-size:15px;
+.video-text{
+  text-align:left;
 }
 
-.video-card video{
-
-    width:100%;
-
-    display:block;
+.video-title{
+  font-family:Georgia,serif;
+  font-size:16px;
+  color:#4d3d31;
 }
 
-/* =====================================================
-   BOTANICAL CORNERS
-===================================================== */
+.video-subtitle{
+  margin-top:5px;
+  font-family:Arial,sans-serif;
+  font-size:9px;
+  letter-spacing:1.7px;
+  color:#9a866f;
+}
+
+/* =========================
+   BOTANICAL DECOR
+========================= */
 
 .botanical{
-
-    position:absolute;
-
-    bottom:18px;
-
-    font-size:42px;
-
-    color:#80694e;
-
-    opacity:.32;
-
-    line-height:1;
+  position:absolute;
+  width:110px;
+  height:90px;
+  opacity:.25;
+  color:#776c58;
+  pointer-events:none;
 }
 
-.botanical.left{
-    left:22px;
+.botanical.bottom-left{
+  bottom:12px;
+  left:10px;
 }
 
-.botanical.right{
-    right:22px;
-
-    transform:scaleX(-1);
+.botanical.bottom-right{
+  bottom:12px;
+  right:10px;
+  transform:scaleX(-1);
 }
 
-/* =====================================================
-   PAGE NUMBERS
-===================================================== */
-
-.page-number{
-
-    position:absolute;
-
-    bottom:18px;
-
-    font-size:11px;
-
-    letter-spacing:3px;
-
-    color:#80684e;
+.botanical svg{
+  width:100%;
+  height:100%;
 }
 
-.left-page .page-number{
-    left:50px;
+/* =========================
+   OUTRO
+========================= */
+
+.outro-title{
+  font-size:clamp(22px,3vw,38px);
+  letter-spacing:4px;
+  font-weight:normal;
+  margin-bottom:20px;
 }
 
-.right-page .page-number{
-    right:50px;
+.outro-message{
+  max-width:430px;
+  font-size:clamp(17px,2vw,25px);
+  line-height:1.7;
+  font-style:italic;
 }
 
-/* =====================================================
-   NAVIGATION
-===================================================== */
-
-.navigation{
-
-    position:absolute;
-
-    left:-5px;
-    right:-5px;
-
-    bottom:-78px;
-
-    height:58px;
-
-    display:grid;
-
-    grid-template-columns:1fr auto 1fr;
-
-    align-items:center;
-
-    z-index:100;
+.signature-line{
+  width:70%;
+  height:1px;
+  background:#b9a78d;
+  margin:27px auto 15px;
 }
 
-.nav-button{
-
-    width:125px;
-
-    padding:11px 18px;
-
-    border-radius:25px;
-
-    border:1px solid #b8935f;
-
-    background:#2f1910;
-
-    color:#efd09a;
-
-    font-family:Georgia,serif;
-
-    cursor:pointer;
-
-    font-size:14px;
+.signature{
+  font-size:12px;
+  letter-spacing:3px;
+  color:#8d7962;
 }
 
-.nav-button:first-child{
-    justify-self:start;
-}
-
-.nav-button:last-child{
-    justify-self:end;
-}
-
-.nav-button:hover{
-    background:#472719;
-}
-
-.book-title{
-    text-align:center;
-
-    color:#edce96;
-}
-
-.book-title strong{
-
-    display:block;
-
-    font-size:12px;
-
-    letter-spacing:5px;
-}
-
-.book-title span{
-
-    display:block;
-
-    margin-top:4px;
-
-    font-family:"Brush Script MT",
-                "Segoe Script",
-                cursive;
-
-    font-size:21px;
-}
-
-/* =====================================================
-   PAGE FLIP OVERLAY
-===================================================== */
+/* =========================
+   FLIP PAGE
+========================= */
 
 .flip-page{
+  position:absolute;
+  top:0;
+  bottom:0;
+  width:50%;
 
-    position:absolute;
+  z-index:30;
 
-    top:0;
+  display:none;
 
-    width:50%;
-    height:100%;
+  transform-style:preserve-3d;
 
-    z-index:50;
+  /* VERY IMPORTANT */
+  backface-visibility:hidden;
+  -webkit-backface-visibility:hidden;
 
-    display:none;
+  background:#f3e5c9;
 
-    transform-style:preserve-3d;
-
-    perspective:2000px;
+  box-shadow:
+    0 0 18px rgba(40,25,15,.20);
 }
 
 .flip-page.next{
-
-    left:50%;
-
-    transform-origin:left center;
+  right:0;
+  transform-origin:left center;
 }
 
 .flip-page.previous{
+  left:0;
+  transform-origin:right center;
+}
 
-    left:0;
+.flip-page.active{
+  display:block;
+}
 
-    transform-origin:right center;
+/* both faces */
+.flip-face{
+  position:absolute;
+  inset:0;
+
+  overflow:hidden;
+
+  background:
+    radial-gradient(
+      ellipse at center,
+      rgba(255,255,255,.55),
+      transparent 68%
+    ),
+    linear-gradient(
+      90deg,
+      #eee0c2,
+      #fff8e7 50%,
+      #ecddbd
+    );
+
+  backface-visibility:hidden;
+  -webkit-backface-visibility:hidden;
+}
+
+.flip-face.back{
+  transform:rotateY(180deg);
 }
 
 .flip-page.animate-next{
-
-    display:block;
-
-    animation:flipNext 1.15s cubic-bezier(.65,.05,.25,1) forwards;
+  animation:turnNext 1.05s cubic-bezier(.22,.7,.25,1) forwards;
 }
 
-.flip-page.animate-previous{
-
-    display:block;
-
-    animation:flipPrevious 1.15s cubic-bezier(.65,.05,.25,1) forwards;
+.flip-page.animate-prev{
+  animation:turnPrev 1.05s cubic-bezier(.22,.7,.25,1) forwards;
 }
 
-.flip-front,
-.flip-back{
+@keyframes turnNext{
+  0%{
+    transform:rotateY(0deg);
+  }
 
-    position:absolute;
-
-    inset:0;
-
-    backface-visibility:hidden;
-
-    background:#f3e5c8;
-
+  45%{
     box-shadow:
-        0 0 25px rgba(40,20,10,.25);
+      -12px 0 24px rgba(30,20,12,.28);
+  }
 
-    overflow:hidden;
+  100%{
+    transform:rotateY(-180deg);
+    box-shadow:
+      0 0 0 rgba(0,0,0,0);
+  }
 }
 
-.flip-back{
+@keyframes turnPrev{
+  0%{
+    transform:rotateY(0deg);
+  }
 
+  45%{
+    box-shadow:
+      12px 0 24px rgba(30,20,12,.28);
+  }
+
+  100%{
     transform:rotateY(180deg);
+    box-shadow:
+      0 0 0 rgba(0,0,0,0);
+  }
 }
 
-@keyframes flipNext{
+/* =========================
+   NAVIGATION
+========================= */
 
-    from{
-        transform:rotateY(0deg);
-    }
+.navigation{
+  width:min(1100px,96vw);
+  margin-top:38px;
 
-    to{
-        transform:rotateY(-180deg);
-    }
+  display:grid;
+  grid-template-columns:1fr auto 1fr;
+  align-items:center;
+  gap:20px;
 }
 
-@keyframes flipPrevious{
+.nav-button{
+  border:1px solid rgba(218,194,163,.25);
+  background:rgba(32,21,15,.7);
+  color:#eadcc4;
 
-    from{
-        transform:rotateY(0deg);
-    }
+  padding:12px 20px;
+  border-radius:5px;
 
-    to{
-        transform:rotateY(180deg);
-    }
+  font-family:Georgia,serif;
+  font-size:14px;
+
+  cursor:pointer;
+
+  transition:
+    opacity .2s ease,
+    background .2s ease;
 }
 
-/* =====================================================
+.nav-button:hover:not(:disabled){
+  background:rgba(62,42,30,.9);
+}
+
+.nav-button:disabled{
+  opacity:.28;
+  cursor:not-allowed;
+}
+
+#nextBtn{
+  justify-self:end;
+}
+
+#prevBtn{
+  justify-self:start;
+}
+
+.nav-title{
+  text-align:center;
+  color:#eadcc4;
+}
+
+.nav-main{
+  font-size:13px;
+  letter-spacing:4px;
+}
+
+.nav-sub{
+  margin-top:5px;
+  font-size:10px;
+  letter-spacing:2px;
+  opacity:.65;
+  font-style:italic;
+}
+
+/* =========================
    MOBILE
-===================================================== */
+========================= */
 
 @media(max-width:700px){
 
-    .scene{
-        padding:8px;
-    }
+  .scene{
+    padding:18px 5px 20px;
+    justify-content:flex-start;
+    padding-top:30px;
+  }
 
-    .book-wrap{
+  .book-wrap,
+  .navigation{
+    width:98vw;
+  }
 
-        width:97vw;
-        height:66vh;
-    }
+  .book-frame{
+    padding:9px;
+  }
 
-    .book-frame{
-        padding:7px;
-    }
+  .book{
+    aspect-ratio:2 / 1.42;
+  }
 
-    .book{
-        inset:7px;
-    }
+  .page-inner{
+    padding:6% 7%;
+  }
 
-    .page-content{
-        padding:13px;
-    }
+  .photo-area{
+    width:88%;
+    height:48%;
+  }
 
-    .polaroid{
+  .polaroid{
+    width:83%;
+    padding:6px 6px 18px;
+  }
 
-        width:80%;
+  .person-name{
+    margin-top:10px;
+  }
 
-        height:48%;
+  .heart-line{
+    margin:8px auto;
+  }
 
-        min-height:170px;
+  .message{
+    font-size:13px;
+    line-height:1.5;
+  }
 
-        padding:7px 7px 25px;
-    }
+  .message:before{
+    font-size:30px;
+    margin-bottom:5px;
+  }
 
-    .tape{
+  .message-divider{
+    margin:10px auto 12px;
+  }
 
-        width:65px;
-        height:17px;
+  .video-card{
+    height:78px;
+    width:94%;
+    gap:9px;
+  }
 
-        top:-9px;
-    }
+  .play-button{
+    width:34px;
+    height:34px;
+    font-size:12px;
+  }
 
-    .person-name{
+  .video-title{
+    font-size:12px;
+  }
 
-        font-size:25px;
+  .video-subtitle{
+    font-size:7px;
+  }
 
-        margin-top:10px;
-    }
+  .page-number{
+    bottom:7px;
+    font-size:8px;
+  }
 
-    .heart-line{
+  .navigation{
+    margin-top:25px;
+    grid-template-columns:auto 1fr auto;
+    gap:7px;
+  }
 
-        margin:5px 0;
+  .nav-button{
+    padding:9px 10px;
+    font-size:10px;
+  }
 
-        font-size:12px;
-    }
+  .nav-main{
+    font-size:9px;
+    letter-spacing:2px;
+  }
 
-    .tags{
+  .nav-sub{
+    font-size:7px;
+  }
 
-        font-size:7px;
+  .intro-heading{
+    letter-spacing:3px;
+    font-size:18px;
+  }
 
-        letter-spacing:1.5px;
-    }
+  .intro-quote{
+    font-size:13px;
+  }
 
-    .message-page{
+  .outro-title{
+    font-size:18px;
+    letter-spacing:2px;
+  }
 
-        padding:18px;
-    }
-
-    .quote-mark{
-
-        font-size:28px;
-
-        margin-bottom:8px;
-    }
-
-    .quote{
-
-        font-size:12px;
-
-        line-height:1.55;
-    }
-
-    .video-card{
-
-        width:90%;
-
-        margin-top:14px;
-    }
-
-    .video-placeholder{
-
-        height:90px;
-    }
-
-    .play{
-
-        width:35px;
-        height:35px;
-
-        font-size:14px;
-    }
-
-    .watch{
-
-        font-size:11px;
-    }
-
-    .botanical{
-
-        font-size:25px;
-
-        bottom:12px;
-    }
-
-    .left-page .page-number{
-        left:25px;
-    }
-
-    .right-page .page-number{
-        right:25px;
-    }
-
-    .page-number{
-        bottom:10px;
-
-        font-size:8px;
-
-        letter-spacing:2px;
-    }
-
-    .navigation{
-
-        bottom:-65px;
-
-        height:48px;
-    }
-
-    .nav-button{
-
-        width:auto;
-
-        min-width:82px;
-
-        padding:8px 11px;
-
-        font-size:10px;
-    }
-
-    .book-title strong{
-
-        font-size:7px;
-
-        letter-spacing:2px;
-    }
-
-    .book-title span{
-
-        font-size:13px;
-    }
+  .outro-message{
+    font-size:13px;
+  }
 }
-
 </style>
 </head>
 
-
 <body>
-
 
 <div class="scene">
 
-<div class="book-wrap">
+  <div class="book-wrap">
 
     <div class="book-shadow"></div>
 
-    <!-- DARK LEATHER OUTER COVER -->
-    <div class="book-frame"></div>
+    <div class="book-frame">
 
-
-    <!-- OPEN BOOK -->
-    <div class="book" id="book">
+      <div class="book">
 
         <!-- LEFT PAGE -->
-        <div class="page left-page">
-
-            <div class="page-content" id="leftContent"></div>
-
-            <div class="botanical left">❧</div>
-
-            <div class="page-number" id="leftNumber">
-                1 / 15
-            </div>
-
-        </div>
-
+        <div class="page left" id="leftPage"></div>
 
         <!-- RIGHT PAGE -->
-        <div class="page right-page">
+        <div class="page right" id="rightPage"></div>
 
-            <div class="page-content message-page" id="rightContent"></div>
-
-            <div class="botanical right">❧</div>
-
-            <div class="page-number" id="rightNumber">
-                2 / 15
-            </div>
-
-        </div>
-
-
-        <!-- SOFT CENTER GUTTER -->
+        <!-- CENTER GUTTER -->
         <div class="gutter"></div>
 
-
-        <!-- PAGE FLIP -->
+        <!-- FLIPPING LEAF -->
         <div class="flip-page" id="flipPage">
 
-            <div class="flip-front" id="flipFront"></div>
+          <div class="flip-face front" id="flipFront"></div>
 
-            <div class="flip-back" id="flipBack"></div>
-
-        </div>
-
-    </div>
-
-
-    <!-- NAVIGATION BELOW BOOK -->
-    <div class="navigation">
-
-        <button
-            class="nav-button"
-            onclick="previousPerson()">
-
-            ← Previous
-
-        </button>
-
-
-        <div class="book-title">
-
-            <strong>
-                FAREWELL 2026
-            </strong>
-
-            <span>
-                Our Memories Together
-            </span>
+          <div class="flip-face back"></div>
 
         </div>
 
-
-        <button
-            class="nav-button"
-            onclick="nextPerson()">
-
-            Next →
-
-        </button>
+      </div>
 
     </div>
+  </div>
 
-</div>
+  <!-- NAVIGATION IS OUTSIDE THE BOOK -->
+  <div class="navigation">
+
+    <button
+      class="nav-button"
+      id="prevBtn"
+      onclick="previousSpread()">
+      ← Previous
+    </button>
+
+    <div class="nav-title">
+      <div class="nav-main">FAREWELL 2026</div>
+      <div class="nav-sub">Our Memories Together</div>
+    </div>
+
+    <button
+      class="nav-button"
+      id="nextBtn"
+      onclick="nextSpread()">
+      Next →
+    </button>
+
+  </div>
 
 </div>
 
@@ -982,167 +882,265 @@ body{
 <script>
 
 /* =====================================================
-   15 PEOPLE
-   ONE PERSON = ONE COMPLETE TWO-PAGE SPREAD
+   BOOK CONTENT
+
+   0  = INTRO
+   1-15 = PEOPLE
+   16 = OUTRO
+
+   TOTAL = 17 SPREADS
+   PHYSICAL PAGES = 34
 ===================================================== */
 
 const people = [
 
-{
+  {
     name:"Sai",
     photo:"",
     tags:"FRIEND • DREAMER • INSPIRATION",
     message:"Some people make our journey beautiful simply by being part of it. You have brought so much positivity, laughter and kindness into our lives. Thank you for being you. May your dreams always be big and your heart always be happy.",
     video:""
-},
+  },
 
-{
+  {
     name:"Person 2",
     photo:"",
     tags:"FRIEND • LAUGHTER • MEMORIES",
-    message:"The memories we created together will always have a special place in our hearts. Every conversation, every laugh and every little moment will be remembered.",
+    message:"The best memories are made with people who make ordinary moments feel special. Thank you for all the laughter, conversations and memories that will stay with us.",
     video:""
-},
+  },
 
-{
+  {
     name:"Person 3",
     photo:"",
     tags:"FRIEND • SMILES • MEMORIES",
-    message:"Goodbyes are not the end. They are simply the beginning of another beautiful chapter. Wherever life takes you, may happiness always follow.",
+    message:"Some friendships become part of the stories we carry forever. Thank you for every smile, every moment and every memory we created together.",
     video:""
-},
+  },
 
-{
+  {
     name:"Person 4",
     photo:"",
     tags:"FRIEND • JOY • ADVENTURE",
-    message:"Thank you for all the laughter, memories and beautiful moments. Life was definitely more enjoyable because you were part of our journey.",
+    message:"Every adventure becomes better when shared with the right people. Thank you for making this chapter brighter, happier and unforgettable.",
     video:""
-},
+  },
 
-{
+  {
     name:"Person 5",
     photo:"",
     tags:"FRIEND • KINDNESS • MEMORIES",
-    message:"Some friendships become memories that stay with us forever. Thank you for being a wonderful part of this chapter.",
+    message:"Kindness has a way of becoming a beautiful memory. Thank you for the warmth, support and wonderful moments you brought into our journey.",
     video:""
-},
+  },
 
-{
+  {
     name:"Person 6",
     photo:"",
     tags:"LAUGHTER • FRIENDSHIP • FUN",
-    message:"From the funniest moments to the unforgettable memories, there will always be a special place in our hearts for the time we shared.",
+    message:"From the funniest moments to the quiet conversations, every little memory became part of something special. Thank you for all the fun and laughter.",
     video:""
-},
+  },
 
-{
+  {
     name:"Person 7",
     photo:"",
     tags:"FRIEND • SUPPORT • SMILES",
-    message:"Thank you for every smile, every conversation and every moment that made this journey special.",
+    message:"A true friend makes difficult days lighter and happy days even brighter. Thank you for always being a wonderful part of this journey.",
     video:""
-},
+  },
 
-{
+  {
     name:"Person 8",
     photo:"",
     tags:"MEMORIES • FRIENDSHIP • JOY",
-    message:"Years may pass and places may change, but beautiful memories have a way of staying with us forever.",
+    message:"Years from now, we may forget the little details, but we will remember how these moments made us feel. Thank you for being part of those memories.",
     video:""
-},
+  },
 
-{
+  {
     name:"Person 9",
     photo:"",
     tags:"FRIEND • LAUGHTER • ADVENTURE",
-    message:"Here is to all the adventures we shared and all the wonderful moments still waiting for us in the future.",
+    message:"Life is made of chapters, and some chapters become unforgettable because of the people in them. Thank you for making this one so memorable.",
     video:""
-},
+  },
 
-{
+  {
     name:"Person 10",
     photo:"",
     tags:"FRIEND • DREAMER • SMILES",
-    message:"May your next chapter be filled with exciting opportunities, wonderful people and countless reasons to smile.",
+    message:"Keep dreaming, keep smiling and keep moving towards everything you wish for. May the next chapter bring you wonderful adventures and beautiful opportunities.",
     video:""
-},
+  },
 
-{
+  {
     name:"Person 11",
     photo:"",
     tags:"FRIENDSHIP • MEMORIES • HEART",
-    message:"Thank you for being part of our story. The memories we made together will always remain a beautiful part of our lives.",
+    message:"Friendship is not measured by the number of days, but by the memories that remain in our hearts. Thank you for every beautiful moment.",
     video:""
-},
+  },
 
-{
+  {
     name:"Person 12",
     photo:"",
     tags:"LAUGHTER • FRIENDSHIP • MOMENTS",
-    message:"Some moments become special simply because of the people who were there. Thank you for making those moments unforgettable.",
+    message:"There are moments that become stories, and stories that become memories. Thank you for being part of so many moments worth remembering.",
     video:""
-},
+  },
 
-{
+  {
     name:"Person 13",
     photo:"",
     tags:"FRIEND • MEMORIES • DREAMS",
-    message:"Wherever your journey takes you next, may it be filled with success, happiness and beautiful new memories.",
+    message:"As one chapter ends, another begins. May your next chapter be filled with dreams coming true, meaningful friendships and countless reasons to smile.",
     video:""
-},
+  },
 
-{
+  {
     name:"Person 14",
     photo:"",
     tags:"FRIENDSHIP • JOY • MEMORIES",
-    message:"Farewells may be difficult, but they remind us just how meaningful the journey has been. Thank you for every wonderful memory.",
+    message:"Thank you for bringing joy, laughter and friendship into our days. The memories we made together will always have a special place in our story.",
     video:""
-},
+  },
 
-{
+  {
     name:"Person 15",
     photo:"",
     tags:"FOREVER • FRIENDSHIP • MEMORIES",
-    message:"And finally, thank you for being part of this beautiful chapter. The journey continues, but these memories will always stay with us.",
+    message:"Some goodbyes are not really endings. They are simply the beginning of a new chapter, carrying all the memories of the journey with us.",
     video:""
-}
+  }
 
 ];
 
 
 /* =====================================================
-   STATE
+   SPREAD DATA
+
+   0 = INTRO
+   1-15 = PEOPLE
+   16 = OUTRO
 ===================================================== */
 
-let current = 0;
+const totalSpreads = people.length + 2;
+
+let currentSpread = 0;
 let animating = false;
 
 
 /* =====================================================
-   ELEMENTS
+   BOTANICAL SVG
 ===================================================== */
 
-const leftContent =
-document.getElementById("leftContent");
+function botanicalSVG(){
 
-const rightContent =
-document.getElementById("rightContent");
+  return `
+    <svg viewBox="0 0 120 90" fill="none">
 
-const leftNumber =
-document.getElementById("leftNumber");
+      <path
+        d="M8 82 C35 70,50 42,72 10"
+        stroke="currentColor"
+        stroke-width="1.2"/>
 
-const rightNumber =
-document.getElementById("rightNumber");
+      <path
+        d="M34 62 C24 52,19 45,17 36"
+        stroke="currentColor"
+        stroke-width="1"/>
 
-const flipPage =
-document.getElementById("flipPage");
+      <path
+        d="M47 46 C58 37,65 30,66 20"
+        stroke="currentColor"
+        stroke-width="1"/>
 
-const flipFront =
-document.getElementById("flipFront");
+      <path
+        d="M24 56 C18 50,11 48,7 48"
+        stroke="currentColor"
+        stroke-width="1"/>
 
-const flipBack =
-document.getElementById("flipBack");
+      <path
+        d="M55 38 C66 35,74 36,81 40"
+        stroke="currentColor"
+        stroke-width="1"/>
+
+      <ellipse
+        cx="18"
+        cy="36"
+        rx="6"
+        ry="3"
+        transform="rotate(-35 18 36)"
+        stroke="currentColor"/>
+
+      <ellipse
+        cx="67"
+        cy="20"
+        rx="7"
+        ry="3"
+        transform="rotate(-40 67 20)"
+        stroke="currentColor"/>
+
+      <ellipse
+        cx="81"
+        cy="40"
+        rx="7"
+        ry="3"
+        transform="rotate(18 81 40)"
+        stroke="currentColor"/>
+
+    </svg>
+  `;
+}
+
+
+/* =====================================================
+   VIDEO CARD
+
+   IMPORTANT:
+   The structure is ALWAYS identical.
+   Later we can replace video="" with OneDrive video.
+===================================================== */
+
+function videoCard(person){
+
+  return `
+    <div
+      class="video-card"
+      onclick="openVideo('${escapeHtml(person.video || "")}')">
+
+      <div class="play-button">▶</div>
+
+      <div class="video-text">
+
+        <div class="video-title">
+          Watch Video
+        </div>
+
+        <div class="video-subtitle">
+          A MEMORY FROM THIS CHAPTER
+        </div>
+
+      </div>
+
+    </div>
+  `;
+}
+
+
+/* =====================================================
+   ESCAPE TEXT
+===================================================== */
+
+function escapeHtml(value){
+
+  return String(value)
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;")
+    .replace(/'/g,"&#039;");
+}
 
 
 /* =====================================================
@@ -1151,302 +1149,503 @@ document.getElementById("flipBack");
 
 function photoHTML(person){
 
-    if(person.photo){
-
-        return `
-            <div class="polaroid">
-
-                <div class="tape"></div>
-
-                <img
-                    src="${person.photo}"
-                    alt="${person.name}"
-                >
-
-            </div>
-        `;
-
-    }
+  if(person.photo){
 
     return `
-        <div class="polaroid">
+      <div class="polaroid">
 
-            <div class="tape"></div>
+        <div class="photo-placeholder">
 
-            <div class="photo-placeholder">
-
-                <div style="font-size:35px">
-                    📷
-                </div>
-
-                <div>
-                    Photo will be added
-                </div>
-
-            </div>
+          <img
+            src="${escapeHtml(person.photo)}"
+            alt="${escapeHtml(person.name)}">
 
         </div>
+
+      </div>
     `;
+
+  }
+
+  return `
+    <div class="polaroid">
+
+      <div class="photo-placeholder">
+        PHOTO
+      </div>
+
+    </div>
+  `;
 }
 
 
 /* =====================================================
-   VIDEO
+   LEFT PERSON PAGE
 ===================================================== */
 
-function videoHTML(person){
+function personLeft(person,pageNumber){
 
-    if(person.video){
+  return `
 
-        return `
-            <div class="video-card">
+    <div class="page-inner">
 
-                <video
-                    controls
-                    playsinline
-                    src="${person.video}">
-                </video>
-
-            </div>
-        `;
-
-    }
-
-    return `
-        <div class="video-card">
-
-            <div class="video-placeholder">
-
-                <div class="play">
-                    ▶
-                </div>
-
-                <div class="watch">
-                    Watch Video
-                </div>
-
-                <small>
-                    Video coming soon
-                </small>
-
-            </div>
-
-        </div>
-    `;
-}
-
-
-/* =====================================================
-   RENDER CURRENT PERSON
-===================================================== */
-
-function renderPerson(){
-
-    const person = people[current];
-
-
-    /* LEFT PAGE */
-
-    leftContent.innerHTML = `
+      <div class="photo-area">
 
         ${photoHTML(person)}
 
-        <div class="person-name">
-            ${person.name}
-        </div>
+      </div>
 
-        <div class="heart-line">
-            ─── ♥ ───
-        </div>
+      <div class="person-name">
+        ${escapeHtml(person.name)}
+      </div>
 
-        <div class="tags">
-            ${person.tags}
-        </div>
+      <div class="heart-line">
+        <span>♡</span>
+      </div>
 
-    `;
+      <div class="tags">
+        ${escapeHtml(person.tags)}
+      </div>
 
+    </div>
 
-    /* RIGHT PAGE */
+    <div class="botanical bottom-left">
+      ${botanicalSVG()}
+    </div>
 
-    rightContent.innerHTML = `
+    <div class="page-number">
+      ${pageNumber} / 34
+    </div>
 
-        <div class="quote-mark">
-            “
-        </div>
-
-        <div class="quote">
-            ${person.message}
-        </div>
-
-        ${videoHTML(person)}
-
-    `;
-
-
-    /*
-       IMPORTANT:
-       Each person uses TWO page numbers.
-    */
-
-    const pageLeft =
-        current * 2 + 1;
-
-    const pageRight =
-        current * 2 + 2;
-
-    leftNumber.innerHTML =
-        `${pageLeft} / 30`;
-
-    rightNumber.innerHTML =
-        `${pageRight} / 30`;
+  `;
 }
 
 
 /* =====================================================
-   NEXT
+   RIGHT PERSON PAGE
 ===================================================== */
 
-function nextPerson(){
+function personRight(person,pageNumber){
 
-    if(animating) return;
+  return `
 
-    if(current >= people.length - 1) return;
+    <div class="page-inner">
 
-    animating = true;
+      <div class="message">
+        ${escapeHtml(person.message)}
+      </div>
+
+      <div class="message-divider"></div>
+
+      ${videoCard(person)}
+
+    </div>
+
+    <div class="botanical bottom-right">
+      ${botanicalSVG()}
+    </div>
+
+    <div class="page-number">
+      ${pageNumber} / 34
+    </div>
+
+  `;
+}
 
 
-    /*
-       Put the current RIGHT page
-       on the physical turning sheet.
-    */
+/* =====================================================
+   INTRO LEFT
+===================================================== */
 
-    flipFront.innerHTML =
-        rightContent.innerHTML;
+function introLeft(){
+
+  return `
+
+    <div class="page-inner">
+
+      <div class="heart">
+        ♡
+      </div>
+
+      <h1 class="intro-heading">
+        OUR STORY
+      </h1>
+
+      <div class="intro-quote">
+        Every chapter has a story...<br>
+        And you made ours special.
+      </div>
+
+      <div class="intro-small">
+        A COLLECTION OF MEMORIES
+      </div>
+
+    </div>
+
+    <div class="botanical bottom-left">
+      ${botanicalSVG()}
+    </div>
+
+    <div class="page-number">
+      1 / 34
+    </div>
+
+  `;
+}
 
 
-    /*
-       Make the back of the turning
-       page look like paper.
-    */
+/* =====================================================
+   INTRO RIGHT
+===================================================== */
 
-    flipBack.innerHTML = `
-        <div style="
-            width:100%;
-            height:100%;
-            background:#f3e5c8;
-        "></div>
-    `;
+function introRight(){
 
+  return `
+
+    <div class="page-inner">
+
+      <div class="intro-heading">
+        FAREWELL
+      </div>
+
+      <div class="intro-quote">
+
+        To the laughter,<br>
+        conversations,<br>
+        adventures,<br>
+        and memories...
+
+      </div>
+
+      <div class="message-divider"></div>
+
+      <div class="intro-small">
+        TURN THE PAGE TO BEGIN
+      </div>
+
+    </div>
+
+    <div class="botanical bottom-right">
+      ${botanicalSVG()}
+    </div>
+
+    <div class="page-number">
+      2 / 34
+    </div>
+
+  `;
+}
+
+
+/* =====================================================
+   OUTRO LEFT
+===================================================== */
+
+function outroLeft(){
+
+  return `
+
+    <div class="page-inner">
+
+      <div class="heart">
+        ♡
+      </div>
+
+      <div class="outro-title">
+        THE NEXT CHAPTER
+      </div>
+
+      <div class="outro-message">
+
+        Wishing you all the best
+        in your next chapter.
+
+      </div>
+
+      <div class="signature-line"></div>
+
+      <div class="signature">
+        WITH LOVE &amp; BEST WISHES
+      </div>
+
+    </div>
+
+    <div class="botanical bottom-left">
+      ${botanicalSVG()}
+    </div>
+
+    <div class="page-number">
+      33 / 34
+    </div>
+
+  `;
+}
+
+
+/* =====================================================
+   OUTRO RIGHT
+===================================================== */
+
+function outroRight(){
+
+  return `
+
+    <div class="page-inner">
+
+      <div class="outro-title">
+        OUR MEMORIES
+      </div>
+
+      <div class="outro-message">
+
+        Wherever life takes us,
+        these moments will always
+        remain a part of our story.
+
+      </div>
+
+      <div class="message-divider"></div>
+
+      <div class="intro-small">
+        UNTIL OUR STORIES CROSS AGAIN
+      </div>
+
+    </div>
+
+    <div class="botanical bottom-right">
+      ${botanicalSVG()}
+    </div>
+
+    <div class="page-number">
+      34 / 34
+    </div>
+
+  `;
+}
+
+
+/* =====================================================
+   RENDER SPREAD
+===================================================== */
+
+function renderSpread(index){
+
+  const left = document.getElementById("leftPage");
+  const right = document.getElementById("rightPage");
+
+  /* INTRO */
+  if(index === 0){
+
+    left.innerHTML = introLeft();
+    right.innerHTML = introRight();
+
+  }
+
+  /* PEOPLE */
+  else if(index >= 1 && index <= people.length){
+
+    const person = people[index - 1];
+
+    const leftNumber = 3 + ((index - 1) * 2);
+    const rightNumber = leftNumber + 1;
+
+    left.innerHTML =
+      personLeft(person,leftNumber);
+
+    right.innerHTML =
+      personRight(person,rightNumber);
+
+  }
+
+  /* OUTRO */
+  else{
+
+    left.innerHTML = outroLeft();
+    right.innerHTML = outroRight();
+
+  }
+
+  updateNavigation();
+}
+
+
+/* =====================================================
+   NAVIGATION STATE
+===================================================== */
+
+function updateNavigation(){
+
+  document.getElementById("prevBtn").disabled =
+    currentSpread === 0 || animating;
+
+  document.getElementById("nextBtn").disabled =
+    currentSpread === totalSpreads - 1 || animating;
+}
+
+
+/* =====================================================
+   NEXT SPREAD
+===================================================== */
+
+function nextSpread(){
+
+  if(
+    animating ||
+    currentSpread >= totalSpreads - 1
+  ){
+    return;
+  }
+
+  animating = true;
+
+  const flipPage =
+    document.getElementById("flipPage");
+
+  const flipFront =
+    document.getElementById("flipFront");
+
+  /*
+    Copy the CURRENT right page.
+
+    The page itself becomes the physical leaf
+    that turns from right → left.
+  */
+
+  flipFront.innerHTML =
+    document.getElementById("rightPage").innerHTML;
+
+  flipPage.className =
+    "flip-page next active animate-next";
+
+  /*
+    Change underlying spread slightly after
+    the leaf reaches the middle.
+
+    At that moment the flipping leaf is edge-on,
+    preventing old content from bleeding through.
+  */
+
+  setTimeout(()=>{
+
+    currentSpread++;
+
+    renderSpread(currentSpread);
+
+  },520);
+
+
+  /*
+    Remove the physical turning leaf after
+    the animation has completely finished.
+  */
+
+  setTimeout(()=>{
 
     flipPage.className =
-        "flip-page next";
+      "flip-page";
 
+    flipFront.innerHTML = "";
 
-    void flipPage.offsetWidth;
+    animating = false;
 
+    updateNavigation();
 
-    flipPage.classList.add(
-        "animate-next"
-    );
+  },1080);
 
-
-    /*
-       Halfway through the turn,
-       prepare the next spread underneath.
-    */
-
-    setTimeout(function(){
-
-        current++;
-
-        renderPerson();
-
-    },580);
-
-
-    /*
-       Finish animation.
-    */
-
-    setTimeout(function(){
-
-        flipPage.className =
-            "flip-page";
-
-        animating = false;
-
-    },1200);
 }
 
 
 /* =====================================================
-   PREVIOUS
+   PREVIOUS SPREAD
 ===================================================== */
 
-function previousPerson(){
+function previousSpread(){
 
-    if(animating) return;
+  if(
+    animating ||
+    currentSpread <= 0
+  ){
+    return;
+  }
 
-    if(current <= 0) return;
+  animating = true;
 
-    animating = true;
+  const flipPage =
+    document.getElementById("flipPage");
+
+  const flipFront =
+    document.getElementById("flipFront");
+
+  /*
+    Copy CURRENT left page.
+
+    It turns from left → right.
+  */
+
+  flipFront.innerHTML =
+    document.getElementById("leftPage").innerHTML;
+
+  flipPage.className =
+    "flip-page previous active animate-prev";
 
 
-    /*
-       Put current LEFT page on
-       the turning sheet.
-    */
+  setTimeout(()=>{
 
-    flipFront.innerHTML =
-        leftContent.innerHTML;
+    currentSpread--;
+
+    renderSpread(currentSpread);
+
+  },520);
 
 
-    flipBack.innerHTML = `
-        <div style="
-            width:100%;
-            height:100%;
-            background:#f3e5c8;
-        "></div>
-    `;
-
+  setTimeout(()=>{
 
     flipPage.className =
-        "flip-page previous";
+      "flip-page";
 
+    flipFront.innerHTML = "";
 
-    void flipPage.offsetWidth;
+    animating = false;
 
+    updateNavigation();
 
-    flipPage.classList.add(
-        "animate-previous"
-    );
+  },1080);
 
-
-    setTimeout(function(){
-
-        current--;
-
-        renderPerson();
-
-    },580);
-
-
-    setTimeout(function(){
-
-        flipPage.className =
-            "flip-page";
-
-        animating = false;
-
-    },1200);
 }
 
 
 /* =====================================================
-   START
+   VIDEO HANDLER
+
+   For now there is no actual video URL.
+
+   Once OneDrive links are ready, this function
+   can be changed to play the embedded video.
 ===================================================== */
 
-renderPerson();
+function openVideo(video){
+
+  if(!video){
+
+    alert(
+      "This memory video will be connected here."
+    );
+
+    return;
+  }
+
+  window.open(video,"_blank");
+
+}
+
+
+/* =====================================================
+   START BOOK
+
+   ALWAYS OPEN ON INTRO SPREAD.
+===================================================== */
+
+renderSpread(0);
 
 </script>
 
