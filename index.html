@@ -1,521 +1,274 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
-<title>Farewell 2026 — Our Memories Together</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Farewell 2026</title>
 
 <style>
 *{
   box-sizing:border-box;
 }
 
-html,body{
-  margin:0;
-  min-height:100%;
-  font-family:Georgia,"Times New Roman",serif;
-}
-
 body{
-  background:
-    radial-gradient(circle at 50% 15%,rgba(255,240,205,.15),transparent 28%),
-    linear-gradient(135deg,#20130e,#3a2115 45%,#160d09);
-  color:#3b281d;
+  margin:0;
+  min-height:100vh;
+  background:#24150f;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  font-family:Georgia,serif;
   overflow:hidden;
 }
 
-/* Subtle background texture */
-body:before{
-  content:"";
-  position:fixed;
-  inset:0;
-  pointer-events:none;
-  opacity:.15;
-  background-image:radial-gradient(#fff 0.7px,transparent .7px);
-  background-size:7px 7px;
-}
-
-.stage{
+.scene{
+  width:100%;
+  max-width:1000px;
   height:100vh;
-  display:grid;
-  place-items:center;
-  padding:20px;
-}
-
-.book-area{
-  width:min(94vw,1000px);
-  height:min(78vh,650px);
-  position:relative;
-  perspective:2200px;
-}
-
-.book-shadow{
-  position:absolute;
-  left:6%;
-  right:6%;
-  bottom:-4%;
-  height:12%;
-  background:#000;
-  filter:blur(25px);
-  opacity:.48;
-  border-radius:50%;
-}
-
-/* =========================
-   CLOSED BOOK
-========================= */
-
-.closed-book{
-  position:absolute;
-  inset:0;
-  margin:auto;
-  width:min(72%,500px);
-  height:min(82%,530px);
-
-  border-radius:8px 15px 15px 8px;
-
-  background:
-    linear-gradient(90deg,rgba(0,0,0,.22),transparent 7%),
-    linear-gradient(135deg,#642a24,#3d1717 70%,#2a1010);
-
-  box-shadow:
-    inset 0 0 0 2px #9b6b38,
-    inset 8px 0 12px rgba(0,0,0,.45),
-    12px 20px 35px #0008;
-
-  color:#e8c982;
-
   display:flex;
-  align-items:center;
   justify-content:center;
-
-  text-align:center;
-
-  z-index:20;
-
-  transition:
-    1.15s cubic-bezier(.77,0,.18,1);
-
-  transform-origin:left center;
+  align-items:center;
+  perspective:2000px;
 }
 
-.closed-book:after{
-  content:"";
-  position:absolute;
-  inset:12px;
+/* BOOK */
 
-  border:1px solid #b98b4b;
-  border-radius:4px;
-
-  box-shadow:
-    inset 0 0 0 3px #4b1b18;
-}
-
-.cover-text{
+.book{
+  width:80%;
+  max-width:650px;
+  height:70%;
   position:relative;
-  z-index:2;
 }
 
-.cover-text .small{
-  font-size:clamp(12px,2vw,17px);
-  letter-spacing:5px;
+/* COVER */
+
+.cover{
+  position:absolute;
+  width:70%;
+  height:85%;
+  left:15%;
+  top:7%;
+  background:linear-gradient(135deg,#702f29,#321313);
+  border:3px solid #b78a48;
+  border-radius:8px;
+  color:#f0d294;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  text-align:center;
+  z-index:10;
+  transform-origin:left center;
+  transition:transform 1.2s ease,opacity 1.2s ease;
+  box-shadow:
+    10px 15px 30px rgba(0,0,0,.6),
+    inset 0 0 20px rgba(0,0,0,.4);
 }
 
-.cover-text h1{
-  font-size:clamp(34px,6vw,66px);
-  margin:12px 0 4px;
-  letter-spacing:2px;
+.cover.open{
+  transform:rotateY(-110deg);
+  opacity:0;
+  pointer-events:none;
 }
 
-.cover-text .script{
-  font-size:clamp(20px,3vw,31px);
+.cover-content h1{
+  font-size:55px;
+  margin:10px 0;
+}
+
+.cover-content h2{
+  font-weight:normal;
   font-style:italic;
 }
 
-.cover-ornament{
+.cover-content .line{
   font-size:28px;
-  margin:22px 0;
+  margin:25px 0;
 }
 
-.open-btn{
+.open{
   position:absolute;
+  bottom:-65px;
   left:50%;
-  bottom:-70px;
-
   transform:translateX(-50%);
-
+  padding:13px 25px;
   border:0;
   border-radius:30px;
-
-  padding:14px 28px;
-
-  background:#f5ead4;
+  background:#f4e7cf;
   color:#3b281d;
-
   font-weight:bold;
-  letter-spacing:1px;
-
-  box-shadow:0 7px 20px #0007;
-
   cursor:pointer;
-
-  z-index:30;
 }
 
-.open-btn:active{
-  transform:translateX(-50%) scale(.97);
-}
+/* OPEN BOOK */
 
-/* =========================
-   OPEN BOOK
-========================= */
-
-.open-book{
+.book-pages{
   position:absolute;
-  inset:0;
-
+  width:100%;
+  height:100%;
+  top:0;
+  left:0;
+  display:flex;
   opacity:0;
-  visibility:hidden;
-
-  transition:.5s;
-
-  transform-style:preserve-3d;
+  transition:opacity .7s ease;
 }
 
-.open-book.visible{
+.book-pages.show{
   opacity:1;
-  visibility:visible;
 }
-
-.spread{
-  position:absolute;
-
-  left:3%;
-  right:3%;
-  top:7%;
-  bottom:3%;
-
-  display:grid;
-  grid-template-columns:1fr 1fr;
-
-  transform-style:preserve-3d;
-
-  filter:drop-shadow(0 22px 25px #0007);
-}
-
-/* Paper pages */
 
 .page{
+  width:50%;
+  height:85%;
+  margin-top:7%;
+  background:#f3e6ca;
   position:relative;
-  overflow:hidden;
-
-  background:
-    radial-gradient(
-      circle at 20% 20%,
-      rgba(130,90,45,.08),
-      transparent 25%
-    ),
-    linear-gradient(
-      90deg,
-      rgba(90,60,30,.11),
-      transparent 8%,
-      transparent 92%,
-      rgba(90,60,30,.08)
-    ),
-    #f2e5ca;
-
-  box-shadow:
-    inset 0 0 35px rgba(93,61,31,.12);
-
-  padding:clamp(18px,3vw,42px);
+  padding:30px;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  text-align:center;
+  box-shadow:inset 0 0 30px rgba(80,50,20,.15);
 }
 
-.left-page{
+.left{
   border-radius:10px 0 0 10px;
   border-right:1px solid #b99b70;
 }
 
-.right-page{
+.right{
   border-radius:0 10px 10px 0;
 }
 
 .spine{
   position:absolute;
-
   left:50%;
-  top:6%;
-  bottom:3%;
-
-  width:20px;
-
+  top:7%;
+  height:85%;
+  width:15px;
   transform:translateX(-50%);
-
-  z-index:10;
-
-  pointer-events:none;
-
-  background:
-    linear-gradient(
-      90deg,
-      transparent,
-      #6d4930aa 45%,
-      #fff5 52%,
-      transparent
-    );
+  background:linear-gradient(
+    90deg,
+    transparent,
+    rgba(70,40,20,.4),
+    white,
+    transparent
+  );
+  z-index:5;
 }
 
-.page-content{
-  height:100%;
-
-  display:flex;
-  flex-direction:column;
-
-  align-items:center;
-  justify-content:center;
-
-  text-align:center;
+.content{
+  width:100%;
 }
 
-.page-number{
+.number{
   font-size:12px;
   letter-spacing:3px;
-  color:#82684d;
-  margin-bottom:8px;
+  color:#80684e;
+  margin-bottom:15px;
 }
 
-.page h2{
-  font-size:clamp(24px,4vw,42px);
-  margin:4px 0 14px;
+.photo{
+  width:65%;
+  max-width:220px;
+  aspect-ratio:4/5;
+  object-fit:cover;
+  border:8px solid white;
+  box-shadow:0 8px 15px rgba(0,0,0,.2);
+  margin-bottom:15px;
+}
+
+.photo-placeholder{
+  width:65%;
+  max-width:220px;
+  aspect-ratio:4/5;
+  margin:0 auto 15px;
+  background:#d6c2a2;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  color:#70583f;
+}
+
+.content h2{
+  font-size:28px;
   font-weight:normal;
 }
 
 .message{
-  font-size:clamp(14px,2vw,19px);
-  line-height:1.65;
-  max-width:420px;
-  color:#574332;
-}
-
-.leaf{
-  margin:14px;
-  font-size:22px;
-  color:#806044;
-}
-
-/* Photo */
-
-.photo{
-  width:min(70%,270px);
-  aspect-ratio:4/5;
-
-  border:10px solid #fffdf5;
-
-  box-shadow:
-    0 8px 20px #3b281d33;
-
-  object-fit:cover;
-
-  transform:rotate(-2deg);
-
-  background:
-    linear-gradient(
-      135deg,
-      #d6c3a3,
-      #a58a69
-    );
-}
-
-.photo.placeholder{
-  display:grid;
-  place-items:center;
-
-  color:#755c45;
-
-  font-size:14px;
-
-  padding:20px;
+  font-size:15px;
+  line-height:1.6;
+  max-width:330px;
+  margin:auto;
 }
 
 .video{
-  margin-top:18px;
-
-  border:1px solid #b89d75;
-
-  background:#ead9ba;
-
-  border-radius:5px;
-
-  padding:10px 18px;
-
-  color:#624c36;
-
-  font-size:13px;
-
-  letter-spacing:.4px;
+  margin:15px auto 0;
+  padding:9px 15px;
+  border:1px solid #b89c74;
+  display:inline-block;
+  font-size:12px;
+  color:#665039;
 }
 
-/* =========================
-   REAL PAGE TURN
-========================= */
-
-.turning-page{
-  position:absolute;
-
-  z-index:20;
-
-  left:50%;
-  top:0;
-
-  width:50%;
-  height:100%;
-
-  transform-origin:left center;
-
-  transform-style:preserve-3d;
-
-  transition:
-    transform 1s cubic-bezier(.65,.05,.25,1);
-
-  display:none;
-}
-
-.turning-page.active{
-  display:block;
-  transform:rotateY(-180deg);
-}
-
-.turn-front,
-.turn-back{
-  position:absolute;
-  inset:0;
-
-  backface-visibility:hidden;
-
-  background:#f2e5ca;
-
-  box-shadow:
-    inset 0 0 30px rgba(80,50,25,.13);
-
-  padding:clamp(18px,3vw,42px);
-
-  border-radius:0 10px 10px 0;
-}
-
-.turn-back{
-  transform:rotateY(180deg);
-  border-radius:10px 0 0 10px;
-}
-
-/* =========================
-   CONTROLS
-========================= */
+/* CONTROLS */
 
 .controls{
   position:absolute;
-
+  bottom:2%;
   left:0;
-  right:0;
-  bottom:-62px;
-
+  width:100%;
   display:flex;
   justify-content:center;
-
-  gap:12px;
-
-  z-index:40;
+  gap:10px;
+  z-index:20;
 }
 
 .controls button{
-  border:1px solid #b99a70;
-
-  background:#f0dfc0;
-
-  color:#4b3525;
-
+  padding:9px 15px;
   border-radius:20px;
-
-  padding:9px 16px;
-
+  border:1px solid #b99a70;
+  background:#f0dfc0;
   cursor:pointer;
-
-  box-shadow:0 4px 12px #0004;
 }
 
-/* =========================
-   COVER OPENING
-========================= */
+/* MOBILE */
 
-.book-area.opened .closed-book{
-  transform:rotateY(-88deg);
-  opacity:0;
-  pointer-events:none;
-}
+@media(max-width:600px){
 
-.book-area.opened .open-book{
-  transition-delay:.55s;
-}
-
-/* =========================
-   MOBILE
-========================= */
-
-@media(max-width:650px){
-
-  .stage{
-    padding:8px;
+  .book{
+    width:96%;
+    height:75%;
   }
 
-  .book-area{
-    width:98vw;
-    height:74vh;
+  .cover{
+    width:78%;
+    left:11%;
   }
 
-  .spread{
-    left:1%;
-    right:1%;
-    top:3%;
-    bottom:1%;
+  .cover-content h1{
+    font-size:40px;
   }
 
   .page{
-    padding:13px;
+    padding:12px;
   }
 
-  .photo{
-    width:78%;
-    border-width:7px;
+  .content h2{
+    font-size:20px;
   }
 
   .message{
-    font-size:12px;
-    line-height:1.45;
+    font-size:11px;
   }
 
-  .page h2{
-    font-size:21px;
-  }
-
-  .page-number{
-    font-size:9px;
-  }
-
-  .video{
-    font-size:10px;
-    padding:8px 10px;
-  }
-
-  .open-btn{
-    bottom:-58px;
-    padding:11px 20px;
-  }
-
-  .controls{
-    bottom:-52px;
+  .photo,
+  .photo-placeholder{
+    width:75%;
   }
 
   .controls button{
-    padding:7px 11px;
-    font-size:11px;
+    font-size:10px;
+    padding:7px 10px;
   }
 }
 </style>
@@ -523,537 +276,341 @@ body:before{
 
 <body>
 
-<div class="stage">
+<div class="scene">
 
-  <div class="book-area" id="bookArea">
+<div class="book">
 
-    <div class="book-shadow"></div>
+<!-- COVER -->
 
-    <!-- =====================
-         CLOSED BOOK COVER
-    ====================== -->
+<div class="cover" id="cover">
 
-    <section class="closed-book" id="cover">
+<div class="cover-content">
 
-      <div class="cover-text">
+<div>F A R E W E L L</div>
 
-        <div class="small">
-          FAREWELL
-        </div>
+<h1>2026</h1>
 
-        <h1>
-          2026
-        </h1>
+<h2>Our Memories Together</h2>
 
-        <div class="script">
-          Our Memories Together
-        </div>
+<div class="line">❦ ♥ ❦</div>
 
-        <div class="cover-ornament">
-          ❦ ♥ ❦
-        </div>
+</div>
 
-      </div>
+<button class="open" id="openBook">
+📖 OPEN BOOK
+</button>
 
-      <button class="open-btn" id="openBtn">
-        📖 OPEN BOOK
-      </button>
-
-    </section>
+</div>
 
 
-    <!-- =====================
-         OPEN BOOK
-    ====================== -->
+<!-- PAGES -->
 
-    <section class="open-book" id="openBook">
+<div class="book-pages" id="pages">
 
-      <div class="spread" id="spread">
+<div class="page left">
 
-        <div
-          class="page left-page"
-          id="leftPage">
-        </div>
+<div class="content" id="leftContent"></div>
 
-        <div
-          class="page right-page"
-          id="rightPage">
-        </div>
+</div>
 
-        <div class="spine"></div>
+<div class="page right">
 
+<div class="content" id="rightContent"></div>
 
-        <!-- Page that physically flips -->
+</div>
 
-        <div
-          class="turning-page"
-          id="turningPage">
+<div class="spine"></div>
 
-          <div
-            class="turn-front"
-            id="turnFront">
-          </div>
-
-          <div
-            class="turn-back"
-            id="turnBack">
-          </div>
-
-        </div>
-
-      </div>
+</div>
 
 
-      <!-- BOOK CONTROLS -->
+<!-- CONTROLS -->
 
-      <div class="controls">
+<div class="controls">
 
-        <button id="prevBtn">
-          ← Previous
-        </button>
+<button id="previous">
+← Previous
+</button>
 
-        <button id="nextBtn">
-          Next →
-        </button>
+<button id="next">
+Next →
+</button>
 
-        <button id="closeBtn">
-          Close book
-        </button>
+<button id="close">
+Close
+</button>
 
-      </div>
+</div>
 
-    </section>
-
-  </div>
+</div>
 
 </div>
 
 
 <script>
 
-/* =====================================================
-   ADD YOUR PEOPLE HERE
-===================================================== */
-
 const people = [
 
-  {
-    name:"Sai",
+{
+name:"Sai",
+photo:"",
+message:"Some people make our journey beautiful simply by being part of it. ❤️"
+},
 
-    photo:"",
+{
+name:"Person 2",
+photo:"",
+message:"The memories we created together will always have a special place in our hearts."
+},
 
-    message:
-      "Some people make our journey beautiful simply by being part of it. ❤️"
-  },
+{
+name:"Person 3",
+photo:"",
+message:"Goodbyes are not the end. They are the beginning of a beautiful new journey."
+},
 
-  {
-    name:"Person 2",
-
-    photo:"",
-
-    message:
-      "The memories we created together will always have a special place in our hearts."
-  },
-
-  {
-    name:"Person 3",
-
-    photo:"",
-
-    message:
-      "Goodbyes are not the end. They are the beginning of a beautiful new journey."
-  },
-
-  {
-    name:"Person 4",
-
-    photo:"",
-
-    message:
-      "Thank you for all the laughter, memories and beautiful moments."
-  }
+{
+name:"Person 4",
+photo:"",
+message:"Thank you for all the laughter, memories and beautiful moments."
+}
 
 ];
 
 
-/* =====================================================
-   BOOK STATE
-===================================================== */
-
 let current = 0;
 
 
-/* =====================================================
-   ELEMENTS
-===================================================== */
+const cover =
+document.getElementById("cover");
 
-const bookArea =
-  document.getElementById("bookArea");
+const pages =
+document.getElementById("pages");
 
-const openBook =
-  document.getElementById("openBook");
+const left =
+document.getElementById("leftContent");
 
-const leftPage =
-  document.getElementById("leftPage");
-
-const rightPage =
-  document.getElementById("rightPage");
-
-const turningPage =
-  document.getElementById("turningPage");
-
-const turnFront =
-  document.getElementById("turnFront");
-
-const turnBack =
-  document.getElementById("turnBack");
+const right =
+document.getElementById("rightContent");
 
 
-/* =====================================================
-   PERSON PAGE
-===================================================== */
+function personPage(person,index){
 
-function pageHTML(person,index){
+let image="";
 
-  const img = person.photo
+if(person.photo){
 
-    ? `
-      <img
-        class="photo"
-        src="${person.photo}"
-        alt="${person.name}">
-      `
+image=
+'<img class="photo" src="' +
+person.photo +
+'" alt="' +
+person.name +
+'">';
 
-    : `
+}else{
 
-      <div class="photo placeholder">
+image=
+'<div class="photo-placeholder">📷<br>Photo will be added</div>';
 
-        📷
+}
 
-        <br><br>
+return `
 
-        Photo will be added here
+<div class="number">
+${index+1} / ${people.length}
+</div>
 
-      </div>
+${image}
 
-      `;
+<h2>
+${person.name}
+</h2>
 
+<div>
+❧
+</div>
 
-  return `
+<p class="message">
+“${person.message}”
+</p>
 
-    <div class="page-content">
+<div class="video">
+▶ Video coming soon
+</div>
 
-      <div class="page-number">
-        ${index+1} / ${people.length}
-      </div>
+`;
 
-      ${img}
-
-      <h2>
-        ${person.name}
-      </h2>
-
-      <div class="leaf">
-        ❧
-      </div>
-
-      <div class="message">
-        “${person.message}”
-      </div>
-
-      <div class="video">
-        ▶ &nbsp; Video coming soon
-      </div>
-
-    </div>
-
-  `;
 }
 
 
-/* =====================================================
-   INTRO PAGE
-===================================================== */
+function intro(){
 
-function introHTML(){
+return `
 
-  return `
+<div class="number">
+OUR STORY
+</div>
 
-    <div class="page-content">
+<div style="font-size:50px">
+♥
+</div>
 
-      <div class="page-number">
-        OUR STORY
-      </div>
+<h2>
+Every chapter<br>
+has a story...
+</h2>
 
-      <div style="font-size:48px">
-        ♥
-      </div>
+<div>
+❦
+</div>
 
-      <h2>
-        Every chapter<br>
-        has a story...
-      </h2>
+<p class="message">
+And you made ours special.
+</p>
 
-      <div class="leaf">
-        ❦
-      </div>
+`;
 
-      <div class="message">
-        And you made ours special.
-      </div>
-
-    </div>
-
-  `;
 }
 
 
-/* =====================================================
-   END PAGE
-===================================================== */
+function ending(){
 
-function endHTML(){
+return `
 
-  return `
+<div class="number">
+THE END
+</div>
 
-    <div class="page-content">
+<div style="font-size:50px">
+♥
+</div>
 
-      <div class="page-number">
-        THE END
-      </div>
+<h2>
+But the memories<br>
+will stay forever.
+</h2>
 
-      <div style="font-size:50px">
-        ♥
-      </div>
+<div>
+❦
+</div>
 
-      <h2>
-        But the memories<br>
-        will stay forever.
-      </h2>
+<p class="message">
+Farewell 2026
+</p>
 
-      <div class="leaf">
-        ❦
-      </div>
+`;
 
-      <div class="message">
-        Farewell 2026
-      </div>
-
-    </div>
-
-  `;
 }
 
-
-/* =====================================================
-   DISPLAY CURRENT SPREAD
-===================================================== */
 
 function render(){
 
-  /*
-     Opening spread
-  */
+if(current===0){
 
-  if(current === 0){
+left.innerHTML=intro();
 
-    leftPage.innerHTML =
-      introHTML();
+right.innerHTML=
+personPage(people[0],0);
 
-    rightPage.innerHTML =
-      pageHTML(
-        people[0],
-        0
-      );
+}
 
-  }
+else if(current < people.length){
 
+left.innerHTML=
+personPage(
+people[current-1],
+current-1
+);
 
-  /*
-     Normal spreads
-  */
+right.innerHTML=
+personPage(
+people[current],
+current
+);
 
-  else if(current <= people.length - 1){
+}
 
-    leftPage.innerHTML =
-      pageHTML(
-        people[current - 1],
-        current - 1
-      );
+else{
 
-    rightPage.innerHTML =
-      pageHTML(
-        people[current],
-        current
-      );
+left.innerHTML=
+personPage(
+people[people.length-1],
+people.length-1
+);
 
-  }
+right.innerHTML=
+ending();
 
-
-  /*
-     Final page
-  */
-
-  else{
-
-    leftPage.innerHTML =
-      pageHTML(
-        people[people.length - 1],
-        people.length - 1
-      );
-
-    rightPage.innerHTML =
-      endHTML();
-
-  }
+}
 
 }
 
 
-/* =====================================================
-   OPEN BOOK
-===================================================== */
+/* OPEN */
 
 document
-  .getElementById("openBtn")
-  .onclick = function(){
+.getElementById("openBook")
+.onclick=function(){
 
-    bookArea.classList.add("opened");
+cover.classList.add("open");
 
-    openBook.classList.add("visible");
+pages.classList.add("show");
 
-    current = 0;
+current=0;
 
-    render();
+render();
 
-  };
+};
 
 
-/* =====================================================
-   NEXT PAGE
-===================================================== */
+/* NEXT */
 
 document
-  .getElementById("nextBtn")
-  .onclick = function(){
+.getElementById("next")
+.onclick=function(){
 
-    if(current >= people.length){
+if(current < people.length){
 
-      return;
+current++;
 
-    }
+render();
 
+}
 
-    /*
-       Save current right page
-       for the physical flip
-    */
-
-    const oldRight =
-      rightPage.innerHTML;
+};
 
 
-    const newLeft =
-      rightPage.innerHTML;
-
-
-    current++;
-
-
-    /*
-       Put the old page on
-       the physical turning page
-    */
-
-    turnFront.innerHTML =
-      oldRight;
-
-    turnBack.innerHTML =
-      newLeft;
-
-
-    /*
-       Reset animation
-    */
-
-    turningPage.classList.remove(
-      "active"
-    );
-
-    void turningPage.offsetWidth;
-
-
-    /*
-       Start physical page turn
-    */
-
-    turningPage.classList.add(
-      "active"
-    );
-
-
-    /*
-       After animation,
-       show new spread
-    */
-
-    setTimeout(
-      function(){
-
-        render();
-
-        turningPage.classList.remove(
-          "active"
-        );
-
-      },
-      1000
-    );
-
-  };
-
-
-/* =====================================================
-   PREVIOUS
-===================================================== */
+/* PREVIOUS */
 
 document
-  .getElementById("prevBtn")
-  .onclick = function(){
+.getElementById("previous")
+.onclick=function(){
 
-    if(current <= 0){
+if(current>0){
 
-      return;
+current--;
 
-    }
+render();
 
-    current--;
+}
 
-    render();
-
-  };
+};
 
 
-/* =====================================================
-   CLOSE BOOK
-===================================================== */
+/* CLOSE */
 
 document
-  .getElementById("closeBtn")
-  .onclick = function(){
+.getElementById("close")
+.onclick=function(){
 
-    bookArea.classList.remove(
-      "opened"
-    );
+cover.classList.remove("open");
 
-    openBook.classList.remove(
-      "visible"
-    );
+pages.classList.remove("show");
 
-  };
+current=0;
 
+};
 
-/* Initial page */
 
 render();
 
