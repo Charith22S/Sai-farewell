@@ -22,10 +22,34 @@ body {
     background: #2c2724;
     font-family: Georgia, "Times New Roman", serif;
     color: #3d3027;
+    overflow-x: hidden;
 }
 
 /* =========================================================
-   VIEWPORT
+   VARIABLES
+========================================================= */
+
+:root {
+    --book-width: min(92vw, 1000px);
+    --book-height: min(calc(92vw * .6), 600px);
+    --page-width: calc(var(--book-width) / 2);
+
+    --paper: #fdfbf7;
+    --paper-alt: #f5f0eb;
+
+    --brown: #604535;
+    --brown-dark: #34271f;
+    --gold: #c6a46a;
+
+    --flip-duration: 720ms;
+
+    --shadow:
+        0 25px 60px rgba(0,0,0,.40),
+        0 8px 20px rgba(0,0,0,.25);
+}
+
+/* =========================================================
+   APP
 ========================================================= */
 
 .book-app {
@@ -34,6 +58,7 @@ body {
 
     display: flex;
     flex-direction: column;
+
     justify-content: center;
     align-items: center;
 
@@ -41,41 +66,7 @@ body {
 }
 
 /* =========================================================
-   BOOK GEOMETRY
-
-   OPEN BOOK:
-   1000 x 600
-
-   SINGLE PAGE:
-   500 x 600
-
-   Everything is derived from the same geometry.
-========================================================= */
-
-:root {
-    --book-width: min(92vw, 1000px);
-    --book-height: min(
-        calc(92vw * 0.6),
-        600px
-    );
-
-    --page-width: calc(var(--book-width) / 2);
-
-    --paper: #fdfbf7;
-    --paper-alt: #f5f0eb;
-
-    --brown: #604535;
-    --brown-dark: #34271f;
-
-    --gold: #c6a46a;
-
-    --shadow:
-        0 25px 60px rgba(0,0,0,.40),
-        0 8px 20px rgba(0,0,0,.25);
-}
-
-/* =========================================================
-   STAGE
+   BOOK STAGE
 ========================================================= */
 
 .book-stage {
@@ -86,8 +77,12 @@ body {
 
     flex-shrink: 0;
 
-    perspective: 2200px;
+    perspective: 1800px;
+    perspective-origin: 50% 50%;
+
     transform-style: preserve-3d;
+
+    isolation: isolate;
 }
 
 /* =========================================================
@@ -103,15 +98,19 @@ body {
 
     overflow: hidden;
 
-    background: #fdfbf7;
+    background: var(--paper);
 
     border-radius: 5px;
 
     box-shadow: var(--shadow);
+
+    transform-style: preserve-3d;
+
+    z-index: 1;
 }
 
 /* =========================================================
-   INDIVIDUAL PAGES
+   PAGE
 ========================================================= */
 
 .book-page {
@@ -135,6 +134,11 @@ body {
             transparent 4px
         ),
         var(--paper);
+
+    transform-style: preserve-3d;
+
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
 }
 
 .book-page.left {
@@ -148,7 +152,6 @@ body {
 .page-content {
     width: 100%;
     height: 100%;
-
     padding: clamp(25px, 4vw, 55px);
 }
 
@@ -165,11 +168,13 @@ body {
     width: 18px;
     height: 100%;
 
-    transform: translateX(-50%);
-
-    z-index: 10;
+    transform:
+        translateX(-50%)
+        translateZ(5px);
 
     pointer-events: none;
+
+    z-index: 20;
 
     background:
         linear-gradient(
@@ -184,15 +189,13 @@ body {
 
 /* =========================================================
    COVER
-
-   EXACTLY ONE PAGE WIDE.
 ========================================================= */
 
 .cover {
     position: absolute;
 
-    left: 50%;
     top: 0;
+    left: 50%;
 
     width: var(--page-width);
     height: var(--book-height);
@@ -201,77 +204,39 @@ body {
 
     transform-style: preserve-3d;
 
-    z-index: 100;
-
     background: #604535;
 
     border-radius: 4px;
+
+    z-index: 100;
 
     box-shadow:
         10px 18px 35px rgba(0,0,0,.40);
 
     backface-visibility: hidden;
     -webkit-backface-visibility: hidden;
+
+    will-change: transform;
 }
 
-/* Closed */
+/*
+   CLOSED:
+   occupies exactly the right half of the open-book
+   coordinate system.
+*/
+
 .cover.closed {
-    transform:
-        translateX(0)
-        rotateY(0deg);
+    transform: translateX(0) rotateY(0deg);
 }
 
-/* Open */
+/*
+   OPEN:
+   rotates around the left hinge and lands over the
+   left page.
+*/
+
 .cover.open {
-    transform:
-        translateX(-100%)
-        rotateY(-180deg);
-}
-
-/* Opening animation */
-.cover.opening {
-    animation:
-        openCover
-        .95s
-        cubic-bezier(.22,.61,.36,1)
-        forwards;
-}
-
-/* Closing animation */
-.cover.closing {
-    animation:
-        closeCover
-        .95s
-        cubic-bezier(.22,.61,.36,1)
-        forwards;
-}
-
-@keyframes openCover {
-    from {
-        transform:
-            translateX(0)
-            rotateY(0deg);
-    }
-
-    to {
-        transform:
-            translateX(-100%)
-            rotateY(-180deg);
-    }
-}
-
-@keyframes closeCover {
-    from {
-        transform:
-            translateX(-100%)
-            rotateY(-180deg);
-    }
-
-    to {
-        transform:
-            translateX(0)
-            rotateY(0deg);
-    }
+    transform: translateX(-100%) rotateY(-180deg);
 }
 
 /* =========================================================
@@ -282,14 +247,24 @@ body {
     position: absolute;
     inset: 0;
 
+    width: 100%;
+    height: 100%;
+
     display: flex;
+
     align-items: center;
     justify-content: center;
 
     padding: 28px;
 
+    overflow: hidden;
+
+    transform-style: preserve-3d;
+
     backface-visibility: hidden;
     -webkit-backface-visibility: hidden;
+
+    background: #f5f0eb;
 }
 
 .cover-front {
@@ -306,9 +281,9 @@ body {
 }
 
 .cover-back {
-    background: #f5f0eb;
-
     transform: rotateY(180deg);
+
+    background: #f5f0eb;
 
     color: #604535;
 }
@@ -325,6 +300,7 @@ body {
 
     display: flex;
     flex-direction: column;
+
     justify-content: center;
     align-items: center;
 
@@ -333,6 +309,7 @@ body {
 
 .cover-eyebrow {
     font-family: Arial, sans-serif;
+
     font-size: 10px;
     letter-spacing: .28em;
 
@@ -344,7 +321,8 @@ body {
 .cover-title {
     margin: 0;
 
-    font-size: clamp(27px, 4vw, 48px);
+    font-size: clamp(27px,4vw,48px);
+
     font-weight: normal;
 
     letter-spacing: .08em;
@@ -354,6 +332,7 @@ body {
     margin-top: 15px;
 
     font-size: 14px;
+
     letter-spacing: .18em;
 
     opacity: .85;
@@ -386,7 +365,9 @@ body {
     padding: 11px 20px;
 
     font-family: Arial, sans-serif;
+
     font-size: 10px;
+
     letter-spacing: .16em;
 
     cursor: pointer;
@@ -421,7 +402,7 @@ body {
     text-align: center;
 }
 
-.intro-left .memory-word {
+.memory-word {
     font-size: clamp(30px,4vw,50px);
 
     letter-spacing: .12em;
@@ -429,7 +410,7 @@ body {
     color: #604535;
 }
 
-.intro-left .decor {
+.decor {
     margin-top: 20px;
 
     color: #9d8168;
@@ -478,7 +459,7 @@ body {
 }
 
 /* =========================================================
-   PERSON SPREAD
+   PERSON LEFT
 ========================================================= */
 
 .person-left {
@@ -496,15 +477,12 @@ body {
 
 /* =========================================================
    POLAROID
-
-   IMPORTANT:
-   Vertical 4:5 shape.
 ========================================================= */
 
 .polaroid {
     position: relative;
 
-    width: min(42%, 220px);
+    width: min(42%,220px);
 
     min-width: 145px;
 
@@ -521,7 +499,6 @@ body {
     transform: rotate(-2deg);
 }
 
-/* Tape */
 .polaroid::before {
     content: "";
 
@@ -542,26 +519,17 @@ body {
     z-index: 5;
 }
 
-.polaroid-image {
+.polaroid-image,
+.photo-placeholder {
     width: 100%;
     height: 100%;
 
     display: block;
 
     object-fit: cover;
-
-    background:
-        linear-gradient(
-            135deg,
-            #e9ddcd,
-            #cdb79c
-        );
 }
 
 .photo-placeholder {
-    width: 100%;
-    height: 100%;
-
     display: flex;
 
     align-items: center;
@@ -661,11 +629,11 @@ body {
 }
 
 /* =========================================================
-   VIDEO CARD
+   VIDEO
 ========================================================= */
 
 .video-card {
-    width: min(100%, 390px);
+    width: min(100%,390px);
 
     min-height: 105px;
 
@@ -738,11 +706,7 @@ body {
 }
 
 /* =========================================================
-   PAGE TURN LEAF
-
-   TWO COMPLETELY SEPARATE FACES.
-
-   This prevents mirrored text / ghosting.
+   PHYSICAL FLIPPING SHEET
 ========================================================= */
 
 .page-leaf {
@@ -753,47 +717,46 @@ body {
     width: var(--page-width);
     height: var(--book-height);
 
-    display: none;
-
-    z-index: 50;
+    display: block;
 
     transform-style: preserve-3d;
 
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+
     pointer-events: none;
+
+    visibility: hidden;
+
+    z-index: 200;
+
+    will-change: transform;
+
+    contain: layout paint style;
 }
 
-/* Next = right page turns toward left */
+/* Next:
+   RIGHT PAGE -> LEFT
+*/
+
 .page-leaf.next {
     left: 50%;
 
     transform-origin: left center;
+
+    transform: rotateY(0deg);
 }
 
-/* Previous = left page turns toward right */
+/* Previous:
+   LEFT PAGE -> RIGHT
+*/
+
 .page-leaf.previous {
     left: 0;
 
     transform-origin: right center;
-}
 
-.page-leaf.animating-next {
-    display: block;
-
-    animation:
-        pageNext
-        .85s
-        cubic-bezier(.22,.61,.36,1)
-        forwards;
-}
-
-.page-leaf.animating-previous {
-    display: block;
-
-    animation:
-        pagePrevious
-        .85s
-        cubic-bezier(.22,.61,.36,1)
-        forwards;
+    transform: rotateY(0deg);
 }
 
 /* =========================================================
@@ -806,113 +769,77 @@ body {
 
     inset: 0;
 
+    width: 100%;
+    height: 100%;
+
     overflow: hidden;
 
     background: #fdfbf7;
 
+    transform-style: preserve-3d;
+
     backface-visibility: hidden;
     -webkit-backface-visibility: hidden;
 
-    transform-style: preserve-3d;
+    isolation: isolate;
+}
+
+.page-front {
+    transform: rotateY(0deg);
 }
 
 .page-back {
     transform: rotateY(180deg);
 }
 
-/* =========================================================
-   TURN ANIMATIONS
-========================================================= */
+/*
+   Force every generated page to have an opaque paper
+   surface. This prevents black/transparent bleed-through.
+*/
 
-@keyframes pageNext {
-
-    0% {
-        transform: rotateY(0deg);
-        filter: brightness(1);
-    }
-
-    35% {
-        filter: brightness(.86);
-    }
-
-    70% {
-        filter: brightness(.95);
-    }
-
-    100% {
-        transform: rotateY(-180deg);
-        filter: brightness(1);
-    }
-}
-
-@keyframes pagePrevious {
-
-    0% {
-        transform: rotateY(0deg);
-        filter: brightness(1);
-    }
-
-    35% {
-        filter: brightness(.86);
-    }
-
-    70% {
-        filter: brightness(.95);
-    }
-
-    100% {
-        transform: rotateY(180deg);
-        filter: brightness(1);
-    }
-}
-
-/* =========================================================
-   TURNING PAGE SHADOW
-========================================================= */
-
-.page-leaf::after {
+.page-front::before,
+.page-back::before {
     content: "";
 
     position: absolute;
 
     inset: 0;
 
+    background: #fdfbf7;
+
+    z-index: -1;
+
     pointer-events: none;
-
-    background:
-        linear-gradient(
-            90deg,
-            transparent 25%,
-            rgba(0,0,0,.12) 50%,
-            transparent 75%
-        );
-
-    opacity: 0;
-
-    animation:
-        turningShadow
-        .85s
-        ease-in-out
-        forwards;
 }
 
-@keyframes turningShadow {
+/* =========================================================
+   ACTIVE FLIP STATES
+========================================================= */
 
-    0% {
-        opacity: 0;
-    }
+.page-leaf.flipping-next {
+    visibility: visible;
 
-    35% {
-        opacity: .75;
-    }
+    z-index: 500;
 
-    70% {
-        opacity: .30;
-    }
+    transform:
+        rotateY(-180deg);
 
-    100% {
-        opacity: 0;
-    }
+    transition:
+        transform var(--flip-duration)
+        cubic-bezier(.22,.61,.36,1);
+}
+
+.page-leaf.flipping-previous {
+    visibility: visible;
+
+    z-index: 500;
+
+    transform:
+        rotateY(180deg);
+
+    transition:
+        transform var(--flip-duration)
+        cubic-bezier(.22,.61,.36,1);
 }
 
 /* =========================================================
@@ -931,10 +858,9 @@ body {
 
     padding: 8px 24px;
 
-    background: rgba(30,26,23,.92);
+    background: rgba(30,26,23,.96);
 
     backdrop-filter: blur(8px);
-
     -webkit-backdrop-filter: blur(8px);
 
     border-radius: 30px;
@@ -942,7 +868,7 @@ body {
     box-shadow:
         0 8px 25px rgba(0,0,0,.30);
 
-    transition: opacity .25s ease;
+    z-index: 1000;
 }
 
 .controls button {
@@ -996,7 +922,7 @@ body {
 }
 
 /* =========================================================
-   CLOSED STATE
+   CLOSED
 ========================================================= */
 
 body.closed .book-spread,
@@ -1013,7 +939,7 @@ body.closed .controls {
    MOBILE
 ========================================================= */
 
-@media (max-width: 700px) {
+@media (max-width:700px) {
 
     :root {
         --book-width: 94vw;
@@ -1046,7 +972,7 @@ body.closed .controls {
 
     .controls button {
         font-size: .75rem;
-        padding: 8px 8px;
+        padding: 8px;
     }
 
     .spread-counter {
@@ -1057,67 +983,43 @@ body.closed .controls {
 </style>
 </head>
 
-
 <body class="closed">
 
 <div class="book-app">
 
     <div class="book-stage">
 
-        <!-- =================================================
-             OPEN BOOK
-        ================================================== -->
+        <!-- OPEN BOOK -->
 
         <div class="book-spread">
 
             <section class="book-page left">
-                <div
-                    class="page-content"
-                    id="leftPage">
-                </div>
+                <div class="page-content" id="leftPage"></div>
             </section>
 
             <section class="book-page right">
-                <div
-                    class="page-content"
-                    id="rightPage">
-                </div>
+                <div class="page-content" id="rightPage"></div>
             </section>
 
         </div>
 
-        <!-- Spine -->
         <div class="spine"></div>
 
 
-        <!-- =================================================
-             3D PAGE LEAF
-        ================================================== -->
+        <!-- PHYSICAL FLIPPING PAGE -->
 
-        <div
-            class="page-leaf"
-            id="pageLeaf">
+        <div class="page-leaf" id="pageLeaf">
 
-            <div
-                class="page-front"
-                id="pageFront">
-            </div>
+            <div class="page-front" id="pageFront"></div>
 
-            <div
-                class="page-back"
-                id="pageBack">
-            </div>
+            <div class="page-back" id="pageBack"></div>
 
         </div>
 
 
-        <!-- =================================================
-             FRONT COVER
-        ================================================== -->
+        <!-- FRONT COVER -->
 
-        <div
-            class="cover closed"
-            id="cover">
+        <div class="cover closed" id="cover">
 
             <div class="cover-face cover-front">
 
@@ -1149,41 +1051,30 @@ body.closed .controls {
 
             </div>
 
-
-            <div class="cover-face cover-back">
-            </div>
+            <div class="cover-face cover-back"></div>
 
         </div>
 
     </div>
 
 
-    <!-- =====================================================
-         ALWAYS AVAILABLE NAVIGATION
-    ====================================================== -->
+    <!-- NAVIGATION -->
 
-    <div
-        class="controls"
-        id="controls">
+    <div class="controls" id="controls">
 
-        <button
-            id="previousButton">
+        <button id="previousButton">
             ← Previous
         </button>
 
-        <button
-            id="closeButton">
+        <button id="closeButton">
             Close Book
         </button>
 
-        <div
-            class="spread-counter"
-            id="spreadCounter">
+        <div class="spread-counter" id="spreadCounter">
             Spread 0 of 15
         </div>
 
-        <button
-            id="nextButton">
+        <button id="nextButton">
             Next →
         </button>
 
@@ -1195,10 +1086,7 @@ body.closed .controls {
 <script>
 
 /* =========================================================
-   DATA
-
-   IMPORTANT:
-   ONE PERSON = ONE COMPLETE SPREAD.
+   PEOPLE
 ========================================================= */
 
 const people = [
@@ -1208,908 +1096,4 @@ const people = [
         image: "",
         tags: ["Friendship", "Laughter", "Memories"],
         message:
-            "Some people become part of our story without us realizing how important they will become. Thank you for every laugh, every conversation and every memory.",
-        video: ""
-    },
-
-    {
-        name: "Person 2",
-        image: "",
-        tags: ["Good Times", "Friends", "Memories"],
-        message:
-            "The best memories are often the simplest moments that we never planned.",
-        video: ""
-    },
-
-    {
-        name: "Person 3",
-        image: "",
-        tags: ["Together", "Friendship", "Moments"],
-        message:
-            "Every chapter becomes special because of the people who are part of it.",
-        video: ""
-    },
-
-    {
-        name: "Person 4",
-        image: "",
-        tags: ["Laughs", "Memories"],
-        message:
-            "Years from now, these little moments will still make us smile.",
-        video: ""
-    },
-
-    {
-        name: "Person 5",
-        image: "",
-        tags: ["Forever", "Memories"],
-        message:
-            "Some memories stay with us long after the moment has passed.",
-        video: ""
-    },
-
-    {
-        name: "Person 6",
-        image: "",
-        tags: ["Thank You", "Friends"],
-        message:
-            "Thank you for being part of a chapter that will always mean something.",
-        video: ""
-    },
-
-    {
-        name: "Person 7",
-        image: "",
-        tags: ["Journey", "Memories"],
-        message:
-            "Life moves forward, but some memories travel with us wherever we go.",
-        video: ""
-    },
-
-    {
-        name: "Person 8",
-        image: "",
-        tags: ["Laughter", "Together"],
-        message:
-            "The laughter, random conversations and little moments are what we remember most.",
-        video: ""
-    },
-
-    {
-        name: "Person 9",
-        image: "",
-        tags: ["Story", "Friendship"],
-        message:
-            "Every person leaves something behind in the story we share.",
-        video: ""
-    },
-
-    {
-        name: "Person 10",
-        image: "",
-        tags: ["Beautiful Times", "Memories"],
-        message:
-            "One day we will look back and realize how beautiful this chapter really was.",
-        video: ""
-    },
-
-    {
-        name: "Person 11",
-        image: "",
-        tags: ["Friendship", "Moments"],
-        message:
-            "Some friendships are made from hundreds of tiny moments that slowly become unforgettable.",
-        video: ""
-    },
-
-    {
-        name: "Person 12",
-        image: "",
-        tags: ["Journey", "Together"],
-        message:
-            "Wherever life takes us next, this part of the journey will always remain ours.",
-        video: ""
-    },
-
-    {
-        name: "Person 13",
-        image: "",
-        tags: ["Thank You", "Memories"],
-        message:
-            "Thank you for the memories that made ordinary days feel extraordinary.",
-        video: ""
-    },
-
-    {
-        name: "Person 14",
-        image: "",
-        tags: ["Next Chapter", "Forever"],
-        message:
-            "The chapter may be ending, but the memories are staying.",
-        video: ""
-    },
-
-    {
-        name: "Person 15",
-        image: "",
-        tags: ["Until Next Time", "Forever"],
-        message:
-            "Until the next chapter... may all the memories we created together continue to make us smile.",
-        video: ""
-    }
-
-];
-
-
-/* =========================================================
-   SPREAD DATA MODEL
-
-   Spread 0 = Intro
-   Spread 1 = Person 1
-   Spread 2 = Person 2
-   ...
-   Spread 15 = Person 15
-========================================================= */
-
-const spreads = [
-
-    {
-        type: "intro"
-    },
-
-    ...people.map(person => ({
-        type: "person",
-        person
-    }))
-
-];
-
-
-/* =========================================================
-   STATE
-========================================================= */
-
-let currentSpread = 0;
-
-let bookOpen = false;
-
-let animating = false;
-
-
-/* =========================================================
-   DOM
-========================================================= */
-
-const leftPage =
-    document.getElementById("leftPage");
-
-const rightPage =
-    document.getElementById("rightPage");
-
-const cover =
-    document.getElementById("cover");
-
-const pageLeaf =
-    document.getElementById("pageLeaf");
-
-const pageFront =
-    document.getElementById("pageFront");
-
-const pageBack =
-    document.getElementById("pageBack");
-
-const openButton =
-    document.getElementById("openButton");
-
-const previousButton =
-    document.getElementById("previousButton");
-
-const nextButton =
-    document.getElementById("nextButton");
-
-const closeButton =
-    document.getElementById("closeButton");
-
-const spreadCounter =
-    document.getElementById("spreadCounter");
-
-
-/* =========================================================
-   INTRO
-========================================================= */
-
-function renderIntro() {
-
-    leftPage.innerHTML = `
-
-        <div class="intro-left">
-
-            <div class="memory-word">
-                MEMORIES
-            </div>
-
-            <div class="decor">
-                ✦ &nbsp; ♡ &nbsp; ✦
-            </div>
-
-        </div>
-    `;
-
-
-    rightPage.innerHTML = `
-
-        <div class="intro-right">
-
-            <div class="eyebrow">
-                CHAPTER ONE
-            </div>
-
-            <h2 class="intro-title">
-                OUR STORY
-            </h2>
-
-            <p class="intro-copy">
-
-                Every chapter has a story...
-
-                <br><br>
-
-                And you made ours special.
-
-                <br><br>
-
-                A collection of memories,
-                laughter and moments we'll
-                always carry with us.
-
-            </p>
-
-        </div>
-    `;
-}
-
-
-/* =========================================================
-   PERSON SPREAD
-========================================================= */
-
-function renderPerson(person) {
-
-    const photo = person.image
-
-        ? `
-            <img
-                class="polaroid-image"
-                src="${person.image}"
-                alt="${person.name}">
-          `
-
-        : `
-            <div class="photo-placeholder">
-                YOUR PHOTO
-            </div>
-          `;
-
-
-    leftPage.innerHTML = `
-
-        <div class="person-left">
-
-            <div class="polaroid">
-                ${photo}
-            </div>
-
-            <h2 class="person-name">
-                ${person.name}
-            </h2>
-
-            <div class="person-divider">
-                ♡ ─── ♡
-            </div>
-
-            <div class="tags">
-
-                ${person.tags.map(tag => `
-                    <span class="tag">
-                        ${tag}
-                    </span>
-                `).join("")}
-
-            </div>
-
-        </div>
-    `;
-
-
-    rightPage.innerHTML = `
-
-        <div class="person-right">
-
-            <div class="eyebrow">
-                A MEMORY FOR YOU
-            </div>
-
-            <p class="tribute">
-                ${person.message}
-            </p>
-
-            <div class="small-divider"></div>
-
-            <div
-                class="video-card"
-                data-video="${person.video || ""}"
-                onclick="watchVideo(this)"
-            >
-
-                <div class="play">
-                    ▶
-                </div>
-
-                <div class="video-text">
-
-                    <strong>
-                        Watch Video
-                    </strong>
-
-                    <span>
-                        A LITTLE MOMENT TO REMEMBER
-                    </span>
-
-                </div>
-
-            </div>
-
-        </div>
-    `;
-}
-
-
-/* =========================================================
-   RENDER CURRENT SPREAD
-========================================================= */
-
-function renderSpread(index) {
-
-    const spread = spreads[index];
-
-    if (!spread) return;
-
-
-    if (spread.type === "intro") {
-
-        renderIntro();
-
-    } else {
-
-        renderPerson(spread.person);
-
-    }
-
-
-    updateNavigation();
-}
-
-
-/* =========================================================
-   NAVIGATION UI
-========================================================= */
-
-function updateNavigation() {
-
-    /*
-      Spread count starts at 0 for intro.
-    */
-
-    spreadCounter.textContent =
-        `Spread ${currentSpread} of ${spreads.length - 1}`;
-
-
-    previousButton.disabled =
-        currentSpread === 0;
-
-
-    nextButton.textContent =
-        currentSpread === spreads.length - 1
-            ? "Close Book"
-            : "Next →";
-}
-
-
-/* =========================================================
-   OPEN BOOK
-========================================================= */
-
-function openBook() {
-
-    if (animating || bookOpen) return;
-
-    animating = true;
-
-
-    /*
-      Render intro before the physical cover opens.
-    */
-
-    currentSpread = 0;
-
-    renderSpread(0);
-
-
-    document.body.classList.remove("closed");
-
-
-    cover.classList.remove("closed");
-
-    cover.classList.add("opening");
-
-
-    cover.addEventListener(
-        "animationend",
-        function finishOpening() {
-
-            cover.classList.remove("opening");
-
-            cover.classList.add("open");
-
-            bookOpen = true;
-
-            animating = false;
-
-        },
-        { once: true }
-    );
-}
-
-
-/* =========================================================
-   CLOSE BOOK
-========================================================= */
-
-function closeBook() {
-
-    if (animating || !bookOpen) return;
-
-    animating = true;
-
-
-    /*
-      SAME cover geometry.
-      SAME hinge.
-      Reverse the exact opening animation.
-    */
-
-    cover.classList.remove("open");
-
-    cover.classList.add("closing");
-
-
-    cover.addEventListener(
-        "animationend",
-        function finishClosing() {
-
-            cover.classList.remove("closing");
-
-            cover.classList.add("closed");
-
-
-            document.body.classList.add("closed");
-
-
-            bookOpen = false;
-
-            currentSpread = 0;
-
-            renderSpread(0);
-
-            animating = false;
-
-        },
-        { once: true }
-    );
-}
-
-
-/* =========================================================
-   NEXT SPREAD
-========================================================= */
-
-function nextSpread() {
-
-    if (!bookOpen || animating) return;
-
-
-    /*
-      Final spread:
-      Next physically closes the book.
-    */
-
-    if (
-        currentSpread ===
-        spreads.length - 1
-    ) {
-
-        closeBook();
-
-        return;
-    }
-
-
-    turnSpread("next");
-}
-
-
-/* =========================================================
-   PREVIOUS SPREAD
-========================================================= */
-
-function previousSpread() {
-
-    if (!bookOpen || animating) return;
-
-
-    if (currentSpread === 0) return;
-
-
-    turnSpread("previous");
-}
-
-
-/* =========================================================
-   ACTUAL SPREAD TURN
-========================================================= */
-
-function turnSpread(direction) {
-
-    animating = true;
-
-
-    const oldSpread = currentSpread;
-
-
-    const newSpread =
-        direction === "next"
-            ? currentSpread + 1
-            : currentSpread - 1;
-
-
-    /*
-      -------------------------------------------------------
-      IMPORTANT
-
-      The turning leaf contains TWO independent faces.
-
-      We capture the page being physically turned,
-      rather than putting both spread contents into one
-      container.
-      -------------------------------------------------------
-    */
-
-    if (direction === "next") {
-
-        /*
-          The RIGHT page is the page physically turning.
-        */
-
-        pageFront.innerHTML =
-            rightPage.innerHTML;
-
-
-        /*
-          Back of the leaf shows the LEFT side of the
-          destination spread.
-        */
-
-        const destination =
-            spreads[newSpread];
-
-
-        pageBack.innerHTML =
-            createLeftPage(destination);
-
-
-        pageLeaf.className =
-            "page-leaf next animating-next";
-
-    } else {
-
-        /*
-          The LEFT page is physically turning.
-        */
-
-        pageFront.innerHTML =
-            leftPage.innerHTML;
-
-
-        /*
-          Back of leaf shows the RIGHT side of destination.
-        */
-
-        const destination =
-            spreads[newSpread];
-
-
-        pageBack.innerHTML =
-            createRightPage(destination);
-
-
-        pageLeaf.className =
-            "page-leaf previous animating-previous";
-    }
-
-
-    /*
-      IMPORTANT:
-      Do NOT change the visible spread until the
-      animation has completed.
-    */
-
-    pageLeaf.addEventListener(
-        "animationend",
-        function finishTurn() {
-
-            currentSpread = newSpread;
-
-            pageLeaf.className =
-                "page-leaf";
-
-
-            renderSpread(currentSpread);
-
-
-            animating = false;
-
-        },
-        { once: true }
-    );
-}
-
-
-/* =========================================================
-   CREATE LEFT PAGE FOR TURNING LEAF
-========================================================= */
-
-function createLeftPage(spread) {
-
-    if (spread.type === "intro") {
-
-        return `
-            <div class="page-content">
-                ${`
-                    <div class="intro-left">
-                        <div class="memory-word">
-                            MEMORIES
-                        </div>
-                        <div class="decor">
-                            ✦ &nbsp; ♡ &nbsp; ✦
-                        </div>
-                    </div>
-                `}
-            </div>
-        `;
-    }
-
-
-    const person = spread.person;
-
-
-    const photo =
-        person.image
-
-            ? `
-                <img
-                    class="polaroid-image"
-                    src="${person.image}"
-                    alt="${person.name}">
-              `
-
-            : `
-                <div class="photo-placeholder">
-                    YOUR PHOTO
-                </div>
-              `;
-
-
-    return `
-        <div class="page-content">
-
-            <div class="person-left">
-
-                <div class="polaroid">
-                    ${photo}
-                </div>
-
-                <h2 class="person-name">
-                    ${person.name}
-                </h2>
-
-                <div class="person-divider">
-                    ♡ ─── ♡
-                </div>
-
-                <div class="tags">
-                    ${person.tags.map(tag => `
-                        <span class="tag">
-                            ${tag}
-                        </span>
-                    `).join("")}
-                </div>
-
-            </div>
-
-        </div>
-    `;
-}
-
-
-/* =========================================================
-   CREATE RIGHT PAGE FOR TURNING LEAF
-========================================================= */
-
-function createRightPage(spread) {
-
-    if (spread.type === "intro") {
-
-        return `
-            <div class="page-content">
-
-                <div class="intro-right">
-
-                    <div class="eyebrow">
-                        CHAPTER ONE
-                    </div>
-
-                    <h2 class="intro-title">
-                        OUR STORY
-                    </h2>
-
-                    <p class="intro-copy">
-                        Every chapter has a story...
-                        <br><br>
-                        And you made ours special.
-                        <br><br>
-                        A collection of memories,
-                        laughter and moments we'll
-                        always carry with us.
-                    </p>
-
-                </div>
-
-            </div>
-        `;
-    }
-
-
-    const person = spread.person;
-
-
-    return `
-        <div class="page-content">
-
-            <div class="person-right">
-
-                <div class="eyebrow">
-                    A MEMORY FOR YOU
-                </div>
-
-                <p class="tribute">
-                    ${person.message}
-                </p>
-
-                <div class="small-divider"></div>
-
-                <div class="video-card">
-
-                    <div class="play">
-                        ▶
-                    </div>
-
-                    <div class="video-text">
-
-                        <strong>
-                            Watch Video
-                        </strong>
-
-                        <span>
-                            A LITTLE MOMENT TO REMEMBER
-                        </span>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-        </div>
-    `;
-}
-
-
-/* =========================================================
-   VIDEO
-========================================================= */
-
-function watchVideo(card) {
-
-    const url =
-        card.dataset.video;
-
-
-    if (!url) {
-
-        alert(
-            "Add this person's video URL in the people array."
-        );
-
-        return;
-    }
-
-
-    window.open(
-        url,
-        "_blank"
-    );
-}
-
-
-/* =========================================================
-   BUTTON EVENTS
-========================================================= */
-
-openButton.addEventListener(
-    "click",
-    openBook
-);
-
-
-previousButton.addEventListener(
-    "click",
-    previousSpread
-);
-
-
-nextButton.addEventListener(
-    "click",
-    nextSpread
-);
-
-
-closeButton.addEventListener(
-    "click",
-    closeBook
-);
-
-
-/* =========================================================
-   KEYBOARD
-========================================================= */
-
-document.addEventListener(
-    "keydown",
-    event => {
-
-        if (event.key === "ArrowRight") {
-            nextSpread();
-        }
-
-        if (event.key === "ArrowLeft") {
-            previousSpread();
-        }
-
-        if (event.key === "Escape") {
-            closeBook();
-        }
-
-    }
-);
-
-
-/* =========================================================
-   INITIALIZE
-========================================================= */
-
-renderSpread(0);
-
-</script>
-
-</body>
-</html>
+            "Some people become part of our story without us realizing how important they will become.
