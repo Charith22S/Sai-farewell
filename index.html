@@ -1,95 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>SAI MEMORY BOOK</title>
+
+<style>
+
 /* =========================================================
-   RESPONSIVE BOOK SIZING
+   RESET
 ========================================================= */
 
-:root {
-  /*
-    The book always keeps a 5:3 overall ratio.
-    The two pages are therefore always equal.
-  */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
 
-  --book-width: min(
-    92vw,
-    1000px
-  );
+html,
+body {
+  width: 100%;
+  min-height: 100%;
+}
 
-  --book-height: calc(
-    var(--book-width) * 0.6
-  );
+body {
+  background:
+    radial-gradient(
+      circle at center,
+      #403731 0%,
+      #2b2623 70%
+    );
 
-  --page-width: calc(
-    var(--book-width) / 2
-  );
+  color: #342a25;
+
+  font-family:
+    Georgia,
+    "Times New Roman",
+    serif;
+
+  overflow-x: hidden;
 }
 
 
 /* =========================================================
-   LAPTOP / DESKTOP
+   RESPONSIVE BOOK VARIABLES
+========================================================= */
+
+:root {
+
+  --book-width:
+    min(92vw, 1000px);
+
+  --book-height:
+    min(
+      calc(92vw * 0.6),
+      600px
+    );
+
+  --page-width:
+    calc(var(--book-width) / 2);
+
+  --paper: #f5eddf;
+  --paper-dark: #e8dac4;
+  --ink: #3b302a;
+  --brown: #4a3024;
+  --gold: #b99663;
+}
+
+
+/* =========================================================
+   DESKTOP / LAPTOP
 ========================================================= */
 
 @media (min-width: 901px) {
 
   :root {
-    --book-width: min(
-      92vw,
-      1000px
-    );
 
-    --book-height: min(
-      calc(var(--book-width) * 0.6),
-      600px
-    );
+    --book-width:
+      min(92vw, 1000px);
+
+    --book-height:
+      min(
+        calc(var(--book-width) * 0.6),
+        600px
+      );
   }
-
 }
 
 
 /* =========================================================
-   TABLET + PHONE LANDSCAPE
+   TABLET / PHONE LANDSCAPE
 ========================================================= */
 
 @media (min-width: 501px) and (max-width: 900px) {
 
   :root {
 
-    --book-width: min(
-      94vw,
-      900px
-    );
+    --book-width:
+      min(94vw, 900px);
 
     --book-height:
       calc(var(--book-width) * 0.6);
-
   }
-
-  .book-app {
-    padding: 15px 10px;
-  }
-
-  .book-page {
-    padding: clamp(20px, 4vw, 35px);
-  }
-
-  .intro-title {
-    font-size: clamp(25px, 4vw, 40px);
-  }
-
-  .intro-text {
-    font-size: clamp(13px, 2vw, 17px);
-  }
-
-  .message {
-    font-size: clamp(14px, 2vw, 21px);
-  }
-
-  .polaroid {
-    width: min(180px, 55%);
-  }
-
-  .person-name {
-    font-size: clamp(20px, 3vw, 30px);
-  }
-
 }
 
 
@@ -101,206 +114,1010 @@
 
   :root {
 
-    /*
-      IMPORTANT:
-      We don't use the full phone width here because
-      a horizontal book needs enough height to remain
-      usable in portrait mode.
-    */
-
     --book-width: 96vw;
 
     --book-height:
       calc(var(--book-width) * 0.6);
-
   }
+}
+
+
+/* =========================================================
+   APP
+========================================================= */
+
+.book-app {
+
+  width: 100%;
+
+  min-height: 100vh;
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+
+  justify-content: center;
+
+  padding:
+    clamp(10px, 3vw, 30px);
+}
+
+
+/* =========================================================
+   BOOK STAGE
+========================================================= */
+
+.book-stage {
+
+  position: relative;
+
+  width: var(--book-width);
+
+  height: var(--book-height);
+
+  perspective: 2200px;
+
+  transform-style: preserve-3d;
+
+  z-index: 1;
+}
+
+
+/* =========================================================
+   STATIC OPEN BOOK
+========================================================= */
+
+.book-spread {
+
+  position: absolute;
+
+  inset: 0;
+
+  display: grid;
+
+  grid-template-columns: 1fr 1fr;
+
+  overflow: hidden;
+
+  border-radius: 5px;
+
+  background: var(--paper);
+
+  box-shadow:
+    0 30px 60px rgba(0,0,0,.45),
+    0 8px 15px rgba(0,0,0,.3);
+
+  transform-style: preserve-3d;
+
+  z-index: 10;
+}
+
+
+/* =========================================================
+   STATIC PAGES
+========================================================= */
+
+.book-page {
+
+  position: relative;
+
+  width: 100%;
+  height: 100%;
+
+  overflow: hidden;
+
+  padding:
+    clamp(16px, 4vw, 45px);
+
+  background:
+    radial-gradient(
+      circle at 20% 20%,
+      rgba(150,110,70,.07) 0 1px,
+      transparent 2px
+    ),
+    radial-gradient(
+      circle at 80% 70%,
+      rgba(120,90,60,.05) 0 1px,
+      transparent 2px
+    ),
+    var(--paper);
+
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+.book-page.left {
+  border-right:
+    1px solid rgba(70,50,35,.12);
+}
+
+.book-page.right {
+  border-left:
+    1px solid rgba(70,50,35,.12);
+}
+
+
+/* =========================================================
+   SPINE
+========================================================= */
+
+.spine {
+
+  position: absolute;
+
+  left: 50%;
+  top: 0;
+
+  width: 3px;
+  height: 100%;
+
+  transform:
+    translateX(-50%);
+
+  background:
+    linear-gradient(
+      to right,
+      rgba(0,0,0,.18),
+      rgba(255,255,255,.18),
+      rgba(0,0,0,.15)
+    );
+
+  z-index: 30;
+
+  pointer-events: none;
+}
+
+
+/* =========================================================
+   PAGE CONTENT
+========================================================= */
+
+.page-content {
+
+  width: 100%;
+  height: 100%;
+
+  min-width: 0;
+
+  display: flex;
+
+  flex-direction: column;
+
+  justify-content: center;
+
+  position: relative;
+}
+
+
+/* =========================================================
+   INTRO LEFT
+========================================================= */
+
+.intro-left {
+
+  align-items: center;
+
+  text-align: center;
+}
+
+.intro-left .small {
+
+  letter-spacing: 5px;
+
+  font-size:
+    clamp(8px, 1.2vw, 12px);
+
+  color: #806d5a;
+
+  margin-bottom:
+    clamp(10px, 2vw, 20px);
+}
+
+.intro-left h1 {
+
+  font-size:
+    clamp(25px, 5vw, 65px);
+
+  letter-spacing:
+    clamp(2px, .7vw, 7px);
+
+  font-weight: normal;
+}
+
+.intro-left .line {
+
+  width:
+    clamp(45px, 8vw, 100px);
+
+  height: 1px;
+
+  background: var(--gold);
+
+  margin:
+    clamp(12px, 2vw, 25px) auto;
+}
+
+
+/* =========================================================
+   INTRO RIGHT
+========================================================= */
+
+.intro-right {
+  justify-content: center;
+}
+
+.chapter {
+
+  font-size:
+    clamp(8px, 1.2vw, 12px);
+
+  letter-spacing:
+    clamp(2px, .5vw, 4px);
+
+  color: #90734e;
+
+  margin-bottom:
+    clamp(8px, 2vw, 18px);
+}
+
+.intro-title {
+
+  font-size:
+    clamp(20px, 4vw, 48px);
+
+  margin-bottom:
+    clamp(10px, 2vw, 25px);
+
+  font-weight: normal;
+}
+
+.intro-text {
+
+  width: 100%;
+
+  max-width: 420px;
+
+  font-size:
+    clamp(10px, 1.8vw, 18px);
+
+  line-height: 1.8;
+
+  color: #55483e;
+}
+
+
+/* =========================================================
+   PERSON LEFT
+========================================================= */
+
+.person-left {
+
+  align-items: center;
+
+  text-align: center;
+}
+
+.polaroid {
+
+  width:
+    clamp(
+      90px,
+      22vw,
+      220px
+    );
+
+  aspect-ratio: 4 / 5;
+
+  background: #fff;
+
+  padding:
+    clamp(5px, 1vw, 10px)
+    clamp(5px, 1vw, 10px)
+    clamp(25px, 3vw, 45px);
+
+  box-shadow:
+    0 15px 30px rgba(0,0,0,.25);
+
+  transform: rotate(-2deg);
+
+  position: relative;
+
+  flex-shrink: 0;
+}
+
+.polaroid-image {
+
+  width: 100%;
+  height: 100%;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  overflow: hidden;
+
+  background:
+    linear-gradient(
+      135deg,
+      #d8c7b0,
+      #efe5d5
+    );
+
+  color: #7a6755;
+
+  font-size:
+    clamp(7px, 1.2vw, 13px);
+}
+
+.polaroid-image img {
+
+  width: 100%;
+  height: 100%;
+
+  object-fit: cover;
+}
+
+.tape {
+
+  position: absolute;
+
+  width:
+    clamp(35px, 7vw, 70px);
+
+  height:
+    clamp(11px, 2vw, 22px);
+
+  background:
+    rgba(218,195,150,.75);
+
+  top:
+    clamp(-10px, -1vw, -5px);
+
+  left: 50%;
+
+  transform:
+    translateX(-50%)
+    rotate(2deg);
+
+  z-index: 2;
+}
+
+.person-name {
+
+  margin-top:
+    clamp(12px, 2vw, 30px);
+
+  font-size:
+    clamp(15px, 3vw, 38px);
+
+  letter-spacing:
+    clamp(1px, .3vw, 2px);
+}
+
+.person-divider {
+
+  width:
+    clamp(35px, 7vw, 70px);
+
+  height: 1px;
+
+  background: var(--gold);
+
+  margin:
+    clamp(7px, 1.5vw, 15px) auto;
+}
+
+.tags {
+
+  display: flex;
+
+  flex-wrap: wrap;
+
+  justify-content: center;
+
+  gap:
+    clamp(3px, .6vw, 7px);
+}
+
+.tag {
+
+  border:
+    1px solid #c9b89d;
+
+  border-radius: 20px;
+
+  padding:
+    clamp(3px, .6vw, 6px)
+    clamp(6px, 1vw, 12px);
+
+  font-size:
+    clamp(6px, .9vw, 11px);
+
+  color: #715f4e;
+}
+
+
+/* =========================================================
+   PERSON RIGHT
+========================================================= */
+
+.person-right {
+  justify-content: center;
+}
+
+.message-title {
+
+  font-size:
+    clamp(7px, 1.2vw, 12px);
+
+  letter-spacing:
+    clamp(2px, .5vw, 4px);
+
+  color: #90734e;
+
+  margin-bottom:
+    clamp(8px, 2vw, 20px);
+}
+
+.message {
+
+  width: 100%;
+
+  max-width: 420px;
+
+  font-size:
+    clamp(10px, 2.2vw, 25px);
+
+  line-height: 1.8;
+
+  color: #40342d;
+}
+
+.message-heart {
+
+  font-size:
+    clamp(13px, 2vw, 22px);
+
+  margin:
+    clamp(7px, 1.5vw, 20px) 0;
+
+  color: #8f5c52;
+}
+
+.video-card {
+
+  width: 100%;
+
+  max-width: 360px;
+
+  margin-top:
+    clamp(8px, 2vw, 25px);
+
+  padding:
+    clamp(7px, 1.5vw, 15px);
+
+  border:
+    1px solid #cdbda4;
+
+  background:
+    rgba(255,255,255,.35);
+
+  display: flex;
+
+  align-items: center;
+
+  gap:
+    clamp(7px, 1.5vw, 15px);
+
+  cursor: pointer;
+
+  transition:
+    transform .2s ease,
+    background .2s ease;
+}
+
+.video-card:hover {
+
+  transform:
+    translateY(-2px);
+
+  background:
+    rgba(255,255,255,.65);
+}
+
+.play {
+
+  width:
+    clamp(25px, 4vw, 38px);
+
+  height:
+    clamp(25px, 4vw, 38px);
+
+  border-radius: 50%;
+
+  background: var(--brown);
+
+  color: white;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  font-size:
+    clamp(8px, 1.2vw, 13px);
+
+  flex-shrink: 0;
+}
+
+.video-text {
+
+  font-size:
+    clamp(7px, 1.2vw, 13px);
+
+  letter-spacing:
+    clamp(.5px, .2vw, 1px);
+}
+
+
+/* =========================================================
+   PHYSICAL TURNING PAGE
+========================================================= */
+
+.page-leaf {
+
+  position: absolute;
+
+  top: 0;
+
+  width: var(--page-width);
+
+  height: var(--book-height);
+
+  display: block;
+
+  transform-style: preserve-3d;
+
+  pointer-events: none;
+
+  visibility: hidden;
+
+  will-change: transform;
+
+  transition:
+    transform
+    760ms
+    cubic-bezier(.22,.61,.36,1);
+
+  z-index: 500;
+
+  transform:
+    translateZ(20px);
+}
+
+.page-leaf.next {
+
+  left: 50%;
+
+  transform-origin:
+    left center;
+}
+
+.page-leaf.previous {
+
+  left: 0;
+
+  transform-origin:
+    right center;
+}
+
+.page-leaf.flipping {
+
+  visibility: visible;
+}
+
+
+/* =========================================================
+   PAGE LEAF FACES
+========================================================= */
+
+.page-front,
+.page-back {
+
+  position: absolute;
+
+  inset: 0;
+
+  width: 100%;
+  height: 100%;
+
+  overflow: hidden;
+
+  background:
+    radial-gradient(
+      circle at 20% 20%,
+      rgba(150,110,70,.07) 0 1px,
+      transparent 2px
+    ),
+    var(--paper);
+
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+
+  transform-style: preserve-3d;
+
+  box-shadow:
+    0 5px 15px rgba(0,0,0,.18);
+}
+
+.page-back {
+  transform:
+    rotateY(180deg);
+}
+
+
+/* =========================================================
+   COVER
+========================================================= */
+
+.cover {
+
+  position: absolute;
+
+  top: 0;
+  left: 50%;
+
+  width: var(--page-width);
+
+  height: var(--book-height);
+
+  transform-origin:
+    left center;
+
+  transform-style:
+    preserve-3d;
+
+  z-index: 1000;
+
+  transition:
+    transform
+    900ms
+    cubic-bezier(.22,.61,.36,1);
+
+  box-shadow:
+    8px 10px 25px rgba(0,0,0,.35);
+
+  pointer-events: auto;
+}
+
+.cover.closed {
+
+  transform:
+    translateX(0)
+    rotateY(0deg);
+}
+
+.cover.open {
+
+  transform:
+    translateX(-100%)
+    rotateY(-180deg);
+}
+
+
+/* =========================================================
+   COVER FACES
+========================================================= */
+
+.cover-face {
+
+  position: absolute;
+
+  inset: 0;
+
+  width: 100%;
+  height: 100%;
+
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+
+  transform-style:
+    preserve-3d;
+}
+
+.cover-front {
+
+  background:
+    linear-gradient(
+      135deg,
+      #563729,
+      #39251d
+    );
+
+  color: #ead8b6;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  text-align: center;
+
+  padding:
+    clamp(12px, 3vw, 30px);
+}
+
+.cover-back {
+
+  transform:
+    rotateY(180deg);
+
+  background:
+    linear-gradient(
+      135deg,
+      #f1e5d2,
+      #e4d4bb
+    );
+}
+
+.cover-content {
+
+  width: 100%;
+}
+
+.cover-small {
+
+  font-size:
+    clamp(6px, 1.1vw, 11px);
+
+  letter-spacing:
+    clamp(2px, .5vw, 5px);
+
+  margin-bottom:
+    clamp(8px, 2vw, 25px);
+
+  opacity: .8;
+}
+
+.cover-title {
+
+  font-size:
+    clamp(17px, 4vw, 45px);
+
+  letter-spacing:
+    clamp(1px, .4vw, 3px);
+
+  line-height: 1.3;
+}
+
+.cover-year {
+
+  margin-top:
+    clamp(7px, 2vw, 18px);
+
+  font-size:
+    clamp(6px, 1.2vw, 13px);
+
+  letter-spacing:
+    clamp(2px, .4vw, 4px);
+
+  color: #c6a775;
+}
+
+.cover-heart {
+
+  font-size:
+    clamp(14px, 2.5vw, 26px);
+
+  margin:
+    clamp(8px, 2vw, 25px) 0;
+}
+
+.open-button {
+
+  border:
+    1px solid #c6a775;
+
+  background: transparent;
+
+  color: #ead8b6;
+
+  padding:
+    clamp(6px, 1.2vw, 12px)
+    clamp(8px, 2vw, 20px);
+
+  font-family: inherit;
+
+  font-size:
+    clamp(6px, 1.1vw, 12px);
+
+  letter-spacing:
+    clamp(1px, .3vw, 2px);
+
+  cursor: pointer;
+
+  transition:
+    background .2s ease,
+    color .2s ease;
+}
+
+.open-button:hover {
+
+  background: #ead8b6;
+
+  color: #39251d;
+}
+
+
+/* =========================================================
+   CONTROLS
+========================================================= */
+
+.controls {
+
+  position: relative;
+
+  z-index: 2000;
+
+  pointer-events: auto;
+
+  margin-top:
+    clamp(10px, 2vw, 22px);
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  flex-wrap: wrap;
+
+  gap:
+    clamp(4px, 1vw, 10px);
+
+  padding:
+    clamp(5px, 1vw, 10px)
+    clamp(7px, 1.5vw, 15px);
+
+  border-radius: 40px;
+
+  background:
+    rgba(20,16,14,.9);
+
+  box-shadow:
+    0 8px 25px rgba(0,0,0,.35);
+
+  transition:
+    opacity .25s ease;
+}
+
+.controls button {
+
+  position: relative;
+
+  z-index: 2001;
+
+  pointer-events: auto;
+
+  cursor: pointer;
+
+  border:
+    1px solid rgba(230,215,190,.35);
+
+  background:
+    rgba(255,255,255,.08);
+
+  color: #f4eadb;
+
+  padding:
+    clamp(7px, 1vw, 10px)
+    clamp(8px, 1.5vw, 15px);
+
+  border-radius: 20px;
+
+  font-family: inherit;
+
+  font-size:
+    clamp(8px, 1vw, 12px);
+
+  min-height: 38px;
+
+  transition:
+    background .2s ease,
+    opacity .2s ease;
+}
+
+.controls button:hover:not(:disabled) {
+
+  background:
+    rgba(255,255,255,.18);
+}
+
+.controls button:disabled {
+
+  opacity: .35;
+
+  cursor: default;
+}
+
+#spreadCounter {
+
+  min-width:
+    clamp(65px, 10vw, 110px);
+
+  text-align: center;
+
+  color: #d7c5aa;
+
+  font-size:
+    clamp(7px, 1vw, 12px);
+}
+
+
+/* =========================================================
+   CLOSED STATE
+========================================================= */
+
+body.closed .book-spread,
+body.closed .spine,
+body.closed .page-leaf {
+
+  visibility: hidden;
+}
+
+body.closed .controls {
+
+  opacity: 0;
+
+  pointer-events: none;
+}
+
+
+/* =========================================================
+   PHONE PORTRAIT EXTRA ADJUSTMENTS
+========================================================= */
+
+@media (max-width: 500px) {
 
   .book-app {
-    width: 100%;
-    padding: 12px 6px 20px;
-  }
 
-  .book-stage {
-    width: var(--book-width);
-    height: var(--book-height);
+    padding:
+      12px 5px 18px;
   }
 
   .book-page {
-    padding: 16px;
-  }
 
-  /* ---------------------------------------------
-     INTRO
-  --------------------------------------------- */
-
-  .intro-left .small {
-    font-size: 8px;
-    letter-spacing: 2px;
-    margin-bottom: 10px;
-  }
-
-  .intro-left h1 {
-    font-size: clamp(20px, 7vw, 32px);
-    letter-spacing: 3px;
-  }
-
-  .intro-left .line {
-    width: 45px;
-    margin: 12px auto;
-  }
-
-  .chapter {
-    font-size: 8px;
-    letter-spacing: 2px;
-    margin-bottom: 8px;
-  }
-
-  .intro-title {
-    font-size: clamp(17px, 5vw, 27px);
-    margin-bottom: 10px;
+    padding:
+      12px;
   }
 
   .intro-text {
-    font-size: clamp(9px, 2.7vw, 13px);
+
     line-height: 1.45;
   }
 
-  /* ---------------------------------------------
-     PERSON LEFT
-  --------------------------------------------- */
-
-  .polaroid {
-    width: min(110px, 65%);
-    padding: 5px 5px 25px;
-  }
-
-  .tape {
-    width: 38px;
-    height: 12px;
-    top: -6px;
-  }
-
-  .person-name {
-    margin-top: 15px;
-    font-size: clamp(15px, 4.5vw, 23px);
-    letter-spacing: 1px;
-  }
-
-  .person-divider {
-    width: 35px;
-    margin: 8px auto;
-  }
-
-  .tags {
-    gap: 3px;
-  }
-
-  .tag {
-    padding: 3px 6px;
-    font-size: 7px;
-  }
-
-  /* ---------------------------------------------
-     PERSON RIGHT
-  --------------------------------------------- */
-
-  .message-title {
-    font-size: 7px;
-    letter-spacing: 2px;
-    margin-bottom: 10px;
-  }
-
   .message {
-    font-size: clamp(10px, 3vw, 15px);
+
     line-height: 1.5;
   }
 
-  .message-heart {
-    font-size: 15px;
-    margin: 8px 0;
-  }
-
-  .video-card {
-    max-width: 100%;
-    margin-top: 10px;
-    padding: 7px;
-    gap: 7px;
-  }
-
-  .play {
-    width: 25px;
-    height: 25px;
-    font-size: 9px;
-    flex-shrink: 0;
-  }
-
-  .video-text {
-    font-size: 8px;
-  }
-
-  /* ---------------------------------------------
-     COVER
-  --------------------------------------------- */
-
-  .cover-front {
-    padding: 15px;
-  }
-
-  .cover-small {
-    font-size: 7px;
-    letter-spacing: 2px;
-    margin-bottom: 10px;
-  }
-
-  .cover-title {
-    font-size: clamp(16px, 5vw, 27px);
-    letter-spacing: 1px;
-  }
-
-  .cover-year {
-    margin-top: 8px;
-    font-size: 8px;
-    letter-spacing: 2px;
-  }
-
-  .cover-heart {
-    font-size: 16px;
-    margin: 10px 0;
-  }
-
-  .open-button {
-    padding: 7px 10px;
-    font-size: 8px;
-    letter-spacing: 1px;
-  }
-
-  /* ---------------------------------------------
-     CONTROLS
-  --------------------------------------------- */
-
   .controls {
+
     width: 96vw;
 
-    margin-top: 12px;
-
-    padding: 6px;
-
-    gap: 4px;
-
-    border-radius: 20px;
+    border-radius: 18px;
   }
 
   .controls button {
+
     min-height: 40px;
-    padding: 7px 8px;
-    font-size: 9px;
   }
-
-  #spreadCounter {
-    min-width: 70px;
-    font-size: 8px;
-  }
-
 }
 
 
@@ -311,37 +1128,61 @@
 @media (max-width: 360px) {
 
   :root {
+
     --book-width: 97vw;
-    --book-height: calc(var(--book-width) * 0.6);
+
+    --book-height:
+      calc(var(--book-width) * .6);
   }
 
   .book-page {
-    padding: 11px;
+
+    padding: 9px;
+  }
+
+  .intro-left h1 {
+
+    font-size: 19px;
   }
 
   .intro-text {
+
     font-size: 8px;
   }
 
   .message {
+
     font-size: 9px;
   }
 
   .polaroid {
-    width: 85px;
+
+    width: 80px;
   }
 
   .person-name {
-    font-size: 14px;
+
+    font-size: 13px;
+  }
+
+  .tag {
+
+    padding: 2px 5px;
+
+    font-size: 6px;
   }
 
   .controls button {
-    padding: 6px;
+
+    padding:
+      6px 7px;
+
     font-size: 8px;
   }
 
   #spreadCounter {
-    min-width: 60px;
+
+    min-width: 58px;
   }
 }
 
@@ -357,7 +1198,1241 @@
   .video-card,
   .open-button,
   .controls button {
-    transition-duration: 0.01ms !important;
+
+    transition-duration:
+      .01ms !important;
+  }
+}
+
+</style>
+</head>
+
+
+<body class="closed">
+
+<div class="book-app">
+
+  <!-- =====================================================
+       BOOK
+  ====================================================== -->
+
+  <div class="book-stage" id="bookStage">
+
+    <!-- STATIC OPEN SPREAD -->
+
+    <div class="book-spread">
+
+      <section class="book-page left">
+
+        <div id="leftPage"></div>
+
+      </section>
+
+
+      <section class="book-page right">
+
+        <div id="rightPage"></div>
+
+      </section>
+
+    </div>
+
+
+    <!-- SPINE -->
+
+    <div class="spine"></div>
+
+
+    <!-- PHYSICAL TURNING PAGE -->
+
+    <div
+      class="page-leaf"
+      id="pageLeaf"
+    >
+
+      <div
+        class="page-front"
+        id="pageFront"
+      ></div>
+
+      <div
+        class="page-back"
+        id="pageBack"
+      ></div>
+
+    </div>
+
+
+    <!-- =================================================
+         COVER
+    ================================================== -->
+
+    <div
+      class="cover closed"
+      id="cover"
+    >
+
+      <div
+        class="cover-face cover-front"
+      >
+
+        <div class="cover-content">
+
+          <div class="cover-small">
+            A COLLECTION OF
+          </div>
+
+
+          <div class="cover-title">
+            SAI<br>
+            MEMORY BOOK
+          </div>
+
+
+          <div class="cover-year">
+            FAREWELL 2026
+          </div>
+
+
+          <div class="cover-heart">
+            ♥
+          </div>
+
+
+          <button
+            class="open-button"
+            id="openButton"
+            type="button"
+          >
+            OPEN BOOK →
+          </button>
+
+        </div>
+
+      </div>
+
+
+      <div
+        class="cover-face cover-back"
+      ></div>
+
+    </div>
+
+  </div>
+
+
+  <!-- =====================================================
+       NAVIGATION
+  ====================================================== -->
+
+  <div
+    class="controls"
+    id="controls"
+  >
+
+    <button
+      id="previousButton"
+      type="button"
+    >
+      ← Previous
+    </button>
+
+
+    <button
+      id="closeButton"
+      type="button"
+    >
+      Close Book
+    </button>
+
+
+    <div id="spreadCounter">
+      Spread 1 of 16
+    </div>
+
+
+    <button
+      id="nextButton"
+      type="button"
+    >
+      Next →
+    </button>
+
+  </div>
+
+</div>
+
+
+<script>
+
+/* =========================================================
+   PEOPLE
+========================================================= */
+
+const people = [
+
+  {
+    name: "Sai",
+    image: "",
+    tags: [
+      "Friendship",
+      "Laughter",
+      "Memories"
+    ],
+    message:
+      "Some people become part of our story without us realizing how important they will become. Thank you for every laugh, every conversation and every memory.",
+    video: ""
+  },
+
+  {
+    name: "Person 2",
+    image: "",
+    tags: [
+      "Good Times",
+      "Friends",
+      "Memories"
+    ],
+    message:
+      "The best memories are often the simplest moments that we never planned.",
+    video: ""
+  },
+
+  {
+    name: "Person 3",
+    image: "",
+    tags: [
+      "Together",
+      "Friendship",
+      "Moments"
+    ],
+    message:
+      "Every chapter becomes special because of the people who are part of it.",
+    video: ""
+  },
+
+  {
+    name: "Person 4",
+    image: "",
+    tags: [
+      "Laughs",
+      "Memories"
+    ],
+    message:
+      "Years from now, these little moments will still make us smile.",
+    video: ""
+  },
+
+  {
+    name: "Person 5",
+    image: "",
+    tags: [
+      "Forever",
+      "Memories"
+    ],
+    message:
+      "Some memories stay with us long after the moment has passed.",
+    video: ""
+  },
+
+  {
+    name: "Person 6",
+    image: "",
+    tags: [
+      "Thank You",
+      "Friends"
+    ],
+    message:
+      "Thank you for being part of a chapter that will always mean something.",
+    video: ""
+  },
+
+  {
+    name: "Person 7",
+    image: "",
+    tags: [
+      "Journey",
+      "Memories"
+    ],
+    message:
+      "Life moves forward, but some memories travel with us wherever we go.",
+    video: ""
+  },
+
+  {
+    name: "Person 8",
+    image: "",
+    tags: [
+      "Laughter",
+      "Together"
+    ],
+    message:
+      "The laughter, random conversations and little moments are what we remember most.",
+    video: ""
+  },
+
+  {
+    name: "Person 9",
+    image: "",
+    tags: [
+      "Story",
+      "Friendship"
+    ],
+    message:
+      "Every person leaves something behind in the story we share.",
+    video: ""
+  },
+
+  {
+    name: "Person 10",
+    image: "",
+    tags: [
+      "Beautiful Times",
+      "Memories"
+    ],
+    message:
+      "One day we will look back and realize how beautiful this chapter really was.",
+    video: ""
+  },
+
+  {
+    name: "Person 11",
+    image: "",
+    tags: [
+      "Friendship",
+      "Moments"
+    ],
+    message:
+      "Some friendships are made from hundreds of tiny moments that slowly become unforgettable.",
+    video: ""
+  },
+
+  {
+    name: "Person 12",
+    image: "",
+    tags: [
+      "Journey",
+      "Together"
+    ],
+    message:
+      "Wherever life takes us next, this part of the journey will always remain ours.",
+    video: ""
+  },
+
+  {
+    name: "Person 13",
+    image: "",
+    tags: [
+      "Thank You",
+      "Memories"
+    ],
+    message:
+      "Thank you for the memories that made ordinary days feel extraordinary.",
+    video: ""
+  },
+
+  {
+    name: "Person 14",
+    image: "",
+    tags: [
+      "Next Chapter",
+      "Forever"
+    ],
+    message:
+      "The chapter may be ending, but the memories are staying.",
+    video: ""
+  },
+
+  {
+    name: "Person 15",
+    image: "",
+    tags: [
+      "Until Next Time",
+      "Forever"
+    ],
+    message:
+      "Until the next chapter... may all the memories we created together continue to make us smile.",
+    video: ""
   }
 
+];
+
+
+/* =========================================================
+   SPREADS
+========================================================= */
+
+const spreads = [
+
+  {
+    type: "intro"
+  },
+
+  ...people.map(person => ({
+    type: "person",
+    person
+  }))
+
+];
+
+
+/* =========================================================
+   DOM
+========================================================= */
+
+const cover =
+  document.getElementById("cover");
+
+const openButton =
+  document.getElementById("openButton");
+
+const previousButton =
+  document.getElementById("previousButton");
+
+const nextButton =
+  document.getElementById("nextButton");
+
+const closeButton =
+  document.getElementById("closeButton");
+
+const spreadCounter =
+  document.getElementById("spreadCounter");
+
+const leftPage =
+  document.getElementById("leftPage");
+
+const rightPage =
+  document.getElementById("rightPage");
+
+const pageLeaf =
+  document.getElementById("pageLeaf");
+
+const pageFront =
+  document.getElementById("pageFront");
+
+const pageBack =
+  document.getElementById("pageBack");
+
+
+/* =========================================================
+   STATE
+========================================================= */
+
+let currentSpread = 0;
+
+let bookOpen = false;
+
+let animating = false;
+
+
+/* =========================================================
+   INTRO
+========================================================= */
+
+function createIntroLeft() {
+
+  return `
+
+    <div class="page-content intro-left">
+
+      <div class="small">
+        OUR MEMORIES
+      </div>
+
+      <h1>
+        MEMORIES
+      </h1>
+
+      <div class="line"></div>
+
+      <div>
+        ♥
+      </div>
+
+    </div>
+
+  `;
 }
+
+
+function createIntroRight() {
+
+  return `
+
+    <div class="page-content intro-right">
+
+      <div class="chapter">
+        CHAPTER ONE
+      </div>
+
+      <div class="intro-title">
+        OUR STORY
+      </div>
+
+      <div class="intro-text">
+
+        A little collection of people,
+        laughter, conversations and
+        moments that made this chapter
+        unforgettable.
+
+      </div>
+
+    </div>
+
+  `;
+}
+
+
+/* =========================================================
+   PERSON LEFT
+========================================================= */
+
+function createPersonLeft(person) {
+
+  const imageHTML =
+    person.image
+
+      ? `<img
+           src="${person.image}"
+           alt="${person.name}"
+         >`
+
+      : `<span>Your photo</span>`;
+
+
+  const tagsHTML =
+    person.tags
+      .map(
+        tag =>
+          `<span class="tag">${tag}</span>`
+      )
+      .join("");
+
+
+  return `
+
+    <div class="page-content person-left">
+
+      <div class="polaroid">
+
+        <div class="tape"></div>
+
+        <div class="polaroid-image">
+
+          ${imageHTML}
+
+        </div>
+
+      </div>
+
+
+      <div class="person-name">
+
+        ${person.name}
+
+      </div>
+
+
+      <div class="person-divider"></div>
+
+
+      <div class="tags">
+
+        ${tagsHTML}
+
+      </div>
+
+    </div>
+
+  `;
+}
+
+
+/* =========================================================
+   PERSON RIGHT
+========================================================= */
+
+function createPersonRight(person) {
+
+  return `
+
+    <div class="page-content person-right">
+
+      <div class="message-title">
+
+        A MEMORY FOR YOU
+
+      </div>
+
+
+      <div class="message">
+
+        ${person.message}
+
+      </div>
+
+
+      <div class="message-heart">
+        ♥
+      </div>
+
+
+      <div
+        class="video-card"
+        data-video-person="${person.name}"
+      >
+
+        <div class="play">
+          ▶
+        </div>
+
+        <div class="video-text">
+          WATCH VIDEO
+        </div>
+
+      </div>
+
+    </div>
+
+  `;
+}
+
+
+/* =========================================================
+   PAGE HTML
+========================================================= */
+
+function leftHTML(index) {
+
+  const spread =
+    spreads[index];
+
+  if (!spread) return "";
+
+  if (spread.type === "intro") {
+
+    return createIntroLeft();
+
+  }
+
+  return createPersonLeft(
+    spread.person
+  );
+}
+
+
+function rightHTML(index) {
+
+  const spread =
+    spreads[index];
+
+  if (!spread) return "";
+
+  if (spread.type === "intro") {
+
+    return createIntroRight();
+
+  }
+
+  return createPersonRight(
+    spread.person
+  );
+}
+
+
+/* =========================================================
+   RENDER
+========================================================= */
+
+function renderSpread(index) {
+
+  if (
+    index < 0 ||
+    index >= spreads.length
+  ) {
+    return;
+  }
+
+
+  const spread =
+    spreads[index];
+
+
+  if (
+    spread.type === "intro"
+  ) {
+
+    leftPage.innerHTML =
+      createIntroLeft();
+
+    rightPage.innerHTML =
+      createIntroRight();
+
+  } else {
+
+    leftPage.innerHTML =
+      createPersonLeft(
+        spread.person
+      );
+
+    rightPage.innerHTML =
+      createPersonRight(
+        spread.person
+      );
+  }
+
+
+  attachVideoButtons();
+
+  updateNavigation();
+}
+
+
+/* =========================================================
+   VIDEO BUTTONS
+========================================================= */
+
+function attachVideoButtons() {
+
+  const cards =
+    document.querySelectorAll(
+      ".video-card"
+    );
+
+
+  cards.forEach(card => {
+
+    card.addEventListener(
+      "click",
+      () => {
+
+        const personName =
+          card.dataset.videoPerson;
+
+        const person =
+          people.find(
+            p => p.name === personName
+          );
+
+        if (
+          person &&
+          person.video
+        ) {
+
+          window.open(
+            person.video,
+            "_blank"
+          );
+
+        } else {
+
+          alert(
+            `Video for ${personName} will be added here.`
+          );
+
+        }
+
+      }
+    );
+
+  });
+}
+
+
+/* =========================================================
+   OPEN
+========================================================= */
+
+function openBook() {
+
+  if (
+    bookOpen ||
+    animating
+  ) {
+    return;
+  }
+
+
+  animating = true;
+
+
+  currentSpread = 0;
+
+
+  renderSpread(0);
+
+
+  document.body.classList.remove(
+    "closed"
+  );
+
+
+  cover.classList.remove(
+    "open"
+  );
+
+  cover.classList.add(
+    "closed"
+  );
+
+
+  void cover.offsetWidth;
+
+
+  requestAnimationFrame(() => {
+
+    cover.classList.remove(
+      "closed"
+    );
+
+    cover.classList.add(
+      "open"
+    );
+
+  });
+
+
+  setTimeout(() => {
+
+    bookOpen = true;
+
+    animating = false;
+
+    updateNavigation();
+
+  }, 950);
+
+}
+
+
+/* =========================================================
+   CLOSE
+========================================================= */
+
+function closeBook() {
+
+  if (
+    !bookOpen ||
+    animating
+  ) {
+    return;
+  }
+
+
+  animating = true;
+
+
+  cover.classList.remove(
+    "closed"
+  );
+
+  cover.classList.add(
+    "open"
+  );
+
+
+  void cover.offsetWidth;
+
+
+  requestAnimationFrame(() => {
+
+    cover.classList.remove(
+      "open"
+    );
+
+    cover.classList.add(
+      "closed"
+    );
+
+  });
+
+
+  setTimeout(() => {
+
+    bookOpen = false;
+
+    currentSpread = 0;
+
+
+    pageLeaf.className =
+      "page-leaf";
+
+    pageLeaf.style.transform = "";
+
+    pageLeaf.style.zIndex = "";
+
+
+    pageFront.innerHTML = "";
+
+    pageBack.innerHTML = "";
+
+
+    document.body.classList.add(
+      "closed"
+    );
+
+
+    renderSpread(0);
+
+
+    animating = false;
+
+    updateNavigation();
+
+  }, 950);
+
+}
+
+
+/* =========================================================
+   PAGE TURN
+========================================================= */
+
+function turnSpread(direction) {
+
+  if (
+    !bookOpen ||
+    animating
+  ) {
+    return;
+  }
+
+
+  const destination =
+    currentSpread + direction;
+
+
+  if (
+    destination < 0 ||
+    destination >= spreads.length
+  ) {
+    return;
+  }
+
+
+  animating = true;
+
+
+  /* =======================================================
+     NEXT
+  ====================================================== */
+
+  if (
+    direction === 1
+  ) {
+
+    pageFront.innerHTML =
+      rightHTML(
+        currentSpread
+      );
+
+
+    pageBack.innerHTML =
+      leftHTML(
+        destination
+      );
+
+
+    pageLeaf.className =
+      "page-leaf next flipping";
+
+
+    pageLeaf.style.zIndex =
+      "600";
+
+
+    pageLeaf.style.transform =
+      "rotateY(0deg)";
+
+
+    void pageLeaf.offsetWidth;
+
+
+    requestAnimationFrame(() => {
+
+      pageLeaf.style.transform =
+        "rotateY(-180deg)";
+
+    });
+
+  }
+
+
+  /* =======================================================
+     PREVIOUS
+  ====================================================== */
+
+  else {
+
+    pageFront.innerHTML =
+      leftHTML(
+        currentSpread
+      );
+
+
+    pageBack.innerHTML =
+      rightHTML(
+        destination
+      );
+
+
+    pageLeaf.className =
+      "page-leaf previous flipping";
+
+
+    pageLeaf.style.zIndex =
+      "600";
+
+
+    pageLeaf.style.transform =
+      "rotateY(0deg)";
+
+
+    void pageLeaf.offsetWidth;
+
+
+    requestAnimationFrame(() => {
+
+      pageLeaf.style.transform =
+        "rotateY(180deg)";
+
+    });
+
+  }
+
+
+  /* =======================================================
+     FINISH
+  ====================================================== */
+
+  setTimeout(() => {
+
+    currentSpread =
+      destination;
+
+
+    pageLeaf.className =
+      "page-leaf";
+
+
+    pageLeaf.style.transform =
+      "";
+
+    pageLeaf.style.zIndex =
+      "";
+
+
+    pageFront.innerHTML =
+      "";
+
+    pageBack.innerHTML =
+      "";
+
+
+    renderSpread(
+      currentSpread
+    );
+
+
+    animating = false;
+
+
+    updateNavigation();
+
+  }, 800);
+
+}
+
+
+/* =========================================================
+   NEXT
+========================================================= */
+
+function nextSpread() {
+
+  if (
+    !bookOpen ||
+    animating
+  ) {
+    return;
+  }
+
+
+  /*
+    Person 15 is the last spread.
+    Next physically closes the book.
+  */
+
+  if (
+    currentSpread >=
+    spreads.length - 1
+  ) {
+
+    closeBook();
+
+    return;
+  }
+
+
+  turnSpread(1);
+
+}
+
+
+/* =========================================================
+   PREVIOUS
+========================================================= */
+
+function previousSpread() {
+
+  if (
+    !bookOpen ||
+    animating
+  ) {
+    return;
+  }
+
+
+  if (
+    currentSpread <= 0
+  ) {
+    return;
+  }
+
+
+  turnSpread(-1);
+
+}
+
+
+/* =========================================================
+   NAVIGATION UI
+========================================================= */
+
+function updateNavigation() {
+
+  spreadCounter.textContent =
+    `Spread ${
+      currentSpread + 1
+    } of ${
+      spreads.length
+    }`;
+
+
+  previousButton.disabled =
+    !bookOpen ||
+    currentSpread === 0 ||
+    animating;
+
+
+  nextButton.disabled =
+    !bookOpen ||
+    animating;
+
+
+  closeButton.disabled =
+    !bookOpen ||
+    animating;
+
+}
+
+
+/* =========================================================
+   BUTTON EVENTS
+========================================================= */
+
+openButton.addEventListener(
+  "click",
+  openBook
+);
+
+
+previousButton.addEventListener(
+  "click",
+  previousSpread
+);
+
+
+nextButton.addEventListener(
+  "click",
+  nextSpread
+);
+
+
+closeButton.addEventListener(
+  "click",
+  closeBook
+);
+
+
+/* =========================================================
+   KEYBOARD
+========================================================= */
+
+document.addEventListener(
+  "keydown",
+  event => {
+
+    if (!bookOpen) {
+      return;
+    }
+
+
+    if (
+      event.key === "ArrowRight"
+    ) {
+
+      nextSpread();
+
+    }
+
+
+    if (
+      event.key === "ArrowLeft"
+    ) {
+
+      previousSpread();
+
+    }
+
+
+    if (
+      event.key === "Escape"
+    ) {
+
+      closeBook();
+
+    }
+
+  }
+);
+
+
+/* =========================================================
+   INITIALIZE
+========================================================= */
+
+renderSpread(0);
+
+document.body.classList.add(
+  "closed"
+);
+
+cover.classList.remove(
+  "open"
+);
+
+cover.classList.add(
+  "closed"
+);
+
+bookOpen = false;
+
+animating = false;
+
+updateNavigation();
+
+</script>
+
+</body>
+</html>
