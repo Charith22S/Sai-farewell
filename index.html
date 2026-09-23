@@ -3,1484 +3,1118 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>SAI MEMORY BOOK</title>
 
 <style>
-
 /* =========================================================
    RESET
 ========================================================= */
 
 * {
-    box-sizing: border-box;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
 html,
 body {
-    margin: 0;
-    width: 100%;
-    min-height: 100%;
+  width: 100%;
+  min-height: 100%;
 }
 
 body {
-    min-height: 100vh;
-    overflow-x: hidden;
-
-    background: #2c2724;
-
-    font-family: Georgia, "Times New Roman", serif;
-    color: #3d3027;
+  background:
+    radial-gradient(circle at center, #403731 0%, #2b2623 70%);
+  color: #342a25;
+  font-family: Georgia, "Times New Roman", serif;
+  overflow-x: hidden;
 }
-
 
 /* =========================================================
    VARIABLES
 ========================================================= */
 
 :root {
+  --book-width: min(92vw, 1000px);
+  --book-height: min(calc(92vw * 0.6), 600px);
+  --page-width: calc(var(--book-width) / 2);
 
-    --book-width: min(92vw, 1000px);
-    --book-height: min(calc(92vw * .60), 600px);
-
-    --page-width: calc(var(--book-width) / 2);
-
-    --paper: #fdfbf7;
-    --paper-alt: #f5f0eb;
-
-    --brown: #604535;
-    --brown-dark: #34271f;
-
-    --gold: #c6a46a;
-
-    --shadow:
-        0 25px 60px rgba(0,0,0,.40),
-        0 8px 20px rgba(0,0,0,.25);
-
-    --flip-duration: 760ms;
+  --paper: #f5eddf;
+  --paper-dark: #e8dac4;
+  --ink: #3b302a;
+  --brown: #4a3024;
+  --gold: #b99663;
 }
 
-
 /* =========================================================
-   APPLICATION
+   APP
 ========================================================= */
 
 .book-app {
+  width: 100%;
+  min-height: 100vh;
 
-    width: 100%;
-    min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 
-    display: flex;
-    flex-direction: column;
-
-    align-items: center;
-    justify-content: center;
-
-    padding: 25px 15px;
+  padding: 25px 15px;
 }
-
 
 /* =========================================================
    BOOK STAGE
-
-   IMPORTANT:
-   The stage itself NEVER changes dimensions while opening
-   or flipping pages.
-
-   This prevents the portrait -> landscape jump.
 ========================================================= */
 
 .book-stage {
+  position: relative;
 
-    position: relative;
+  width: var(--book-width);
+  height: var(--book-height);
 
-    width: var(--book-width);
-    height: var(--book-height);
+  perspective: 2200px;
+  transform-style: preserve-3d;
 
-    flex-shrink: 0;
-
-    perspective: 1800px;
-    perspective-origin: 50% 50%;
-
-    transform-style: preserve-3d;
-
-    isolation: isolate;
+  z-index: 1;
 }
 
-
 /* =========================================================
-   OPEN BOOK
+   STATIC OPEN BOOK
 ========================================================= */
 
 .book-spread {
+  position: absolute;
+  inset: 0;
 
-    position: absolute;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
 
-    inset: 0;
+  overflow: hidden;
 
-    display: grid;
+  border-radius: 5px;
 
-    grid-template-columns: 1fr 1fr;
+  background: var(--paper);
 
-    overflow: hidden;
+  box-shadow:
+    0 30px 60px rgba(0,0,0,.45),
+    0 8px 15px rgba(0,0,0,.3);
 
-    background: var(--paper);
+  transform-style: preserve-3d;
 
-    border-radius: 5px;
-
-    box-shadow: var(--shadow);
-
-    transform-style: preserve-3d;
-
-    z-index: 1;
+  z-index: 10;
 }
 
-
 /* =========================================================
-   STATIC PAGE
+   PAGES
 ========================================================= */
 
 .book-page {
+  position: relative;
 
-    position: relative;
+  width: 100%;
+  height: 100%;
 
-    width: 100%;
-    height: 100%;
+  overflow: hidden;
 
-    overflow: hidden;
+  background:
+    radial-gradient(
+      circle at 20% 20%,
+      rgba(150,110,70,.07) 0 1px,
+      transparent 2px
+    ),
+    radial-gradient(
+      circle at 80% 70%,
+      rgba(120,90,60,.05) 0 1px,
+      transparent 2px
+    ),
+    var(--paper);
 
-    background:
-        linear-gradient(
-            rgba(255,255,255,.18),
-            rgba(255,255,255,.18)
-        ),
-        repeating-linear-gradient(
-            0deg,
-            rgba(100,70,40,.025) 0px,
-            rgba(100,70,40,.025) 1px,
-            transparent 1px,
-            transparent 4px
-        ),
-        var(--paper);
+  padding: 45px;
 
-    transform-style: preserve-3d;
+  backface-visibility: hidden;
 }
 
 .book-page.left {
-    border-right: 1px solid rgba(70,50,35,.15);
+  border-right: 1px solid rgba(70,50,35,.12);
 }
 
 .book-page.right {
-    border-left: 1px solid rgba(70,50,35,.10);
+  border-left: 1px solid rgba(70,50,35,.12);
 }
-
-
-.page-content {
-
-    width: 100%;
-    height: 100%;
-
-    padding: clamp(25px, 4vw, 55px);
-}
-
 
 /* =========================================================
    SPINE
 ========================================================= */
 
 .spine {
+  position: absolute;
 
-    position: absolute;
+  left: 50%;
+  top: 0;
 
-    top: 0;
-    left: 50%;
+  width: 3px;
+  height: 100%;
 
-    width: 18px;
-    height: 100%;
+  transform: translateX(-50%);
 
-    transform:
-        translateX(-50%)
-        translateZ(3px);
+  background:
+    linear-gradient(
+      to right,
+      rgba(0,0,0,.18),
+      rgba(255,255,255,.18),
+      rgba(0,0,0,.15)
+    );
 
-    pointer-events: none;
+  z-index: 30;
 
-    z-index: 20;
-
-    background:
-        linear-gradient(
-            90deg,
-            transparent,
-            rgba(50,35,25,.12),
-            rgba(50,35,25,.20),
-            rgba(50,35,25,.08),
-            transparent
-        );
+  pointer-events: none;
 }
-
 
 /* =========================================================
-   PHYSICAL PAGE LEAF
-
-   This is the important part.
-
-   ONE physical sheet
-   TWO physical faces
+   PAGE CONTENT
 ========================================================= */
 
-.page-leaf {
+.page-content {
+  width: 100%;
+  height: 100%;
 
-    position: absolute;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 
-    top: 0;
-
-    width: var(--page-width);
-    height: var(--book-height);
-
-    display: none;
-
-    pointer-events: none;
-
-    transform-style: preserve-3d;
-
-    will-change: transform;
-
-    z-index: 300;
-
-    contain: layout style paint;
+  position: relative;
 }
-
-
-/* RIGHT PAGE TURNING LEFT */
-
-.page-leaf.next {
-
-    left: 50%;
-
-    transform-origin: left center;
-
-    transform:
-        rotateY(0deg)
-        translateZ(8px);
-}
-
-
-/* LEFT PAGE TURNING RIGHT */
-
-.page-leaf.previous {
-
-    left: 0;
-
-    transform-origin: right center;
-
-    transform:
-        rotateY(0deg)
-        translateZ(8px);
-}
-
-
-/* =========================================================
-   PAGE FACES
-
-   NEVER allow the opposite face to bleed through.
-========================================================= */
-
-.page-front,
-.page-back {
-
-    position: absolute;
-
-    inset: 0;
-
-    width: 100%;
-    height: 100%;
-
-    overflow: hidden;
-
-    background: var(--paper);
-
-    transform-style: preserve-3d;
-
-    backface-visibility: hidden;
-    -webkit-backface-visibility: hidden;
-
-    will-change: transform;
-
-    isolation: isolate;
-}
-
-
-/* Front */
-
-.page-front {
-
-    transform:
-        rotateY(0deg)
-        translateZ(.1px);
-}
-
-
-/* Back */
-
-.page-back {
-
-    transform:
-        rotateY(180deg)
-        translateZ(.1px);
-
-    background: var(--paper);
-}
-
-
-/* =========================================================
-   FLIP SHADOW
-
-   Uses opacity only.
-   No filter.
-   No repaint-heavy brightness animation.
-========================================================= */
-
-.page-leaf::after {
-
-    content: "";
-
-    position: absolute;
-
-    inset: 0;
-
-    pointer-events: none;
-
-    z-index: 20;
-
-    background:
-        linear-gradient(
-            90deg,
-            transparent 20%,
-            rgba(0,0,0,.16) 50%,
-            transparent 80%
-        );
-
-    opacity: 0;
-
-    transition:
-        opacity var(--flip-duration) ease;
-
-    will-change: opacity;
-}
-
-
-/* =========================================================
-   ANIMATION STATES
-
-   JavaScript controls the transform directly.
-========================================================= */
-
-.page-leaf.flipping {
-
-    display: block;
-}
-
-
-/* =========================================================
-   COVER
-
-   Exactly one page wide.
-========================================================= */
-
-.cover {
-
-    position: absolute;
-
-    top: 0;
-    left: 50%;
-
-    width: var(--page-width);
-    height: var(--book-height);
-
-    transform-origin: left center;
-
-    transform-style: preserve-3d;
-
-    will-change: transform;
-
-    z-index: 400;
-
-    border-radius: 4px;
-
-    background: var(--brown);
-
-    box-shadow:
-        10px 18px 35px rgba(0,0,0,.40);
-
-    backface-visibility: hidden;
-    -webkit-backface-visibility: hidden;
-
-    transition:
-        transform 900ms cubic-bezier(.22,.61,.36,1);
-}
-
-
-/* Closed */
-
-.cover.closed {
-
-    transform:
-        translateX(0)
-        rotateY(0deg);
-}
-
-
-/* Open */
-
-.cover.open {
-
-    transform:
-        translateX(-100%)
-        rotateY(-180deg);
-}
-
-
-/* =========================================================
-   COVER FACES
-========================================================= */
-
-.cover-face {
-
-    position: absolute;
-
-    inset: 0;
-
-    display: flex;
-
-    align-items: center;
-    justify-content: center;
-
-    padding: 28px;
-
-    transform-style: preserve-3d;
-
-    backface-visibility: hidden;
-    -webkit-backface-visibility: hidden;
-}
-
-
-.cover-front {
-
-    background:
-        linear-gradient(
-            135deg,
-            rgba(255,255,255,.05),
-            transparent 35%,
-            rgba(0,0,0,.10)
-        ),
-        var(--brown);
-
-    color: #f5e9da;
-}
-
-
-.cover-back {
-
-    background: var(--paper-alt);
-
-    color: var(--brown);
-
-    transform:
-        rotateY(180deg);
-}
-
-
-/* =========================================================
-   COVER DESIGN
-========================================================= */
-
-.cover-frame {
-
-    width: 100%;
-    height: 100%;
-
-    border: 1px solid rgba(255,255,255,.20);
-
-    display: flex;
-    flex-direction: column;
-
-    align-items: center;
-    justify-content: center;
-
-    text-align: center;
-}
-
-
-.cover-eyebrow {
-
-    font-family: Arial, sans-serif;
-
-    font-size: 10px;
-
-    letter-spacing: .28em;
-
-    opacity: .75;
-
-    margin-bottom: 18px;
-}
-
-
-.cover-title {
-
-    margin: 0;
-
-    font-size: clamp(27px,4vw,48px);
-
-    font-weight: normal;
-
-    letter-spacing: .08em;
-}
-
-
-.cover-subtitle {
-
-    margin-top: 15px;
-
-    font-size: 14px;
-
-    letter-spacing: .18em;
-
-    opacity: .85;
-}
-
-
-.cover-heart {
-
-    margin-top: 25px;
-
-    font-size: 25px;
-}
-
-
-/* =========================================================
-   OPEN BOOK BUTTON
-========================================================= */
-
-.open-book-button {
-
-    position: absolute;
-
-    bottom: 35px;
-    left: 50%;
-
-    transform:
-        translateX(-50%);
-
-    border: 1px solid rgba(255,255,255,.35);
-
-    background: rgba(255,255,255,.10);
-
-    color: #fff5e9;
-
-    padding: 11px 20px;
-
-    font-family: Arial, sans-serif;
-
-    font-size: 10px;
-
-    letter-spacing: .16em;
-
-    cursor: pointer;
-
-    transition:
-        background .2s ease,
-        transform .2s ease;
-}
-
-.open-book-button:hover {
-
-    background: rgba(255,255,255,.20);
-
-    transform:
-        translateX(-50%)
-        translateY(-1px);
-}
-
 
 /* =========================================================
    INTRO
 ========================================================= */
 
 .intro-left {
-
-    width: 100%;
-    height: 100%;
-
-    display: flex;
-
-    flex-direction: column;
-
-    align-items: center;
-    justify-content: center;
-
-    text-align: center;
+  align-items: center;
+  text-align: center;
 }
 
-
-.intro-left .memory-word {
-
-    font-size: clamp(30px,4vw,50px);
-
-    letter-spacing: .12em;
-
-    color: var(--brown);
+.intro-left .small {
+  letter-spacing: 5px;
+  font-size: 12px;
+  color: #806d5a;
+  margin-bottom: 20px;
 }
 
-
-.intro-left .decor {
-
-    margin-top: 20px;
-
-    color: #9d8168;
-
-    letter-spacing: .3em;
+.intro-left h1 {
+  font-size: clamp(38px, 5vw, 65px);
+  letter-spacing: 7px;
+  font-weight: normal;
 }
 
+.intro-left .line {
+  width: 100px;
+  height: 1px;
+  background: var(--gold);
+  margin: 25px auto;
+}
 
 .intro-right {
-
-    width: 100%;
-    height: 100%;
-
-    display: flex;
-
-    flex-direction: column;
-
-    justify-content: center;
+  justify-content: center;
 }
 
-
-.eyebrow {
-
-    font-family: Arial, sans-serif;
-
-    font-size: 10px;
-
-    letter-spacing: .25em;
-
-    color: #92755d;
-
-    margin-bottom: 15px;
+.chapter {
+  font-size: 12px;
+  letter-spacing: 4px;
+  color: #90734e;
+  margin-bottom: 18px;
 }
-
 
 .intro-title {
-
-    margin: 0 0 20px;
-
-    font-size: clamp(28px,4vw,46px);
-
-    font-weight: normal;
+  font-size: clamp(30px, 4vw, 48px);
+  margin-bottom: 25px;
+  font-weight: normal;
 }
 
-
-.intro-copy {
-
-    max-width: 440px;
-
-    font-size: 16px;
-
-    line-height: 1.8;
-
-    color: #6b5645;
+.intro-text {
+  max-width: 420px;
+  font-size: 18px;
+  line-height: 1.8;
+  color: #55483e;
 }
-
 
 /* =========================================================
-   PERSON LEFT
+   PERSON PAGE
 ========================================================= */
 
 .person-left {
-
-    width: 100%;
-    height: 100%;
-
-    display: flex;
-
-    flex-direction: column;
-
-    align-items: center;
-    justify-content: center;
-
-    text-align: center;
+  align-items: center;
+  text-align: center;
 }
-
-
-/* =========================================================
-   POLAROID
-========================================================= */
 
 .polaroid {
+  width: min(220px, 65%);
+  aspect-ratio: 4 / 5;
 
-    position: relative;
+  background: #fff;
 
-    width: min(42%,220px);
+  padding: 10px 10px 45px;
 
-    min-width: 145px;
+  box-shadow:
+    0 15px 30px rgba(0,0,0,.25);
 
-    aspect-ratio: 4 / 5;
+  transform: rotate(-2deg);
 
-    padding: 9px 9px 34px;
-
-    background: #fffdf8;
-
-    box-shadow:
-        0 12px 25px rgba(50,35,25,.22),
-        0 2px 5px rgba(50,35,25,.12);
-
-    transform: rotate(-2deg);
+  position: relative;
 }
-
-
-.polaroid::before {
-
-    content: "";
-
-    position: absolute;
-
-    top: -9px;
-    left: 50%;
-
-    width: 65px;
-    height: 18px;
-
-    transform:
-        translateX(-50%)
-        rotate(-2deg);
-
-    background: rgba(207,183,148,.78);
-
-    z-index: 5;
-}
-
 
 .polaroid-image {
+  width: 100%;
+  height: 100%;
 
-    width: 100%;
-    height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
-    display: block;
+  overflow: hidden;
 
-    object-fit: cover;
+  background:
+    linear-gradient(
+      135deg,
+      #d8c7b0,
+      #efe5d5
+    );
 
-    background:
-        linear-gradient(
-            135deg,
-            #e9ddcd,
-            #cdb79c
-        );
+  color: #7a6755;
+  font-size: 13px;
 }
 
-
-.photo-placeholder {
-
-    width: 100%;
-    height: 100%;
-
-    display: flex;
-
-    align-items: center;
-    justify-content: center;
-
-    background:
-        linear-gradient(
-            135deg,
-            #eadfce,
-            #cdb89f
-        );
-
-    color: #806b58;
-
-    font-family: Arial, sans-serif;
-
-    font-size: 10px;
-
-    letter-spacing: .12em;
+.polaroid-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
+.tape {
+  position: absolute;
+
+  width: 70px;
+  height: 22px;
+
+  background: rgba(218,195,150,.75);
+
+  top: -10px;
+  left: 50%;
+
+  transform: translateX(-50%) rotate(2deg);
+
+  z-index: 2;
+}
 
 .person-name {
+  margin-top: 30px;
 
-    margin: 18px 0 6px;
+  font-size: clamp(25px, 3vw, 38px);
 
-    font-size: clamp(20px,2.5vw,30px);
-
-    font-weight: normal;
+  letter-spacing: 2px;
 }
-
 
 .person-divider {
+  width: 70px;
+  height: 1px;
 
-    color: #a1775d;
+  background: var(--gold);
 
-    margin: 3px 0 10px;
-
-    letter-spacing: .2em;
+  margin: 15px auto;
 }
-
 
 .tags {
-
-    display: flex;
-
-    flex-wrap: wrap;
-
-    justify-content: center;
-
-    gap: 6px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 7px;
 }
-
 
 .tag {
+  border: 1px solid #c9b89d;
 
-    border: 1px solid rgba(96,69,53,.25);
+  border-radius: 20px;
 
-    border-radius: 20px;
+  padding: 6px 12px;
 
-    padding: 5px 9px;
+  font-size: 11px;
 
-    font-family: Arial, sans-serif;
-
-    font-size: 9px;
-
-    letter-spacing: .08em;
-
-    color: #705b49;
+  color: #715f4e;
 }
 
-
 /* =========================================================
-   PERSON RIGHT
+   MESSAGE
 ========================================================= */
 
 .person-right {
-
-    width: 100%;
-    height: 100%;
-
-    display: flex;
-
-    flex-direction: column;
-
-    justify-content: center;
+  justify-content: center;
 }
 
+.message-title {
+  font-size: 12px;
+  letter-spacing: 4px;
+  color: #90734e;
 
-.tribute {
-
-    max-width: 450px;
-
-    margin: 0;
-
-    font-size: 1rem;
-
-    line-height: 1.6;
-
-    color: #49382d;
+  margin-bottom: 20px;
 }
 
+.message {
+  max-width: 420px;
 
-.small-divider {
+  font-size: clamp(19px, 2.2vw, 25px);
 
-    width: 65px;
-    height: 1px;
+  line-height: 1.8;
 
-    margin: 22px 0;
-
-    background: rgba(96,69,53,.30);
+  color: #40342d;
 }
 
+.message-heart {
+  font-size: 22px;
 
-/* =========================================================
-   VIDEO
-========================================================= */
+  margin: 20px 0;
+
+  color: #8f5c52;
+}
 
 .video-card {
+  width: 100%;
+  max-width: 360px;
 
-    width: min(100%,390px);
+  margin-top: 25px;
 
-    min-height: 105px;
+  padding: 15px 18px;
 
-    display: flex;
+  border: 1px solid #cdbda4;
 
-    align-items: center;
-    justify-content: center;
+  background: rgba(255,255,255,.35);
 
-    gap: 15px;
+  display: flex;
+  align-items: center;
+  gap: 15px;
 
-    border: 1px solid rgba(96,69,53,.22);
+  cursor: pointer;
 
-    background: rgba(255,255,255,.48);
-
-    cursor: pointer;
-
-    transition:
-        transform .2s ease,
-        box-shadow .2s ease;
+  transition:
+    transform .2s ease,
+    background .2s ease;
 }
-
 
 .video-card:hover {
-
-    transform: translateY(-2px);
-
-    box-shadow:
-        0 10px 22px rgba(50,35,25,.13);
+  transform: translateY(-2px);
+  background: rgba(255,255,255,.65);
 }
-
 
 .play {
+  width: 38px;
+  height: 38px;
 
-    width: 42px;
-    height: 42px;
+  border-radius: 50%;
 
-    border-radius: 50%;
+  background: var(--brown);
+  color: white;
 
-    background: var(--brown);
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
-    color: #fff;
-
-    display: flex;
-
-    align-items: center;
-    justify-content: center;
-
-    font-family: Arial, sans-serif;
-
-    padding-left: 2px;
+  font-size: 13px;
 }
-
 
 .video-text {
-
-    display: flex;
-
-    flex-direction: column;
-
-    gap: 4px;
+  font-size: 13px;
+  letter-spacing: 1px;
 }
-
-
-.video-text strong {
-
-    font-weight: normal;
-
-    font-size: 14px;
-}
-
-
-.video-text span {
-
-    font-family: Arial, sans-serif;
-
-    font-size: 9px;
-
-    letter-spacing: .12em;
-
-    color: #8b725c;
-}
-
 
 /* =========================================================
-   NAVIGATION
+   PHYSICAL PAGE LEAF
+========================================================= */
+
+.page-leaf {
+  position: absolute;
+
+  top: 0;
+
+  width: var(--page-width);
+  height: var(--book-height);
+
+  display: block;
+
+  transform-style: preserve-3d;
+
+  pointer-events: none;
+
+  visibility: hidden;
+
+  will-change: transform;
+
+  transition:
+    transform 760ms cubic-bezier(.22,.61,.36,1);
+
+  z-index: 500;
+
+  transform: translateZ(20px);
+}
+
+.page-leaf.next {
+  left: 50%;
+  transform-origin: left center;
+}
+
+.page-leaf.previous {
+  left: 0;
+  transform-origin: right center;
+}
+
+.page-leaf.flipping {
+  visibility: visible;
+}
+
+/* =========================================================
+   PAGE LEAF FACES
+========================================================= */
+
+.page-front,
+.page-back {
+  position: absolute;
+
+  inset: 0;
+
+  width: 100%;
+  height: 100%;
+
+  overflow: hidden;
+
+  background:
+    radial-gradient(
+      circle at 20% 20%,
+      rgba(150,110,70,.07) 0 1px,
+      transparent 2px
+    ),
+    var(--paper);
+
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+
+  transform-style: preserve-3d;
+
+  box-shadow:
+    0 5px 15px rgba(0,0,0,.18);
+}
+
+.page-back {
+  transform: rotateY(180deg);
+}
+
+/* =========================================================
+   COVER
+========================================================= */
+
+.cover {
+  position: absolute;
+
+  top: 0;
+  left: 50%;
+
+  width: var(--page-width);
+  height: var(--book-height);
+
+  transform-origin: left center;
+
+  transform-style: preserve-3d;
+
+  z-index: 1000;
+
+  transition:
+    transform 900ms cubic-bezier(.22,.61,.36,1);
+
+  box-shadow:
+    8px 10px 25px rgba(0,0,0,.35);
+
+  pointer-events: auto;
+}
+
+.cover.closed {
+  transform:
+    translateX(0)
+    rotateY(0deg);
+}
+
+.cover.open {
+  transform:
+    translateX(-100%)
+    rotateY(-180deg);
+}
+
+.cover-face {
+  position: absolute;
+
+  inset: 0;
+
+  width: 100%;
+  height: 100%;
+
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+
+  transform-style: preserve-3d;
+}
+
+.cover-front {
+  background:
+    linear-gradient(
+      135deg,
+      #563729,
+      #39251d
+    );
+
+  color: #ead8b6;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  text-align: center;
+
+  padding: 30px;
+}
+
+.cover-back {
+  transform: rotateY(180deg);
+
+  background:
+    linear-gradient(
+      135deg,
+      #f1e5d2,
+      #e4d4bb
+    );
+}
+
+.cover-content {
+  width: 100%;
+}
+
+.cover-small {
+  font-size: 11px;
+  letter-spacing: 5px;
+  margin-bottom: 25px;
+  opacity: .8;
+}
+
+.cover-title {
+  font-size: clamp(25px, 4vw, 45px);
+  letter-spacing: 3px;
+  line-height: 1.3;
+}
+
+.cover-year {
+  margin-top: 18px;
+
+  font-size: 13px;
+
+  letter-spacing: 4px;
+
+  color: #c6a775;
+}
+
+.cover-heart {
+  font-size: 26px;
+  margin: 25px 0;
+}
+
+.open-button {
+  border: 1px solid #c6a775;
+
+  background: transparent;
+
+  color: #ead8b6;
+
+  padding: 12px 20px;
+
+  font-family: inherit;
+
+  font-size: 12px;
+
+  letter-spacing: 2px;
+
+  cursor: pointer;
+
+  transition:
+    background .2s ease,
+    color .2s ease;
+}
+
+.open-button:hover {
+  background: #ead8b6;
+  color: #39251d;
+}
+
+/* =========================================================
+   CONTROLS
 ========================================================= */
 
 .controls {
+  position: relative;
 
-    margin-top: 22px;
+  z-index: 2000;
 
-    display: flex;
+  pointer-events: auto;
 
-    align-items: center;
-    justify-content: center;
+  margin-top: 22px;
 
-    gap: 7px;
+  display: flex;
 
-    padding: 8px 24px;
+  align-items: center;
+  justify-content: center;
 
-    background: rgba(30,26,23,.95);
+  gap: 10px;
 
-    border-radius: 30px;
+  padding: 10px 15px;
 
-    box-shadow:
-        0 8px 25px rgba(0,0,0,.30);
+  border-radius: 40px;
 
-    opacity: 1;
+  background: rgba(20,16,14,.9);
 
-    transition:
-        opacity .25s ease;
+  box-shadow:
+    0 8px 25px rgba(0,0,0,.35);
+
+  transition: opacity .25s ease;
 }
-
 
 .controls button {
+  position: relative;
 
-    border: 0;
+  z-index: 2001;
 
-    background: transparent;
+  pointer-events: auto;
 
-    color: #f5f0eb;
+  cursor: pointer;
 
-    font-family: Arial, sans-serif;
+  border: 1px solid rgba(230,215,190,.35);
 
-    font-weight: 500;
+  background: rgba(255,255,255,.08);
 
-    font-size: .95rem;
+  color: #f4eadb;
 
-    padding: 9px 13px;
+  padding: 10px 15px;
 
-    border-radius: 20px;
+  border-radius: 20px;
 
-    cursor: pointer;
+  font-family: inherit;
 
-    transition:
-        background .2s ease,
-        color .2s ease;
+  font-size: 12px;
+
+  transition:
+    background .2s ease,
+    opacity .2s ease;
 }
-
 
 .controls button:hover:not(:disabled) {
-
-    background: rgba(255,255,255,.10);
-
-    color: #fff;
+  background: rgba(255,255,255,.18);
 }
-
 
 .controls button:disabled {
-
-    opacity: .35;
-
-    cursor: default;
+  opacity: .35;
+  cursor: default;
 }
 
+#spreadCounter {
+  min-width: 110px;
 
-.spread-counter {
+  text-align: center;
 
-    min-width: 105px;
+  color: #d7c5aa;
 
-    text-align: center;
-
-    color: #d8bb7d;
-
-    font-family: Arial, sans-serif;
-
-    font-size: .85rem;
-
-    font-weight: 500;
+  font-size: 12px;
 }
 
+/* Hide controls while book is closed */
+
+body.closed .controls {
+  opacity: 0;
+  pointer-events: none;
+}
 
 /* =========================================================
-   CLOSED BOOK
-
-   Hide the entire open-book layer behind the cover.
+   CLOSED STATE
 ========================================================= */
 
 body.closed .book-spread,
 body.closed .spine,
 body.closed .page-leaf {
-
-    visibility: hidden;
+  visibility: hidden;
 }
-
 
 /* =========================================================
-   MOBILE
+   RESPONSIVE
 ========================================================= */
 
-@media (max-width:700px) {
+@media (max-width: 700px) {
 
-    :root {
+  :root {
+    --book-width: 94vw;
+    --book-height: 56.4vw;
+  }
 
-        --book-width: 94vw;
+  .book-page {
+    padding: 25px;
+  }
 
-        --book-height: calc(94vw * .60);
-    }
+  .intro-title {
+    font-size: 25px;
+  }
 
-    .book-app {
+  .intro-text {
+    font-size: 13px;
+    line-height: 1.6;
+  }
 
-        padding: 20px 8px;
-    }
+  .message {
+    font-size: 15px;
+    line-height: 1.6;
+  }
 
-    .page-content {
+  .polaroid {
+    width: 150px;
+  }
 
-        padding: 20px;
-    }
+  .person-name {
+    font-size: 22px;
+  }
 
-    .polaroid {
+  .tag {
+    font-size: 9px;
+    padding: 4px 8px;
+  }
 
-        width: 48%;
-    }
+  .controls {
+    gap: 5px;
+    padding: 7px;
+  }
 
-    .tribute {
+  .controls button {
+    padding: 8px 10px;
+    font-size: 10px;
+  }
 
-        font-size: .88rem;
-    }
-
-    .video-card {
-
-        min-height: 80px;
-    }
-
-    .controls {
-
-        padding: 6px 10px;
-    }
-
-    .controls button {
-
-        font-size: .75rem;
-
-        padding: 8px;
-    }
-
-    .spread-counter {
-
-        min-width: 75px;
-
-        font-size: .7rem;
-    }
+  #spreadCounter {
+    min-width: 80px;
+    font-size: 10px;
+  }
 }
-
-
-/* =========================================================
-   REDUCED MOTION
-========================================================= */
-
-@media (prefers-reduced-motion: reduce) {
-
-    .cover {
-
-        transition-duration: 1ms;
-    }
-
-}
-
 </style>
 </head>
 
-
 <body class="closed">
-
 
 <div class="book-app">
 
-    <div class="book-stage">
+  <!-- =====================================================
+       BOOK
+  ====================================================== -->
 
+  <div class="book-stage" id="bookStage">
 
-        <!-- =================================================
-             OPEN BOOK
-        ================================================== -->
+    <!-- STATIC OPEN SPREAD -->
+    <div class="book-spread">
 
-        <div class="book-spread">
+      <section class="book-page left">
+        <div id="leftPage"></div>
+      </section>
 
-            <section class="book-page left">
-
-                <div
-                    class="page-content"
-                    id="leftPage">
-                </div>
-
-            </section>
-
-
-            <section class="book-page right">
-
-                <div
-                    class="page-content"
-                    id="rightPage">
-                </div>
-
-            </section>
-
-        </div>
-
-
-        <!-- SPINE -->
-
-        <div class="spine"></div>
-
-
-        <!-- =================================================
-             PHYSICAL FLIPPING SHEET
-        ================================================== -->
-
-        <div
-            class="page-leaf"
-            id="pageLeaf">
-
-            <div
-                class="page-front"
-                id="pageFront">
-            </div>
-
-            <div
-                class="page-back"
-                id="pageBack">
-            </div>
-
-        </div>
-
-
-        <!-- =================================================
-             FRONT COVER
-        ================================================== -->
-
-        <div
-            class="cover closed"
-            id="cover">
-
-            <div class="cover-face cover-front">
-
-                <div class="cover-frame">
-
-                    <div class="cover-eyebrow">
-                        A COLLECTION OF MEMORIES
-                    </div>
-
-                    <h1 class="cover-title">
-                        SAI MEMORY BOOK
-                    </h1>
-
-                    <div class="cover-subtitle">
-                        FAREWELL 2026
-                    </div>
-
-                    <div class="cover-heart">
-                        ♡
-                    </div>
-
-                </div>
-
-
-                <button
-                    class="open-book-button"
-                    id="openButton">
-
-                    OPEN BOOK →
-
-                </button>
-
-            </div>
-
-
-            <div class="cover-face cover-back"></div>
-
-        </div>
+      <section class="book-page right">
+        <div id="rightPage"></div>
+      </section>
 
     </div>
 
+    <!-- SPINE -->
+    <div class="spine"></div>
 
-    <!-- =====================================================
-         NAVIGATION
-    ====================================================== -->
+    <!-- PHYSICAL TURNING PAGE -->
+    <div class="page-leaf" id="pageLeaf">
 
-    <div
-        class="controls"
-        id="controls">
+      <div class="page-front" id="pageFront"></div>
 
-        <button
-            id="previousButton">
+      <div class="page-back" id="pageBack"></div>
 
-            ← Previous
+    </div>
 
-        </button>
+    <!-- =================================================
+         FRONT COVER
+    ================================================== -->
 
+    <div class="cover closed" id="cover">
 
-        <button
-            id="closeButton">
+      <div class="cover-face cover-front">
 
-            Close Book
+        <div class="cover-content">
 
-        </button>
+          <div class="cover-small">
+            A COLLECTION OF
+          </div>
 
+          <div class="cover-title">
+            SAI<br>
+            MEMORY BOOK
+          </div>
 
-        <div
-            class="spread-counter"
-            id="spreadCounter">
+          <div class="cover-year">
+            FAREWELL 2026
+          </div>
 
-            Spread 0 of 15
+          <div class="cover-heart">
+            ♥
+          </div>
+
+          <button
+            class="open-button"
+            id="openButton"
+            type="button"
+          >
+            OPEN BOOK →
+          </button>
 
         </div>
 
+      </div>
 
-        <button
-            id="nextButton">
-
-            Next →
-
-        </button>
+      <div class="cover-face cover-back"></div>
 
     </div>
+
+  </div>
+
+  <!-- =====================================================
+       NAVIGATION
+  ====================================================== -->
+
+  <div class="controls" id="controls">
+
+    <button
+      id="previousButton"
+      type="button"
+    >
+      ← Previous
+    </button>
+
+    <button
+      id="closeButton"
+      type="button"
+    >
+      Close Book
+    </button>
+
+    <div id="spreadCounter">
+      Spread 1 of 16
+    </div>
+
+    <button
+      id="nextButton"
+      type="button"
+    >
+      Next →
+    </button>
+
+  </div>
 
 </div>
 
 
 <script>
-
 /* =========================================================
    DATA
 ========================================================= */
 
 const people = [
 
-    {
-        name: "Sai",
-        image: "",
-        tags: ["Friendship", "Laughter", "Memories"],
-        message:
-            "Some people become part of our story without us realizing how important they will become. Thank you for every laugh, every conversation and every memory.",
-        video: ""
-    },
+  {
+    name: "Sai",
+    image: "",
+    tags: ["Friendship", "Laughter", "Memories"],
+    message:
+      "Some people become part of our story without us realizing how important they will become. Thank you for every laugh, every conversation and every memory.",
+    video: ""
+  },
 
-    {
-        name: "Person 2",
-        image: "",
-        tags: ["Good Times", "Friends", "Memories"],
-        message:
-            "The best memories are often the simplest moments that we never planned.",
-        video: ""
-    },
+  {
+    name: "Person 2",
+    image: "",
+    tags: ["Good Times", "Friends", "Memories"],
+    message:
+      "The best memories are often the simplest moments that we never planned.",
+    video: ""
+  },
 
-    {
-        name: "Person 3",
-        image: "",
-        tags: ["Together", "Friendship", "Moments"],
-        message:
-            "Every chapter becomes special because of the people who are part of it.",
-        video: ""
-    },
+  {
+    name: "Person 3",
+    image: "",
+    tags: ["Together", "Friendship", "Moments"],
+    message:
+      "Every chapter becomes special because of the people who are part of it.",
+    video: ""
+  },
 
-    {
-        name: "Person 4",
-        image: "",
-        tags: ["Laughs", "Memories"],
-        message:
-            "Years from now, these little moments will still make us smile.",
-        video: ""
-    },
+  {
+    name: "Person 4",
+    image: "",
+    tags: ["Laughs", "Memories"],
+    message:
+      "Years from now, these little moments will still make us smile.",
+    video: ""
+  },
 
-    {
-        name: "Person 5",
-        image: "",
-        tags: ["Forever", "Memories"],
-        message:
-            "Some memories stay with us long after the moment has passed.",
-        video: ""
-    },
+  {
+    name: "Person 5",
+    image: "",
+    tags: ["Forever", "Memories"],
+    message:
+      "Some memories stay with us long after the moment has passed.",
+    video: ""
+  },
 
-    {
-        name: "Person 6",
-        image: "",
-        tags: ["Thank You", "Friends"],
-        message:
-            "Thank you for being part of a chapter that will always mean something.",
-        video: ""
-    },
+  {
+    name: "Person 6",
+    image: "",
+    tags: ["Thank You", "Friends"],
+    message:
+      "Thank you for being part of a chapter that will always mean something.",
+    video: ""
+  },
 
-    {
-        name: "Person 7",
-        image: "",
-        tags: ["Journey", "Memories"],
-        message:
-            "Life moves forward, but some memories travel with us wherever we go.",
-        video: ""
-    },
+  {
+    name: "Person 7",
+    image: "",
+    tags: ["Journey", "Memories"],
+    message:
+      "Life moves forward, but some memories travel with us wherever we go.",
+    video: ""
+  },
 
-    {
-        name: "Person 8",
-        image: "",
-        tags: ["Laughter", "Together"],
-        message:
-            "The laughter, random conversations and little moments are what we remember most.",
-        video: ""
-    },
+  {
+    name: "Person 8",
+    image: "",
+    tags: ["Laughter", "Together"],
+    message:
+      "The laughter, random conversations and little moments are what we remember most.",
+    video: ""
+  },
 
-    {
-        name: "Person 9",
-        image: "",
-        tags: ["Story", "Friendship"],
-        message:
-            "Every person leaves something behind in the story we share.",
-        video: ""
-    },
+  {
+    name: "Person 9",
+    image: "",
+    tags: ["Story", "Friendship"],
+    message:
+      "Every person leaves something behind in the story we share.",
+    video: ""
+  },
 
-    {
-        name: "Person 10",
-        image: "",
-        tags: ["Beautiful Times", "Memories"],
-        message:
-            "One day we will look back and realize how beautiful this chapter really was.",
-        video: ""
-    },
+  {
+    name: "Person 10",
+    image: "",
+    tags: ["Beautiful Times", "Memories"],
+    message:
+      "One day we will look back and realize how beautiful this chapter really was.",
+    video: ""
+  },
 
-    {
-        name: "Person 11",
-        image: "",
-        tags: ["Friendship", "Moments"],
-        message:
-            "Some friendships are made from hundreds of tiny moments that slowly become unforgettable.",
-        video: ""
-    },
+  {
+    name: "Person 11",
+    image: "",
+    tags: ["Friendship", "Moments"],
+    message:
+      "Some friendships are made from hundreds of tiny moments that slowly become unforgettable.",
+    video: ""
+  },
 
-    {
-        name: "Person 12",
-        image: "",
-        tags: ["Journey", "Together"],
-        message:
-            "Wherever life takes us next, this part of the journey will always remain ours.",
-        video: ""
-    },
+  {
+    name: "Person 12",
+    image: "",
+    tags: ["Journey", "Together"],
+    message:
+      "Wherever life takes us next, this part of the journey will always remain ours.",
+    video: ""
+  },
 
-    {
-        name: "Person 13",
-        image: "",
-        tags: ["Thank You", "Memories"],
-        message:
-            "Thank you for the memories that made ordinary days feel extraordinary.",
-        video: ""
-    },
+  {
+    name: "Person 13",
+    image: "",
+    tags: ["Thank You", "Memories"],
+    message:
+      "Thank you for the memories that made ordinary days feel extraordinary.",
+    video: ""
+  },
 
-    {
-        name: "Person 14",
-        image: "",
-        tags: ["Next Chapter", "Forever"],
-        message:
-            "The chapter may be ending, but the memories are staying.",
-        video: ""
-    },
+  {
+    name: "Person 14",
+    image: "",
+    tags: ["Next Chapter", "Forever"],
+    message:
+      "The chapter may be ending, but the memories are staying.",
+    video: ""
+  },
 
-    {
-        name: "Person 15",
-        image: "",
-        tags: ["Until Next Time", "Forever"],
-        message:
-            "Until the next chapter... may all the memories we created together continue to make us smile.",
-        video: ""
-    }
+  {
+    name: "Person 15",
+    image: "",
+    tags: ["Until Next Time", "Forever"],
+    message:
+      "Until the next chapter... may all the memories we created together continue to make us smile.",
+    video: ""
+  }
 
 ];
 
 
 /* =========================================================
-   SPREAD MODEL
+   SPREADS
 ========================================================= */
 
 const spreads = [
-
-    {
-        type: "intro"
-    },
-
-    ...people.map(person => ({
-        type: "person",
-        person
-    }))
-
+  { type: "intro" },
+  ...people.map(person => ({
+    type: "person",
+    person
+  }))
 ];
+
+
+/* =========================================================
+   ELEMENTS
+========================================================= */
+
+const cover =
+  document.getElementById("cover");
+
+const openButton =
+  document.getElementById("openButton");
+
+const previousButton =
+  document.getElementById("previousButton");
+
+const nextButton =
+  document.getElementById("nextButton");
+
+const closeButton =
+  document.getElementById("closeButton");
+
+const spreadCounter =
+  document.getElementById("spreadCounter");
+
+const leftPage =
+  document.getElementById("leftPage");
+
+const rightPage =
+  document.getElementById("rightPage");
+
+const pageLeaf =
+  document.getElementById("pageLeaf");
+
+const pageFront =
+  document.getElementById("pageFront");
+
+const pageBack =
+  document.getElementById("pageBack");
 
 
 /* =========================================================
@@ -1495,232 +1129,134 @@ let animating = false;
 
 
 /* =========================================================
-   DOM
+   INTRO PAGE
 ========================================================= */
 
-const leftPage =
-    document.getElementById("leftPage");
+function createIntroLeft() {
 
-const rightPage =
-    document.getElementById("rightPage");
+  return `
+    <div class="page-content intro-left">
 
-const cover =
-    document.getElementById("cover");
+      <div class="small">
+        OUR MEMORIES
+      </div>
 
-const pageLeaf =
-    document.getElementById("pageLeaf");
+      <h1>
+        MEMORIES
+      </h1>
 
-const pageFront =
-    document.getElementById("pageFront");
+      <div class="line"></div>
 
-const pageBack =
-    document.getElementById("pageBack");
+      <div>
+        ♥
+      </div>
 
-const openButton =
-    document.getElementById("openButton");
-
-const previousButton =
-    document.getElementById("previousButton");
-
-const nextButton =
-    document.getElementById("nextButton");
-
-const closeButton =
-    document.getElementById("closeButton");
-
-const spreadCounter =
-    document.getElementById("spreadCounter");
-
-
-/* =========================================================
-   PAGE CONTENT GENERATORS
-
-   These generate the same content whether the page is:
-   static OR physically turning.
-========================================================= */
-
-function leftPageHTML(spread) {
-
-    if (spread.type === "intro") {
-
-        return `
-
-            <div class="page-content">
-
-                <div class="intro-left">
-
-                    <div class="memory-word">
-                        MEMORIES
-                    </div>
-
-                    <div class="decor">
-                        ✦ &nbsp; ♡ &nbsp; ✦
-                    </div>
-
-                </div>
-
-            </div>
-
-        `;
-    }
-
-
-    const person = spread.person;
-
-
-    const photo = person.image
-
-        ? `
-            <img
-                class="polaroid-image"
-                src="${person.image}"
-                alt="${person.name}">
-          `
-
-        : `
-            <div class="photo-placeholder">
-                YOUR PHOTO
-            </div>
-          `;
-
-
-    return `
-
-        <div class="page-content">
-
-            <div class="person-left">
-
-                <div class="polaroid">
-
-                    ${photo}
-
-                </div>
-
-
-                <h2 class="person-name">
-                    ${person.name}
-                </h2>
-
-
-                <div class="person-divider">
-                    ♡ ─── ♡
-                </div>
-
-
-                <div class="tags">
-
-                    ${person.tags.map(tag => `
-
-                        <span class="tag">
-                            ${tag}
-                        </span>
-
-                    `).join("")}
-
-                </div>
-
-            </div>
-
-        </div>
-
-    `;
+    </div>
+  `;
 }
 
 
-function rightPageHTML(spread) {
+function createIntroRight() {
 
-    if (spread.type === "intro") {
+  return `
+    <div class="page-content intro-right">
 
-        return `
+      <div class="chapter">
+        CHAPTER ONE
+      </div>
 
-            <div class="page-content">
+      <div class="intro-title">
+        OUR STORY
+      </div>
 
-                <div class="intro-right">
+      <div class="intro-text">
+        A little collection of people,
+        laughter, conversations and
+        moments that made this chapter
+        unforgettable.
+      </div>
 
-                    <div class="eyebrow">
-                        CHAPTER ONE
-                    </div>
-
-                    <h2 class="intro-title">
-                        OUR STORY
-                    </h2>
-
-                    <p class="intro-copy">
-
-                        Every chapter has a story...
-
-                        <br><br>
-
-                        And you made ours special.
-
-                        <br><br>
-
-                        A collection of memories,
-                        laughter and moments we'll
-                        always carry with us.
-
-                    </p>
-
-                </div>
-
-            </div>
-
-        `;
-    }
+    </div>
+  `;
+}
 
 
-    const person = spread.person;
+/* =========================================================
+   PERSON PAGE
+========================================================= */
 
+function createPersonLeft(person) {
 
-    return `
+  const imageHTML = person.image
+    ? `<img src="${person.image}" alt="${person.name}">`
+    : `<span>Your photo</span>`;
 
-        <div class="page-content">
+  const tagsHTML = person.tags
+    .map(tag => `<span class="tag">${tag}</span>`)
+    .join("");
 
-            <div class="person-right">
+  return `
+    <div class="page-content person-left">
 
-                <div class="eyebrow">
-                    A MEMORY FOR YOU
-                </div>
+      <div class="polaroid">
 
+        <div class="tape"></div>
 
-                <p class="tribute">
-                    ${person.message}
-                </p>
-
-
-                <div class="small-divider"></div>
-
-
-                <div
-                    class="video-card"
-                    data-video="${person.video || ""}"
-                    onclick="watchVideo(this)"
-                >
-
-                    <div class="play">
-                        ▶
-                    </div>
-
-
-                    <div class="video-text">
-
-                        <strong>
-                            Watch Video
-                        </strong>
-
-                        <span>
-                            A LITTLE MOMENT TO REMEMBER
-                        </span>
-
-                    </div>
-
-                </div>
-
-            </div>
-
+        <div class="polaroid-image">
+          ${imageHTML}
         </div>
 
-    `;
+      </div>
+
+      <div class="person-name">
+        ${person.name}
+      </div>
+
+      <div class="person-divider"></div>
+
+      <div class="tags">
+        ${tagsHTML}
+      </div>
+
+    </div>
+  `;
+}
+
+
+function createPersonRight(person) {
+
+  return `
+    <div class="page-content person-right">
+
+      <div class="message-title">
+        A MEMORY FOR YOU
+      </div>
+
+      <div class="message">
+        ${person.message}
+      </div>
+
+      <div class="message-heart">
+        ♥
+      </div>
+
+      <div
+        class="video-card"
+        onclick="watchVideo()"
+      >
+
+        <div class="play">
+          ▶
+        </div>
+
+        <div class="video-text">
+          WATCH VIDEO
+        </div>
+
+      </div>
+
+    </div>
+  `;
 }
 
 
@@ -1730,59 +1266,60 @@ function rightPageHTML(spread) {
 
 function renderSpread(index) {
 
-    const spread = spreads[index];
+  const spread = spreads[index];
 
-    if (!spread) return;
+  if (!spread) return;
 
+  if (spread.type === "intro") {
 
     leftPage.innerHTML =
-        leftPageHTML(spread);
-
+      createIntroLeft();
 
     rightPage.innerHTML =
-        rightPageHTML(spread);
+      createIntroRight();
 
+  } else {
 
-    updateNavigation();
+    leftPage.innerHTML =
+      createPersonLeft(spread.person);
+
+    rightPage.innerHTML =
+      createPersonRight(spread.person);
+  }
+
+  updateNavigation();
 }
 
 
 /* =========================================================
-   NAVIGATION
+   LEAF CONTENT
 ========================================================= */
 
-function updateNavigation() {
+function leftHTML(index) {
 
-    spreadCounter.textContent =
-        `Spread ${currentSpread} of ${spreads.length - 1}`;
+  const spread = spreads[index];
 
+  if (!spread) return "";
 
-    previousButton.disabled =
-        !bookOpen ||
-        currentSpread === 0;
+  if (spread.type === "intro") {
+    return createIntroLeft();
+  }
 
-
-    closeButton.disabled =
-        !bookOpen;
-
-
-    if (
-        currentSpread ===
-        spreads.length - 1
-    ) {
-
-        nextButton.textContent =
-            "Close Book";
-
-    } else {
-
-        nextButton.textContent =
-            "Next →";
-    }
+  return createPersonLeft(spread.person);
+}
 
 
-    nextButton.disabled =
-        !bookOpen;
+function rightHTML(index) {
+
+  const spread = spreads[index];
+
+  if (!spread) return "";
+
+  if (spread.type === "intro") {
+    return createIntroRight();
+  }
+
+  return createPersonRight(spread.person);
 }
 
 
@@ -1792,65 +1329,37 @@ function updateNavigation() {
 
 function openBook() {
 
-    if (animating || bookOpen) return;
+  if (bookOpen || animating) return;
 
+  animating = true;
 
-    animating = true;
+  currentSpread = 0;
 
+  renderSpread(0);
 
-    currentSpread = 0;
+  document.body.classList.remove("closed");
 
-    renderSpread(currentSpread);
+  cover.classList.remove("open");
+  cover.classList.add("closed");
 
+  void cover.offsetWidth;
 
-    document.body.classList.remove("closed");
-
+  requestAnimationFrame(() => {
 
     cover.classList.remove("closed");
-    cover.classList.remove("open");
+    cover.classList.add("open");
 
+  });
 
-    /*
-       Force browser to recognize the starting state
-       before starting the transition.
-    */
-
-    void cover.offsetWidth;
-
-
-    requestAnimationFrame(() => {
-
-        cover.classList.add("open");
-
-    });
-
-
-    cover.addEventListener(
-        "transitionend",
-        finishOpening,
-        { once: true }
-    );
-}
-
-
-function finishOpening(event) {
-
-    if (
-        event.propertyName !== "transform"
-    ) return;
-
+  setTimeout(() => {
 
     bookOpen = true;
 
     animating = false;
 
-
-    cover.classList.remove("closed");
-
-    cover.classList.add("open");
-
-
     updateNavigation();
+
+  }, 950);
 }
 
 
@@ -1860,294 +1369,215 @@ function finishOpening(event) {
 
 function closeBook() {
 
-    if (
-        animating ||
-        !bookOpen
-    ) return;
+  if (!bookOpen || animating) return;
 
+  animating = true;
 
-    animating = true;
+  cover.classList.remove("closed");
+  cover.classList.add("open");
 
+  void cover.offsetWidth;
 
-    cover.classList.remove("open");
-
-
-    void cover.offsetWidth;
-
-
-    requestAnimationFrame(() => {
-
-        cover.classList.add("closed");
-
-    });
-
-
-    cover.addEventListener(
-        "transitionend",
-        finishClosing,
-        { once: true }
-    );
-}
-
-
-function finishClosing(event) {
-
-    if (
-        event.propertyName !== "transform"
-    ) return;
-
-
-    bookOpen = false;
-
-    animating = false;
-
-
-    currentSpread = 0;
-
-
-    pageLeaf.className =
-        "page-leaf";
-
-
-    pageFront.innerHTML = "";
-    pageBack.innerHTML = "";
-
-
-    document.body.classList.add("closed");
-
+  requestAnimationFrame(() => {
 
     cover.classList.remove("open");
     cover.classList.add("closed");
 
+  });
+
+  setTimeout(() => {
+
+    bookOpen = false;
+
+    currentSpread = 0;
+
+    pageLeaf.className = "page-leaf";
+
+    pageLeaf.style.transform = "";
+
+    pageFront.innerHTML = "";
+    pageBack.innerHTML = "";
+
+    document.body.classList.add("closed");
 
     renderSpread(0);
 
+    animating = false;
+
     updateNavigation();
+
+  }, 950);
 }
 
 
 /* =========================================================
-   START PAGE TURN
+   PAGE TURN
 ========================================================= */
 
 function turnSpread(direction) {
 
-    if (
-        animating ||
-        !bookOpen
-    ) return;
+  if (!bookOpen || animating) return;
 
+  const destination =
+    currentSpread + direction;
 
-    const destinationIndex =
-        direction === "next"
+  if (
+    destination < 0 ||
+    destination >= spreads.length
+  ) {
+    return;
+  }
 
-            ? currentSpread + 1
+  animating = true;
 
-            : currentSpread - 1;
+  /* =======================================================
+     NEXT
+  ====================================================== */
 
+  if (direction === 1) {
 
-    if (
-        destinationIndex < 0 ||
-        destinationIndex >= spreads.length
-    ) return;
+    pageFront.innerHTML =
+      rightHTML(currentSpread);
 
+    pageBack.innerHTML =
+      leftHTML(destination);
 
-    animating = true;
+    pageLeaf.className =
+      "page-leaf next flipping";
 
+    pageLeaf.style.zIndex = "600";
 
-    /*
-       ----------------------------------------------------
-       IMPORTANT:
+    pageLeaf.style.transform =
+      "rotateY(0deg)";
 
-       Build BOTH physical faces BEFORE animation.
+    void pageLeaf.offsetWidth;
 
-       NEXT:
-       front = current RIGHT page
-       back  = destination LEFT page
+    requestAnimationFrame(() => {
 
-       PREVIOUS:
-       front = current LEFT page
-       back  = destination RIGHT page
-       ----------------------------------------------------
-    */
+      pageLeaf.style.transform =
+        "rotateY(-180deg)";
 
-    if (direction === "next") {
+    });
 
-        pageFront.innerHTML =
-            rightPageHTML(
-                spreads[currentSpread]
-            );
+  }
 
+  /* =======================================================
+     PREVIOUS
+  ====================================================== */
 
-        pageBack.innerHTML =
-            leftPageHTML(
-                spreads[destinationIndex]
-            );
+  else {
 
+    pageFront.innerHTML =
+      leftHTML(currentSpread);
 
-        pageLeaf.className =
-            "page-leaf next flipping";
+    pageBack.innerHTML =
+      rightHTML(destination);
 
+    pageLeaf.className =
+      "page-leaf previous flipping";
 
-        pageLeaf.style.zIndex = "500";
+    pageLeaf.style.zIndex = "600";
 
+    pageLeaf.style.transform =
+      "rotateY(0deg)";
 
-        void pageLeaf.offsetWidth;
+    void pageLeaf.offsetWidth;
 
+    requestAnimationFrame(() => {
 
-        requestAnimationFrame(() => {
+      pageLeaf.style.transform =
+        "rotateY(180deg)";
 
-            pageLeaf.style.transform =
-                "rotateY(-180deg) translateZ(8px)";
+    });
 
-            pageLeaf.style.setProperty(
-                "--flip-direction",
-                "-1"
-            );
+  }
 
-            pageLeaf.classList.add(
-                "flip-shadow"
-            );
 
-        });
+  /* =======================================================
+     COMPLETE TURN
+  ====================================================== */
 
-    } else {
+  setTimeout(() => {
 
-        pageFront.innerHTML =
-            leftPageHTML(
-                spreads[currentSpread]
-            );
+    currentSpread = destination;
 
+    pageLeaf.className =
+      "page-leaf";
 
-        pageBack.innerHTML =
-            rightPageHTML(
-                spreads[destinationIndex]
-            );
+    pageLeaf.style.transform = "";
 
+    pageLeaf.style.zIndex = "";
 
-        pageLeaf.className =
-            "page-leaf previous flipping";
+    pageFront.innerHTML = "";
+    pageBack.innerHTML = "";
 
+    renderSpread(currentSpread);
 
-        pageLeaf.style.zIndex = "500";
+    animating = false;
 
+    updateNavigation();
 
-        void pageLeaf.offsetWidth;
-
-
-        requestAnimationFrame(() => {
-
-            pageLeaf.style.transform =
-                "rotateY(180deg) translateZ(8px)";
-
-            pageLeaf.classList.add(
-                "flip-shadow"
-            );
-
-        });
-
-    }
-
-
-    pageLeaf.addEventListener(
-        "transitionend",
-        function finishPageTurn(event) {
-
-            if (
-                event.propertyName !==
-                "transform"
-            ) return;
-
-
-            currentSpread =
-                destinationIndex;
-
-
-            /*
-               Remove physical sheet.
-               Then render the new permanent spread.
-            */
-
-            pageLeaf.style.transform =
-                "";
-
-
-            pageLeaf.className =
-                "page-leaf";
-
-
-            pageLeaf.style.zIndex =
-                "";
-
-
-            pageFront.innerHTML = "";
-            pageBack.innerHTML = "";
-
-
-            renderSpread(
-                currentSpread
-            );
-
-
-            animating = false;
-
-        },
-        {
-            once: true
-        }
-    );
+  }, 800);
 }
 
 
 /* =========================================================
-   NEXT
+   NAVIGATION
 ========================================================= */
 
 function nextSpread() {
 
-    if (
-        !bookOpen ||
-        animating
-    ) return;
+  if (!bookOpen || animating) return;
+
+  /*
+    Person 15 is the final spread.
+    Next closes the physical book.
+  */
+
+  if (
+    currentSpread >= spreads.length - 1
+  ) {
+
+    closeBook();
+
+    return;
+  }
+
+  turnSpread(1);
+}
 
 
-    /*
-       Person 15 -> physically close book.
-    */
+function previousSpread() {
 
-    if (
-        currentSpread ===
-        spreads.length - 1
-    ) {
+  if (!bookOpen || animating) return;
 
-        closeBook();
+  if (currentSpread <= 0) return;
 
-        return;
-    }
-
-
-    turnSpread("next");
+  turnSpread(-1);
 }
 
 
 /* =========================================================
-   PREVIOUS
+   NAVIGATION UI
 ========================================================= */
 
-function previousSpread() {
+function updateNavigation() {
 
-    if (
-        !bookOpen ||
-        animating
-    ) return;
+  spreadCounter.textContent =
+    `Spread ${currentSpread + 1} of ${spreads.length}`;
 
+  previousButton.disabled =
+    !bookOpen ||
+    currentSpread === 0 ||
+    animating;
 
-    if (
-        currentSpread === 0
-    ) return;
+  nextButton.disabled =
+    !bookOpen ||
+    animating;
 
-
-    turnSpread("previous");
+  closeButton.disabled =
+    !bookOpen ||
+    animating;
 }
 
 
@@ -2155,55 +1585,52 @@ function previousSpread() {
    VIDEO
 ========================================================= */
 
-function watchVideo(card) {
+function watchVideo() {
 
-    const url =
-        card.dataset.video;
+  const person =
+    spreads[currentSpread]?.person;
 
+  if (!person) return;
 
-    if (!url) {
-
-        alert(
-            "Add this person's video URL in the people array."
-        );
-
-        return;
-    }
-
+  if (person.video) {
 
     window.open(
-        url,
-        "_blank",
-        "noopener,noreferrer"
+      person.video,
+      "_blank"
     );
+
+  } else {
+
+    alert(
+      `Video for ${person.name} will be added here.`
+    );
+
+  }
 }
 
 
 /* =========================================================
-   BUTTONS
+   BUTTON EVENTS
 ========================================================= */
 
 openButton.addEventListener(
-    "click",
-    openBook
+  "click",
+  openBook
 );
-
 
 previousButton.addEventListener(
-    "click",
-    previousSpread
+  "click",
+  previousSpread
 );
-
 
 nextButton.addEventListener(
-    "click",
-    nextSpread
+  "click",
+  nextSpread
 );
 
-
 closeButton.addEventListener(
-    "click",
-    closeBook
+  "click",
+  closeBook
 );
 
 
@@ -2212,45 +1639,40 @@ closeButton.addEventListener(
 ========================================================= */
 
 document.addEventListener(
-    "keydown",
-    event => {
+  "keydown",
+  event => {
 
-        if (
-            event.key === "ArrowRight"
-        ) {
+    if (!bookOpen) return;
 
-            nextSpread();
-        }
-
-
-        if (
-            event.key === "ArrowLeft"
-        ) {
-
-            previousSpread();
-        }
-
-
-        if (
-            event.key === "Escape"
-        ) {
-
-            closeBook();
-        }
-
+    if (event.key === "ArrowRight") {
+      nextSpread();
     }
+
+    if (event.key === "ArrowLeft") {
+      previousSpread();
+    }
+
+    if (event.key === "Escape") {
+      closeBook();
+    }
+
+  }
 );
 
 
 /* =========================================================
-   INITIAL STATE
+   INITIALIZE
 ========================================================= */
 
 renderSpread(0);
 
 document.body.classList.add("closed");
 
+cover.classList.remove("open");
 cover.classList.add("closed");
+
+bookOpen = false;
+animating = false;
 
 updateNavigation();
 
