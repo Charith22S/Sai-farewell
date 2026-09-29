@@ -345,25 +345,43 @@ body {
   align-items: center;
 
   text-align: center;
+
+  min-width: 0;
 }
+
+
+/* =========================================================
+   POLAROID
+========================================================= */
 
 .polaroid {
 
+  /*
+     Fixed responsive frame.
+     Every photo gets the same visible frame.
+  */
+
   width:
     clamp(
-      90px,
+      120px,
       22vw,
       220px
     );
 
-  aspect-ratio: 4 / 5;
+  height:
+    clamp(
+      155px,
+      29vw,
+      285px
+    );
 
   background: #fff;
 
   padding:
-    clamp(5px, 1vw, 10px)
-    clamp(5px, 1vw, 10px)
-    clamp(25px, 3vw, 45px);
+    clamp(7px, 1vw, 10px);
+
+  padding-bottom:
+    clamp(25px, 3vw, 40px);
 
   box-shadow:
     0 15px 30px rgba(0,0,0,.25);
@@ -373,11 +391,19 @@ body {
   position: relative;
 
   flex-shrink: 0;
+
+  overflow: hidden;
 }
+
+
+/* =========================================================
+   POLAROID IMAGE AREA
+========================================================= */
 
 .polaroid-image {
 
   width: 100%;
+
   height: 100%;
 
   display: flex;
@@ -401,13 +427,36 @@ body {
     clamp(7px, 1.2vw, 13px);
 }
 
+
+/*
+   IMPORTANT:
+   CONTAIN keeps the COMPLETE PHOTO visible.
+
+   It will NOT stretch the photo.
+   It will NOT crop the person.
+*/
+
 .polaroid-image img {
 
   width: 100%;
+
   height: 100%;
 
-  object-fit: cover;
+  max-width: 100%;
+
+  max-height: 100%;
+
+  object-fit: contain;
+
+  object-position: center;
+
+  display: block;
 }
+
+
+/* =========================================================
+   TAPE
+========================================================= */
 
 .tape {
 
@@ -467,6 +516,8 @@ body {
 
   gap:
     clamp(3px, .6vw, 7px);
+
+  max-width: 90%;
 }
 
 .tag {
@@ -708,6 +759,7 @@ body {
     var(--paper);
 
   backface-visibility: hidden;
+
   -webkit-backface-visibility: hidden;
 
   transform-style: preserve-3d;
@@ -1102,6 +1154,40 @@ body.closed .controls {
   }
 
 
+  /* MOBILE PHOTO */
+
+  .polaroid {
+
+    width: 120px;
+
+    height: 155px;
+
+    padding: 6px;
+
+    padding-bottom: 24px;
+  }
+
+
+  .polaroid-image {
+
+    width: 100%;
+
+    height: 100%;
+  }
+
+
+  .polaroid-image img {
+
+    width: 100%;
+
+    height: 100%;
+
+    object-fit: contain;
+
+    object-position: center;
+  }
+
+
   .message {
 
     height: 180px;
@@ -1193,6 +1279,24 @@ body.closed .controls {
   }
 
 
+  .polaroid {
+
+    width: 90px;
+
+    height: 120px;
+
+    padding: 5px;
+
+    padding-bottom: 20px;
+  }
+
+
+  .polaroid-image img {
+
+    object-fit: contain;
+  }
+
+
   .message {
 
     height: 145px;
@@ -1218,12 +1322,6 @@ body.closed .controls {
   .message-title {
 
     font-size: 8px;
-  }
-
-
-  .polaroid {
-
-    width: 80px;
   }
 
 
@@ -1511,7 +1609,7 @@ Sukruth.`
 
 
   {
-   image: "./Images/TejaRoy.jpg",
+    image: "./Images/TejaRoy.jpg",
     tags: [
       "Laughs",
       "Memories"
@@ -1600,7 +1698,7 @@ Sukruth.`
 
 
   {
-     image: "./Images/Pavan.jpg",
+    image: "./Images/Pavan.jpg",
     tags: [
       "Journey",
       "Memories"
@@ -1628,7 +1726,7 @@ Sukruth.`
 
 
   {
-     image: "./Images/Siddarth.jpg",
+    image: "./Images/Siddarth.jpg",
     tags: [
       "Laughter",
       "Together"
@@ -1654,7 +1752,7 @@ Sukruth.`
 
 
   {
-     image: "./Images/Aparna.jpg",
+    image: "./Images/Aparna.jpg",
     tags: [
       "Story",
       "Friendship"
@@ -1676,7 +1774,7 @@ Sukruth.`
 
 
   {
-     image: "./Images/Kshitij.jpg",
+    image: "./Images/Kshitij.jpg",
     tags: [
       "Beautiful Times",
       "Memories"
@@ -1688,7 +1786,7 @@ Sukruth.`
 
 
   {
-     image: "./Images/Haresh.jpg",
+    image: "./Images/Haresh.jpg",
     tags: [
       "Friendship",
       "Moments"
@@ -2025,7 +2123,7 @@ function createPersonRight(person) {
 
       <div class="message-heart">
 
-        ♥ 
+        ♥
 
       </div>
 
@@ -2146,23 +2244,16 @@ function openBook() {
 
   animating = true;
 
-
   currentSpread = 0;
 
 
-  /* Render first spread */
-
   renderSpread(0);
 
-
-  /* Show book */
 
   document.body.classList.remove(
     "closed"
   );
 
-
-  /* Start from closed position */
 
   cover.classList.remove(
     "open"
@@ -2173,12 +2264,8 @@ function openBook() {
   );
 
 
-  /* Force browser reflow */
-
   void cover.offsetWidth;
 
-
-  /* Start opening animation */
 
   requestAnimationFrame(() => {
 
@@ -2192,8 +2279,6 @@ function openBook() {
 
   });
 
-
-  /* Finish animation */
 
   setTimeout(() => {
 
@@ -2227,8 +2312,6 @@ function closeBook() {
   animating = true;
 
 
-  /* Start closing */
-
   cover.classList.remove(
     "open"
   );
@@ -2248,10 +2331,8 @@ function closeBook() {
     pageLeaf.className =
       "page-leaf";
 
-
     pageLeaf.style.transform =
       "";
-
 
     pageLeaf.style.zIndex =
       "";
@@ -2259,7 +2340,6 @@ function closeBook() {
 
     pageFront.innerHTML =
       "";
-
 
     pageBack.innerHTML =
       "";
@@ -2317,7 +2397,7 @@ function turnSpread(direction) {
 
   /* =======================================================
      NEXT PAGE
-  ======================================================= */
+  ======================================================== */
 
   if (
     direction === 1
@@ -2362,7 +2442,7 @@ function turnSpread(direction) {
 
   /* =======================================================
      PREVIOUS PAGE
-  ======================================================= */
+  ======================================================== */
 
   else {
 
@@ -2405,7 +2485,7 @@ function turnSpread(direction) {
 
   /* =======================================================
      FINISH TURN
-  ======================================================= */
+  ======================================================== */
 
   setTimeout(() => {
 
@@ -2420,14 +2500,12 @@ function turnSpread(direction) {
     pageLeaf.style.transform =
       "";
 
-
     pageLeaf.style.zIndex =
       "";
 
 
     pageFront.innerHTML =
       "";
-
 
     pageBack.innerHTML =
       "";
@@ -2439,7 +2517,6 @@ function turnSpread(direction) {
 
 
     animating = false;
-
 
     updateNavigation();
 
