@@ -552,6 +552,8 @@ body {
 
   min-height: 0;
 
+  height: 100%;
+
   overflow: hidden;
 }
 
@@ -591,25 +593,27 @@ body {
    MESSAGE
 ========================================================= */
 
-/*
-   The message itself scrolls.
-
-   The book page does NOT scroll.
-   Only this area gets a vertical scrollbar
-   when the message is longer than the available space.
-*/
-
 .message {
 
   width: 100%;
 
   max-width: 420px;
 
-  flex: 1 1 auto;
+  /*
+     FIXED READING WINDOW
 
-  min-height: 0;
+     Long messages stay inside this box
+     and scroll vertically.
+  */
 
-  overflow-y: auto;
+  height: 300px;
+
+  max-height: 300px;
+
+  flex:
+    0 1 300px;
+
+  overflow-y: scroll;
 
   overflow-x: hidden;
 
@@ -628,27 +632,29 @@ body {
 
   word-wrap: break-word;
 
+  /* Firefox */
   scrollbar-width: thin;
 
   scrollbar-color:
-    #b49a78
-    rgba(180,154,120,.12);
+    #8f7658
+    #eee8df;
 }
 
 
 /* =========================================================
-   MESSAGE SCROLLBAR - CHROME / EDGE / SAFARI
+   MESSAGE SCROLLBAR
+   CHROME / EDGE / SAFARI
 ========================================================= */
 
 .message::-webkit-scrollbar {
 
-  width: 7px;
+  width: 6px;
 }
 
 .message::-webkit-scrollbar-track {
 
   background:
-    rgba(120,90,60,.08);
+    #eee8df;
 
   border-radius: 10px;
 }
@@ -656,18 +662,15 @@ body {
 .message::-webkit-scrollbar-thumb {
 
   background:
-    #b49a78;
+    #8f7658;
 
   border-radius: 10px;
-
-  border:
-    1px solid rgba(255,255,255,.25);
 }
 
 .message::-webkit-scrollbar-thumb:hover {
 
   background:
-    #967b5c;
+    #6f5840;
 }
 
 
@@ -677,7 +680,8 @@ body {
 
 .message-heart {
 
-  flex: 0 0 auto;
+  flex:
+    0 0 auto;
 
   font-size:
     clamp(13px, 2vw, 22px);
@@ -1138,11 +1142,26 @@ body.closed .controls {
 
   .message {
 
+    /*
+       Smaller reading window on phones
+    */
+
+    height: 180px;
+
+    max-height: 180px;
+
+    flex-basis: 180px;
+
     font-size: 14px;
 
     line-height: 1.45;
 
     padding-right: 8px;
+  }
+
+  .message::-webkit-scrollbar {
+
+    width: 5px;
   }
 
   .message-title {
@@ -1208,11 +1227,22 @@ body.closed .controls {
 
   .message {
 
+    height: 145px;
+
+    max-height: 145px;
+
+    flex-basis: 145px;
+
     font-size: 12px;
 
     line-height: 1.35;
 
     padding-right: 7px;
+  }
+
+  .message::-webkit-scrollbar {
+
+    width: 5px;
   }
 
   .message-title {
