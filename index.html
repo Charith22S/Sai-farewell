@@ -280,6 +280,7 @@ body {
   height: 100%;
 
   min-width: 0;
+  min-height: 0;
 
   display: flex;
 
@@ -546,22 +547,46 @@ body {
 ========================================================= */
 
 .person-right {
+
   justify-content: center;
+
+  align-items: center;
+
+  min-height: 0;
 }
 
 .message-title {
 
+  width: 100%;
+
+  max-width: 420px;
+
+  flex: 0 0 auto;
+
   font-size:
-    clamp(7px, 1.2vw, 12px);
+    clamp(9px, 1.2vw, 15px);
 
   letter-spacing:
-    clamp(2px, .5vw, 4px);
+    clamp(1px, .5vw, 4px);
 
   color: #90734e;
 
   margin-bottom:
-    clamp(8px, 2vw, 20px);
+    clamp(8px, 1.5vw, 15px);
+
+  text-align: center;
+
+  word-break: break-word;
 }
+
+
+/*
+   MESSAGE AREA
+
+   The message is now a FLEXIBLE, CONSTRAINED area.
+   JavaScript automatically reduces its font size when
+   the message is too large.
+*/
 
 .message {
 
@@ -569,114 +594,44 @@ body {
 
   max-width: 420px;
 
-  max-height: 72%;
+  flex: 0 1 62%;
 
-  overflow-y: auto;
+  min-height: 0;
 
-  font-size:
-    clamp(10px, 1.65vw, 18px);
+  overflow: hidden;
 
-  line-height: 1.65;
+  font-size: 18px;
+
+  line-height: 1.55;
 
   color: #40342d;
 
-  padding-right: 5px;
+  padding:
+    0 3px;
+
+  text-align: left;
+
+  overflow-wrap: break-word;
+
+  word-wrap: break-word;
 }
 
-.message::-webkit-scrollbar {
-  width: 4px;
-}
 
-.message::-webkit-scrollbar-thumb {
-  background: #c9b89d;
-  border-radius: 10px;
-}
+/* =========================================================
+   HEART
+========================================================= */
 
 .message-heart {
+
+  flex: 0 0 auto;
 
   font-size:
     clamp(13px, 2vw, 22px);
 
   margin:
-    clamp(7px, 1.5vw, 20px) 0;
+    clamp(5px, 1vw, 12px) 0 0;
 
   color: #8f5c52;
-}
-
-.video-card {
-
-  width: 100%;
-
-  max-width: 360px;
-
-  margin-top:
-    clamp(8px, 2vw, 25px);
-
-  padding:
-    clamp(7px, 1.5vw, 15px);
-
-  border:
-    1px solid #cdbda4;
-
-  background:
-    rgba(255,255,255,.35);
-
-  display: flex;
-
-  align-items: center;
-
-  gap:
-    clamp(7px, 1.5vw, 15px);
-
-  cursor: pointer;
-
-  transition:
-    transform .2s ease,
-    background .2s ease;
-}
-
-.video-card:hover {
-
-  transform:
-    translateY(-2px);
-
-  background:
-    rgba(255,255,255,.65);
-}
-
-.play {
-
-  width:
-    clamp(25px, 4vw, 38px);
-
-  height:
-    clamp(25px, 4vw, 38px);
-
-  border-radius: 50%;
-
-  background: var(--brown);
-
-  color: white;
-
-  display: flex;
-
-  align-items: center;
-
-  justify-content: center;
-
-  font-size:
-    clamp(8px, 1.2vw, 13px);
-
-  flex-shrink: 0;
-}
-
-.video-text {
-
-  font-size:
-    clamp(7px, 1.2vw, 13px);
-
-  letter-spacing:
-    clamp(.5px, .2vw, 1px);
 }
 
 
@@ -1129,11 +1084,23 @@ body.closed .controls {
 
   .message {
 
+    flex-basis: 64%;
+
     line-height: 1.45;
 
-    max-height: 70%;
+    font-size: 14px;
+  }
+
+  .message-title {
+
+    margin-bottom: 7px;
 
     font-size: 9px;
+  }
+
+  .message-heart {
+
+    margin-top: 5px;
   }
 
   .controls {
@@ -1187,6 +1154,15 @@ body.closed .controls {
 
   .message {
 
+    font-size: 12px;
+
+    line-height: 1.35;
+
+    flex-basis: 66%;
+  }
+
+  .message-title {
+
     font-size: 8px;
   }
 
@@ -1230,7 +1206,6 @@ body.closed .controls {
 
   .cover,
   .page-leaf,
-  .video-card,
   .open-button,
   .controls button {
 
@@ -1759,6 +1734,109 @@ let animating = false;
 
 
 /* =========================================================
+   MESSAGE FONT FITTING
+========================================================= */
+
+/*
+   This automatically makes long messages smaller.
+
+   Normal desktop size:
+   18px
+
+   Minimum size:
+   7px
+
+   The function checks the REAL rendered height
+   of the message and keeps reducing the font until
+   all text fits inside the available message area.
+*/
+
+function fitMessageText() {
+
+  const messages =
+    document.querySelectorAll(".message");
+
+
+  messages.forEach(message => {
+
+    /*
+       Reset first.
+       This is important when moving from a long
+       message to a short message.
+    */
+
+    let fontSize = 18;
+
+    let lineHeight = 1.55;
+
+
+    message.style.fontSize =
+      fontSize + "px";
+
+    message.style.lineHeight =
+      lineHeight;
+
+
+    /*
+       Reduce font size until the complete
+       message fits.
+    */
+
+    while (
+      message.scrollHeight >
+      message.clientHeight &&
+      fontSize > 7
+    ) {
+
+      fontSize -= 0.5;
+
+
+      /*
+         Slightly tighten line spacing as the
+         text gets smaller.
+      */
+
+      lineHeight =
+        Math.max(
+          1.25,
+          1.55 -
+          ((18 - fontSize) * 0.015)
+        );
+
+
+      message.style.fontSize =
+        fontSize + "px";
+
+      message.style.lineHeight =
+        lineHeight;
+    }
+
+  });
+
+}
+
+
+/*
+   Run fitting after the browser has calculated
+   the actual page dimensions.
+*/
+
+function fitMessagesAfterRender() {
+
+  requestAnimationFrame(() => {
+
+    requestAnimationFrame(() => {
+
+      fitMessageText();
+
+    });
+
+  });
+
+}
+
+
+/* =========================================================
    INTRO
 ========================================================= */
 
@@ -1894,7 +1972,7 @@ function createPersonRight(person) {
 
       <div class="message-title">
 
-        A MEMORY FOR YOU
+        ${person.name}
 
       </div>
 
@@ -1908,22 +1986,6 @@ function createPersonRight(person) {
 
       <div class="message-heart">
         ♥
-      </div>
-
-
-      <div
-        class="video-card"
-        data-video-person="${person.name}"
-      >
-
-        <div class="play">
-          ▶
-        </div>
-
-        <div class="video-text">
-          WATCH VIDEO
-        </div>
-
       </div>
 
     </div>
@@ -1943,15 +2005,20 @@ function leftHTML(index) {
 
   if (!spread) return "";
 
-  if (spread.type === "intro") {
+
+  if (
+    spread.type === "intro"
+  ) {
 
     return createIntroLeft();
 
   }
 
+
   return createPersonLeft(
     spread.person
   );
+
 }
 
 
@@ -1962,15 +2029,20 @@ function rightHTML(index) {
 
   if (!spread) return "";
 
-  if (spread.type === "intro") {
+
+  if (
+    spread.type === "intro"
+  ) {
 
     return createIntroRight();
 
   }
 
+
   return createPersonRight(
     spread.person
   );
+
 }
 
 
@@ -1984,7 +2056,9 @@ function renderSpread(index) {
     index < 0 ||
     index >= spreads.length
   ) {
+
     return;
+
   }
 
 
@@ -2002,7 +2076,9 @@ function renderSpread(index) {
     rightPage.innerHTML =
       createIntroRight();
 
-  } else {
+  }
+
+  else {
 
     leftPage.innerHTML =
       createPersonLeft(
@@ -2013,63 +2089,19 @@ function renderSpread(index) {
       createPersonRight(
         spread.person
       );
+
   }
 
 
-  attachVideoButtons();
+  /*
+     Automatically fit the new message.
+  */
+
+  fitMessagesAfterRender();
+
 
   updateNavigation();
-}
 
-
-/* =========================================================
-   VIDEO BUTTONS
-========================================================= */
-
-function attachVideoButtons() {
-
-  const cards =
-    document.querySelectorAll(
-      ".video-card"
-    );
-
-
-  cards.forEach(card => {
-
-    card.addEventListener(
-      "click",
-      () => {
-
-        const personName =
-          card.dataset.videoPerson;
-
-        const person =
-          people.find(
-            p => p.name === personName
-          );
-
-        if (
-          person &&
-          person.video
-        ) {
-
-          window.open(
-            person.video,
-            "_blank"
-          );
-
-        } else {
-
-          alert(
-            `Video for ${personName} will be added here.`
-          );
-
-        }
-
-      }
-    );
-
-  });
 }
 
 
@@ -2083,7 +2115,9 @@ function openBook() {
     bookOpen ||
     animating
   ) {
+
     return;
+
   }
 
 
@@ -2091,7 +2125,9 @@ function openBook() {
 
   currentSpread = 0;
 
+
   renderSpread(0);
+
 
   document.body.classList.remove(
     "closed"
@@ -2131,6 +2167,8 @@ function openBook() {
 
     updateNavigation();
 
+    fitMessagesAfterRender();
+
   }, 950);
 
 }
@@ -2146,7 +2184,9 @@ function closeBook() {
     !bookOpen ||
     animating
   ) {
+
     return;
+
   }
 
 
@@ -2188,14 +2228,18 @@ function closeBook() {
     pageLeaf.className =
       "page-leaf";
 
-    pageLeaf.style.transform = "";
+    pageLeaf.style.transform =
+      "";
 
-    pageLeaf.style.zIndex = "";
+    pageLeaf.style.zIndex =
+      "";
 
 
-    pageFront.innerHTML = "";
+    pageFront.innerHTML =
+      "";
 
-    pageBack.innerHTML = "";
+    pageBack.innerHTML =
+      "";
 
 
     document.body.classList.add(
@@ -2225,7 +2269,9 @@ function turnSpread(direction) {
     !bookOpen ||
     animating
   ) {
+
     return;
+
   }
 
 
@@ -2237,14 +2283,18 @@ function turnSpread(direction) {
     destination < 0 ||
     destination >= spreads.length
   ) {
+
     return;
+
   }
 
 
   animating = true;
 
 
-  /* NEXT */
+  /* =======================================================
+     NEXT
+  ======================================================= */
 
   if (
     direction === 1
@@ -2274,6 +2324,14 @@ function turnSpread(direction) {
       "rotateY(0deg)";
 
 
+    /*
+       Fit the message on the physical
+       turning page too.
+    */
+
+    fitMessagesAfterRender();
+
+
     void pageLeaf.offsetWidth;
 
 
@@ -2287,7 +2345,9 @@ function turnSpread(direction) {
   }
 
 
-  /* PREVIOUS */
+  /* =======================================================
+     PREVIOUS
+  ======================================================= */
 
   else {
 
@@ -2315,6 +2375,9 @@ function turnSpread(direction) {
       "rotateY(0deg)";
 
 
+    fitMessagesAfterRender();
+
+
     void pageLeaf.offsetWidth;
 
 
@@ -2328,7 +2391,9 @@ function turnSpread(direction) {
   }
 
 
-  /* FINISH */
+  /* =======================================================
+     FINISH
+  ======================================================= */
 
   setTimeout(() => {
 
@@ -2364,6 +2429,9 @@ function turnSpread(direction) {
 
     updateNavigation();
 
+
+    fitMessagesAfterRender();
+
   }, 800);
 
 }
@@ -2379,12 +2447,14 @@ function nextSpread() {
     !bookOpen ||
     animating
   ) {
+
     return;
+
   }
 
 
   /*
-    Last spread automatically closes the book.
+     Last spread automatically closes the book.
   */
 
   if (
@@ -2395,6 +2465,7 @@ function nextSpread() {
     closeBook();
 
     return;
+
   }
 
 
@@ -2413,14 +2484,18 @@ function previousSpread() {
     !bookOpen ||
     animating
   ) {
+
     return;
+
   }
 
 
   if (
     currentSpread <= 0
   ) {
+
     return;
+
   }
 
 
@@ -2498,7 +2573,9 @@ document.addEventListener(
   event => {
 
     if (!bookOpen) {
+
       return;
+
     }
 
 
@@ -2527,6 +2604,25 @@ document.addEventListener(
       closeBook();
 
     }
+
+  }
+);
+
+
+/* =========================================================
+   RESIZE
+========================================================= */
+
+/*
+   If the browser/window size changes, the available
+   message area changes too. Re-fit the text.
+*/
+
+window.addEventListener(
+  "resize",
+  () => {
+
+    fitMessagesAfterRender();
 
   }
 );
