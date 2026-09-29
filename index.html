@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>SAI MEMORY BOOK</title>
+<title>SAI's MU SIGMA MEMORY BOOK</title>
 
 <style>
 
@@ -39,18 +39,17 @@ body {
     "Times New Roman",
     serif;
 
-  overflow-x: hidden;
+  overflow: hidden;
 }
 
 
 /* =========================================================
-   RESPONSIVE BOOK VARIABLES
+   VARIABLES
 ========================================================= */
 
 :root {
 
-  --book-width:
-    min(92vw, 1000px);
+  --book-width: min(92vw, 1000px);
 
   --book-height:
     min(
@@ -62,75 +61,22 @@ body {
     calc(var(--book-width) / 2);
 
   --paper: #f5eddf;
-  --paper-dark: #e8dac4;
+
   --ink: #3b302a;
-  --brown: #4a3024;
+
   --gold: #b99663;
 }
 
 
 /* =========================================================
-   DESKTOP / LAPTOP
-========================================================= */
-
-@media (min-width: 901px) {
-
-  :root {
-
-    --book-width:
-      min(92vw, 1000px);
-
-    --book-height:
-      min(
-        calc(var(--book-width) * 0.6),
-        600px
-      );
-  }
-}
-
-
-/* =========================================================
-   TABLET / PHONE LANDSCAPE
-========================================================= */
-
-@media (min-width: 501px) and (max-width: 900px) {
-
-  :root {
-
-    --book-width:
-      min(94vw, 900px);
-
-    --book-height:
-      calc(var(--book-width) * 0.6);
-  }
-}
-
-
-/* =========================================================
-   PHONE PORTRAIT
-========================================================= */
-
-@media (max-width: 500px) {
-
-  :root {
-
-    --book-width: 96vw;
-
-    --book-height:
-      calc(var(--book-width) * 0.6);
-  }
-}
-
-
-/* =========================================================
-   APP
+   BOOK APP
 ========================================================= */
 
 .book-app {
 
   width: 100%;
 
-  min-height: 100vh;
+  height: 100vh;
 
   display: flex;
 
@@ -166,7 +112,7 @@ body {
 
 
 /* =========================================================
-   STATIC OPEN BOOK
+   OPEN BOOK
 ========================================================= */
 
 .book-spread {
@@ -196,7 +142,7 @@ body {
 
 
 /* =========================================================
-   STATIC PAGES
+   PAGES
 ========================================================= */
 
 .book-page {
@@ -346,6 +292,7 @@ body {
 ========================================================= */
 
 .intro-right {
+
   justify-content: center;
 }
 
@@ -489,7 +436,7 @@ body {
 
 
 /* =========================================================
-   PERSON DIVIDER
+   DIVIDER
 ========================================================= */
 
 .person-divider {
@@ -559,7 +506,7 @@ body {
 
 
 /* =========================================================
-   MESSAGE TITLE
+   PERSON NAME
 ========================================================= */
 
 .message-title {
@@ -590,7 +537,7 @@ body {
 
 
 /* =========================================================
-   MESSAGE
+   MESSAGE SCROLL AREA
 ========================================================= */
 
 .message {
@@ -634,7 +581,7 @@ body {
 
 
 /* =========================================================
-   MESSAGE SCROLLBAR
+   SCROLLBAR
 ========================================================= */
 
 .message::-webkit-scrollbar {
@@ -685,7 +632,7 @@ body {
 
 
 /* =========================================================
-   PHYSICAL TURNING PAGE
+   TURNING PAGE
 ========================================================= */
 
 .page-leaf {
@@ -697,8 +644,6 @@ body {
   width: var(--page-width);
 
   height: var(--book-height);
-
-  display: block;
 
   transform-style: preserve-3d;
 
@@ -714,9 +659,6 @@ body {
     cubic-bezier(.22,.61,.36,1);
 
   z-index: 500;
-
-  transform:
-    translateZ(20px);
 }
 
 .page-leaf.next {
@@ -742,7 +684,7 @@ body {
 
 
 /* =========================================================
-   PAGE LEAF FACES
+   TURNING PAGE FACES
 ========================================================= */
 
 .page-front,
@@ -778,6 +720,7 @@ body {
 }
 
 .page-back {
+
   transform:
     rotateY(180deg);
 }
@@ -792,6 +735,7 @@ body {
   position: absolute;
 
   top: 0;
+
   left: 50%;
 
   width: var(--page-width);
@@ -817,12 +761,22 @@ body {
   pointer-events: auto;
 }
 
+
+/* =========================================================
+   COVER CLOSED
+========================================================= */
+
 .cover.closed {
 
   transform:
     translateX(0)
     rotateY(0deg);
 }
+
+
+/* =========================================================
+   COVER OPEN
+========================================================= */
 
 .cover.open {
 
@@ -846,6 +800,7 @@ body {
   height: 100%;
 
   backface-visibility: hidden;
+
   -webkit-backface-visibility: hidden;
 
   transform-style:
@@ -887,6 +842,11 @@ body {
       #e4d4bb
     );
 }
+
+
+/* =========================================================
+   COVER CONTENT
+========================================================= */
 
 .cover-content {
 
@@ -941,23 +901,35 @@ body {
     clamp(8px, 2vw, 25px) 0;
 }
 
+
+/* =========================================================
+   OPEN BUTTON
+========================================================= */
+
 .open-button {
+
+  position: relative;
+
+  z-index: 10;
+
+  pointer-events: auto;
 
   border:
     1px solid #c6a775;
 
-  background: transparent;
+  background:
+    transparent;
 
   color: #ead8b6;
 
   padding:
-    clamp(6px, 1.2vw, 12px)
-    clamp(8px, 2vw, 20px);
+    clamp(7px, 1.2vw, 12px)
+    clamp(9px, 2vw, 20px);
 
   font-family: inherit;
 
   font-size:
-    clamp(6px, 1.1vw, 12px);
+    clamp(7px, 1.1vw, 12px);
 
   letter-spacing:
     clamp(1px, .3vw, 2px);
@@ -971,15 +943,16 @@ body {
 
 .open-button:hover {
 
-  background: #ead8b6;
+  background:
+    #ead8b6;
 
-  color: #39251d;
+  color:
+    #39251d;
 }
 
 
 /* =========================================================
    CONTROLS
-   NO SPREAD COUNTER
 ========================================================= */
 
 .controls {
@@ -1071,12 +1044,11 @@ body {
 
 
 /* =========================================================
-   CLOSED STATE
+   CLOSED BOOK STATE
 ========================================================= */
 
 body.closed .book-spread,
-body.closed .spine,
-body.closed .page-leaf {
+body.closed .spine {
 
   visibility: hidden;
 }
@@ -1090,10 +1062,19 @@ body.closed .controls {
 
 
 /* =========================================================
-   PHONE PORTRAIT
+   MOBILE
 ========================================================= */
 
 @media (max-width: 500px) {
+
+  :root {
+
+    --book-width: 96vw;
+
+    --book-height:
+      calc(var(--book-width) * 0.6);
+  }
+
 
   .book-app {
 
@@ -1101,23 +1082,25 @@ body.closed .controls {
       12px 5px 18px;
   }
 
+
   .book-page {
 
-    padding:
-      12px;
+    padding: 12px;
   }
+
 
   .page-front,
   .page-back {
 
-    padding:
-      12px;
+    padding: 12px;
   }
+
 
   .intro-text {
 
     line-height: 1.45;
   }
+
 
   .message {
 
@@ -1134,10 +1117,12 @@ body.closed .controls {
     padding-right: 8px;
   }
 
+
   .message::-webkit-scrollbar {
 
     width: 5px;
   }
+
 
   .message-title {
 
@@ -1146,10 +1131,12 @@ body.closed .controls {
     font-size: 9px;
   }
 
+
   .message-heart {
 
     margin-top: 5px;
   }
+
 
   .controls {
 
@@ -1157,6 +1144,7 @@ body.closed .controls {
 
     border-radius: 18px;
   }
+
 
   .controls button {
 
@@ -1179,10 +1167,12 @@ body.closed .controls {
       calc(var(--book-width) * .6);
   }
 
+
   .book-page {
 
     padding: 9px;
   }
+
 
   .page-front,
   .page-back {
@@ -1190,15 +1180,18 @@ body.closed .controls {
     padding: 9px;
   }
 
+
   .intro-left h1 {
 
     font-size: 19px;
   }
 
+
   .intro-text {
 
     font-size: 8px;
   }
+
 
   .message {
 
@@ -1215,27 +1208,33 @@ body.closed .controls {
     padding-right: 7px;
   }
 
+
   .message::-webkit-scrollbar {
 
     width: 5px;
   }
+
 
   .message-title {
 
     font-size: 8px;
   }
 
+
   .polaroid {
 
     width: 80px;
   }
 
+
   .tag {
 
-    padding: 2px 5px;
+    padding:
+      2px 5px;
 
     font-size: 6px;
   }
+
 
   .controls button {
 
@@ -1271,23 +1270,50 @@ body.closed .controls {
 
 <div class="book-app">
 
+
+  <!-- =====================================================
+       BOOK
+  ====================================================== -->
+
   <div class="book-stage" id="bookStage">
+
+
+    <!-- ===================================================
+         MAIN OPEN SPREAD
+    ==================================================== -->
 
     <div class="book-spread">
 
+
+      <!-- LEFT PAGE -->
+
       <section class="book-page left">
+
         <div id="leftPage"></div>
+
       </section>
 
+
+      <!-- RIGHT PAGE -->
+
       <section class="book-page right">
+
         <div id="rightPage"></div>
+
       </section>
+
 
     </div>
 
 
+    <!-- BOOK SPINE -->
+
     <div class="spine"></div>
 
+
+    <!-- ===================================================
+         ANIMATED PAGE
+    ==================================================== -->
 
     <div
       class="page-leaf"
@@ -1307,34 +1333,50 @@ body.closed .controls {
     </div>
 
 
-    <!-- COVER -->
+    <!-- ===================================================
+         COVER
+    ==================================================== -->
 
     <div
       class="cover closed"
       id="cover"
     >
 
-      <div class="cover-face cover-front">
+
+      <!-- COVER FRONT -->
+
+      <div
+        class="cover-face cover-front"
+      >
 
         <div class="cover-content">
+
 
           <div class="cover-small">
             A COLLECTION OF
           </div>
 
+
           <div class="cover-title">
+
             SAI's<br>
             MU SIGMA<br>
             MEMORIES
+
           </div>
 
+
           <div class="cover-year">
+
             FAREWELL - 1st OCT 2026
+
           </div>
+
 
           <div class="cover-heart">
             ♥
           </div>
+
 
           <button
             class="open-button"
@@ -1344,20 +1386,29 @@ body.closed .controls {
             OPEN BOOK →
           </button>
 
+
         </div>
 
       </div>
 
 
-      <div class="cover-face cover-back"></div>
+      <!-- COVER BACK -->
+
+      <div
+        class="cover-face cover-back"
+      ></div>
+
 
     </div>
+
 
   </div>
 
 
-  <!-- NAVIGATION -->
-  <!-- NO SPREAD COUNTER -->
+  <!-- =====================================================
+       CONTROLS
+       NO SPREAD COUNTER
+  ====================================================== -->
 
   <div
     class="controls"
@@ -1388,6 +1439,7 @@ body.closed .controls {
     </button>
 
   </div>
+
 
 </div>
 
@@ -1447,9 +1499,13 @@ Sukruth.`
     name: "Aditya",
     message:
       `Hi Sai,<br><br>
+
       Finally, the day you’ve been waiting for so long has arrived… 😂 Bye-bye, Mu Sigma! 👋<br><br>
+
       We almost started our LP journey together, and it was great getting all those KTs done along the way! I’ve genuinely enjoyed working with you and all the fun moments we shared — especially your legendary mimicry and our outings together. 😄<br><br>
+
       Wishing you all the very best for this next chapter. Keep doing the amazing work, and most importantly, stay the way you are!<br><br>
+
       Good luck, Sai! Keep rocking and stay in touch! 🙌`
   },
 
@@ -1752,7 +1808,7 @@ Sukruth.`
 
 
 /* =========================================================
-   SPREAD DATA
+   SPREADS
 ========================================================= */
 
 const spreads = [
@@ -1763,14 +1819,14 @@ const spreads = [
 
   ...people.map(person => ({
     type: "person",
-    person
+    person: person
   }))
 
 ];
 
 
 /* =========================================================
-   DOM
+   DOM ELEMENTS
 ========================================================= */
 
 const cover =
@@ -1816,7 +1872,7 @@ let animating = false;
 
 
 /* =========================================================
-   INTRO
+   INTRO LEFT
 ========================================================= */
 
 function createIntroLeft() {
@@ -1844,6 +1900,10 @@ function createIntroLeft() {
   `;
 }
 
+
+/* =========================================================
+   INTRO RIGHT
+========================================================= */
 
 function createIntroRight() {
 
@@ -1883,12 +1943,16 @@ function createPersonLeft(person) {
   const imageHTML =
     person.image
 
-      ? `<img
-           src="${person.image}"
-           alt="${person.name}"
-         >`
+      ? `
+        <img
+          src="${person.image}"
+          alt="${person.name}"
+        >
+        `
 
-      : `<span>Your photo</span>`;
+      : `
+        <span>Your photo</span>
+        `;
 
 
   const tagsHTML =
@@ -1903,6 +1967,7 @@ function createPersonLeft(person) {
   return `
 
     <div class="page-content person-left">
+
 
       <div class="polaroid">
 
@@ -1926,6 +1991,7 @@ function createPersonLeft(person) {
 
       </div>
 
+
     </div>
 
   `;
@@ -1942,6 +2008,7 @@ function createPersonRight(person) {
 
     <div class="page-content person-right">
 
+
       <div class="message-title">
 
         ${person.name}
@@ -1957,8 +2024,11 @@ function createPersonRight(person) {
 
 
       <div class="message-heart">
-        ♥
+
+        ♥ 
+
       </div>
+
 
     </div>
 
@@ -1967,7 +2037,7 @@ function createPersonRight(person) {
 
 
 /* =========================================================
-   PAGE HTML
+   LEFT HTML
 ========================================================= */
 
 function leftHTML(index) {
@@ -1975,7 +2045,11 @@ function leftHTML(index) {
   const spread =
     spreads[index];
 
-  if (!spread) return "";
+  if (!spread) {
+
+    return "";
+
+  }
 
 
   if (
@@ -1994,12 +2068,20 @@ function leftHTML(index) {
 }
 
 
+/* =========================================================
+   RIGHT HTML
+========================================================= */
+
 function rightHTML(index) {
 
   const spread =
     spreads[index];
 
-  if (!spread) return "";
+  if (!spread) {
+
+    return "";
+
+  }
 
 
   if (
@@ -2019,7 +2101,7 @@ function rightHTML(index) {
 
 
 /* =========================================================
-   RENDER
+   RENDER SPREAD
 ========================================================= */
 
 function renderSpread(index) {
@@ -2034,35 +2116,11 @@ function renderSpread(index) {
   }
 
 
-  const spread =
-    spreads[index];
+  leftPage.innerHTML =
+    leftHTML(index);
 
-
-  if (
-    spread.type === "intro"
-  ) {
-
-    leftPage.innerHTML =
-      createIntroLeft();
-
-    rightPage.innerHTML =
-      createIntroRight();
-
-  }
-
-  else {
-
-    leftPage.innerHTML =
-      createPersonLeft(
-        spread.person
-      );
-
-    rightPage.innerHTML =
-      createPersonRight(
-        spread.person
-      );
-
-  }
+  rightPage.innerHTML =
+    rightHTML(index);
 
 
   updateNavigation();
@@ -2088,16 +2146,23 @@ function openBook() {
 
   animating = true;
 
+
   currentSpread = 0;
 
 
+  /* Render first spread */
+
   renderSpread(0);
 
+
+  /* Show book */
 
   document.body.classList.remove(
     "closed"
   );
 
+
+  /* Start from closed position */
 
   cover.classList.remove(
     "open"
@@ -2108,8 +2173,12 @@ function openBook() {
   );
 
 
+  /* Force browser reflow */
+
   void cover.offsetWidth;
 
+
+  /* Start opening animation */
 
   requestAnimationFrame(() => {
 
@@ -2123,6 +2192,8 @@ function openBook() {
 
   });
 
+
+  /* Finish animation */
 
   setTimeout(() => {
 
@@ -2156,29 +2227,15 @@ function closeBook() {
   animating = true;
 
 
-  cover.classList.remove(
-    "closed"
-  );
+  /* Start closing */
 
-  cover.classList.add(
+  cover.classList.remove(
     "open"
   );
 
-
-  void cover.offsetWidth;
-
-
-  requestAnimationFrame(() => {
-
-    cover.classList.remove(
-      "open"
-    );
-
-    cover.classList.add(
-      "closed"
-    );
-
-  });
+  cover.classList.add(
+    "closed"
+  );
 
 
   setTimeout(() => {
@@ -2191,8 +2248,10 @@ function closeBook() {
     pageLeaf.className =
       "page-leaf";
 
+
     pageLeaf.style.transform =
       "";
+
 
     pageLeaf.style.zIndex =
       "";
@@ -2200,6 +2259,7 @@ function closeBook() {
 
     pageFront.innerHTML =
       "";
+
 
     pageBack.innerHTML =
       "";
@@ -2223,7 +2283,7 @@ function closeBook() {
 
 
 /* =========================================================
-   PAGE TURN
+   TURN SPREAD
 ========================================================= */
 
 function turnSpread(direction) {
@@ -2256,7 +2316,7 @@ function turnSpread(direction) {
 
 
   /* =======================================================
-     NEXT
+     NEXT PAGE
   ======================================================= */
 
   if (
@@ -2301,7 +2361,7 @@ function turnSpread(direction) {
 
 
   /* =======================================================
-     PREVIOUS
+     PREVIOUS PAGE
   ======================================================= */
 
   else {
@@ -2344,7 +2404,7 @@ function turnSpread(direction) {
 
 
   /* =======================================================
-     FINISH
+     FINISH TURN
   ======================================================= */
 
   setTimeout(() => {
@@ -2360,12 +2420,14 @@ function turnSpread(direction) {
     pageLeaf.style.transform =
       "";
 
+
     pageLeaf.style.zIndex =
       "";
 
 
     pageFront.innerHTML =
       "";
+
 
     pageBack.innerHTML =
       "";
@@ -2548,10 +2610,14 @@ document.addEventListener(
 
 
 /* =========================================================
-   INITIALIZE
+   INITIAL STATE
 ========================================================= */
 
 renderSpread(0);
+
+bookOpen = false;
+
+animating = false;
 
 document.body.classList.add(
   "closed"
@@ -2564,10 +2630,6 @@ cover.classList.remove(
 cover.classList.add(
   "closed"
 );
-
-bookOpen = false;
-
-animating = false;
 
 updateNavigation();
 
