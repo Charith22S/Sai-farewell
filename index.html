@@ -569,12 +569,27 @@ body {
 
   max-width: 420px;
 
-  font-size:
-    clamp(10px, 2.2vw, 25px);
+  max-height: 72%;
 
-  line-height: 1.8;
+  overflow-y: auto;
+
+  font-size:
+    clamp(10px, 1.65vw, 18px);
+
+  line-height: 1.65;
 
   color: #40342d;
+
+  padding-right: 5px;
+}
+
+.message::-webkit-scrollbar {
+  width: 4px;
+}
+
+.message::-webkit-scrollbar-thumb {
+  background: #c9b89d;
+  border-radius: 10px;
 }
 
 .message-heart {
@@ -753,6 +768,9 @@ body {
 
   box-shadow:
     0 5px 15px rgba(0,0,0,.18);
+
+  padding:
+    clamp(16px, 4vw, 45px);
 }
 
 .page-back {
@@ -1080,7 +1098,7 @@ body.closed .controls {
 
 
 /* =========================================================
-   PHONE PORTRAIT EXTRA ADJUSTMENTS
+   PHONE PORTRAIT
 ========================================================= */
 
 @media (max-width: 500px) {
@@ -1097,6 +1115,13 @@ body.closed .controls {
       12px;
   }
 
+  .page-front,
+  .page-back {
+
+    padding:
+      12px;
+  }
+
   .intro-text {
 
     line-height: 1.45;
@@ -1104,7 +1129,11 @@ body.closed .controls {
 
   .message {
 
-    line-height: 1.5;
+    line-height: 1.45;
+
+    max-height: 70%;
+
+    font-size: 9px;
   }
 
   .controls {
@@ -1140,6 +1169,12 @@ body.closed .controls {
     padding: 9px;
   }
 
+  .page-front,
+  .page-back {
+
+    padding: 9px;
+  }
+
   .intro-left h1 {
 
     font-size: 19px;
@@ -1152,7 +1187,7 @@ body.closed .controls {
 
   .message {
 
-    font-size: 9px;
+    font-size: 8px;
   }
 
   .polaroid {
@@ -1212,38 +1247,23 @@ body.closed .controls {
 
 <div class="book-app">
 
-  <!-- =====================================================
-       BOOK
-  ====================================================== -->
-
   <div class="book-stage" id="bookStage">
-
-    <!-- STATIC OPEN SPREAD -->
 
     <div class="book-spread">
 
       <section class="book-page left">
-
         <div id="leftPage"></div>
-
       </section>
 
-
       <section class="book-page right">
-
         <div id="rightPage"></div>
-
       </section>
 
     </div>
 
 
-    <!-- SPINE -->
-
     <div class="spine"></div>
 
-
-    <!-- PHYSICAL TURNING PAGE -->
 
     <div
       class="page-leaf"
@@ -1263,18 +1283,14 @@ body.closed .controls {
     </div>
 
 
-    <!-- =================================================
-         COVER
-    ================================================== -->
+    <!-- COVER -->
 
     <div
       class="cover closed"
       id="cover"
     >
 
-      <div
-        class="cover-face cover-front"
-      >
+      <div class="cover-face cover-front">
 
         <div class="cover-content">
 
@@ -1282,23 +1298,19 @@ body.closed .controls {
             A COLLECTION OF
           </div>
 
-
           <div class="cover-title">
             SAI's<br>
             MU SIGMA<br>
             MEMORY BOOK
           </div>
 
-
           <div class="cover-year">
-            FAREWELL-1st oct 2026
+            FAREWELL - 1st OCT 2026
           </div>
-
 
           <div class="cover-heart">
             ♥
           </div>
-
 
           <button
             class="open-button"
@@ -1313,18 +1325,14 @@ body.closed .controls {
       </div>
 
 
-      <div
-        class="cover-face cover-back"
-      ></div>
+      <div class="cover-face cover-back"></div>
 
     </div>
 
   </div>
 
 
-  <!-- =====================================================
-       NAVIGATION
-  ====================================================== -->
+  <!-- NAVIGATION -->
 
   <div
     class="controls"
@@ -1348,7 +1356,7 @@ body.closed .controls {
 
 
     <div id="spreadCounter">
-      Spread 1 of 16
+      Spread 1 of 15
     </div>
 
 
@@ -1379,259 +1387,305 @@ const people = [
       "Laughter",
       "Memories"
     ],
-   name:"Varsha"
+    name: "Varsha",
     message:
-      "Finally, you’re free! So glad the day has finally come.I still remember the day we had our first discussion, and from that day until now, your sincerity, dedication, and commitment to always do better have truly stood out.You’ll always be that little innocent junior to me. 😊 Keep shining, and I know you’ll do wonders wherever you go.Wishing you all the very best for this new chapter! ❤️",
+      "Finally, you’re free! So glad the day has finally come. I still remember the day we had our first discussion, and from that day until now, your sincerity, dedication, and commitment to always do better have truly stood out. You’ll always be that little innocent junior to me. 😊 Keep shining, and I know you’ll do wonders wherever you go. Wishing you all the very best for this new chapter! ❤️"
   },
 
+
   {
-   
     image: "",
     tags: [
       "Good Times",
       "Friends",
       "Memories"
     ],
-      name: "Sukruth",
+    name: "Sukruth",
     message:
-      "Hi saicherith. Hearty congratulations on finishing a great chapter in musigma and also for your amazing next job. Very inspired to see you moving into greater and greater heights in IT Industry. Very sincere and hardworking and eagerness to learn and submissiveness to seniors all of it really payed off.We both spent lot of hours cracking jokes and sharing work and also in outing we spent a nice time visiting to many wonderful places . Wish you a very happy life ahead in  future. 
-/n
-Your  well wisher. ,
-Sukruth. ",
+      `Hi saicherith.
+
+Hearty congratulations on finishing a great chapter in Mu Sigma and also for your amazing next job. Very inspired to see you moving into greater and greater heights in IT Industry.
+
+Very sincere and hardworking and eagerness to learn and submissiveness to seniors all of it really paid off.
+
+We both spent lot of hours cracking jokes and sharing work and also in outing we spent a nice time visiting to many wonderful places.
+
+Wish you a very happy life ahead in future.
+
+Your well wisher,
+Sukruth.`
   },
 
+
   {
-    
     image: "",
     tags: [
       "Together",
       "Friendship",
       "Moments"
     ],
-     name: "Aditya",
+    name: "Aditya",
     message:
-  "Hi Sai,<br><br>
-  Finally, the day you’ve been waiting for so long has arrived… 😂 Bye-bye, Mu Sigma! 👋<br><br>We almost started our LP journey together, and it was great getting all those KTs done along the way! I’ve genuinely enjoyed working with you and all the fun moments we shared — especially your legendary mimicry and our outings together. 😄<br><br>Wishing you all the very best for this next chapter. Keep doing the amazing work, and most importantly, stay the way you are!<br><br>Good luck, Sai! Keep rocking and stay in touch! 🙌",},
+      `Hi Sai,<br><br>
+      Finally, the day you’ve been waiting for so long has arrived… 😂 Bye-bye, Mu Sigma! 👋<br><br>
+      We almost started our LP journey together, and it was great getting all those KTs done along the way! I’ve genuinely enjoyed working with you and all the fun moments we shared — especially your legendary mimicry and our outings together. 😄<br><br>
+      Wishing you all the very best for this next chapter. Keep doing the amazing work, and most importantly, stay the way you are!<br><br>
+      Good luck, Sai! Keep rocking and stay in touch! 🙌`
+  },
+
 
   {
-    
     image: "",
     tags: [
       "Laughs",
       "Memories"
     ],
-     name: "Teja Roy",
+    name: "Teja Roy",
     message:
-      "Hi Charith! 👋
+      `Hi Charith! 👋<br><br>
 
-Had a great journey with you during my time in LP. You were always there and stood by me whenever I needed you, and I’m really happy to have had you as my cohort lead. 🤝
+      Had a great journey with you during my time in LP. You were always there and stood by me whenever I needed you, and I’m really happy to have had you as my cohort lead. 🤝<br><br>
 
-Although, one thing will always remain incomplete — we still haven’t completed our KPI KT call! 😂
+      Although, one thing will always remain incomplete — we still haven’t completed our KPI KT call! 😂<br><br>
 
-I’ll always cherish the memories we made — our crazy moments at Club Cubana 🕺, all those hilarious drawings of yours in Scribble memories 😂🎨, our Coorg trip 🌿🏔️, and of course, all the badminton matches we played 🏸.
+      I’ll always cherish the memories we made — our crazy moments at Club Cubana 🕺, all those hilarious drawings of yours in Scribble memories 😂🎨, our Coorg trip 🌿🏔️, and of course, all the badminton matches we played 🏸.<br><br>
 
-It’s been really great knowing and working with you. Wishing you all the very best for your next journey, both in your career and in finding your life partner! 😄❤️
+      It’s been really great knowing and working with you. Wishing you all the very best for your next journey, both in your career and in finding your life partner! 😄❤️<br><br>
 
-Keep in touch and keep rocking! 🚀
+      Keep in touch and keep rocking! 🚀<br><br>
 
-Thanks & regards,
-Teja Roy",
-   
+      Thanks & regards,<br>
+      Teja Roy`
   },
 
+
   {
-   
     image: "",
     tags: [
       "Forever",
       "Memories"
     ],
-        name: "The Lead who leaned on you",
+    name: "The Lead who leaned on you",
     message:
-      "Hey charith... 
-Can't believe finally the time has come that we all are parted ways from Musigma. 
-Initially when I was asked to join rewards I was so scared and little worried thinking how would I survive in the team cause everyone was new to me. The first impression I had on you was the topper guy whos very difficult to talk and mingle. I thought you were that strict person who never talks with new people, never cracks jokes, never gossips, never cheats and never backbitches 😂 but but my impression changed complete upside down as I spent time with you. 
+      `Hey Charith...<br><br>
 
-Moving to 2nd chapter after varsha left though people made me the face of rewards but its always you who is the captain of the ship. Do you remember the time Whenever sahil used assign any new adhocs we used to try to hide in his eyes so that we could escape from the work. Keeping the fun aside....I know you are one of those hardworking, inquisitive and a well mannered man I have ever met in my life. I always admire you for the things way like the way you work,the way you deal with stakeholders,the way you build network I wish I could steal these qualities from you.
+      Can't believe finally the time has come that we all are parted ways from Musigma.<br><br>
 
-The funniest chapter, I miss all those fun and memorable moments that we spent together. The dinner party, the coorg trip, Mini lepakshi trip and I really hope and pray to continue these trips in future. I will never forget the days spent by you, me and teja during my last days in musigma. And yes,,, the badminton hours how can we forget this charith. 
+      Initially when I was asked to join rewards I was so scared and little worried thinking how would I survive in the team cause everyone was new to me. The first impression I had on you was the topper guy who's very difficult to talk and mingle. I thought you were that strict person who never talks with new people, never cracks jokes, never gossips, never cheats and never backbitches 😂 but my impression changed completely upside down as I spent time with you.<br><br>
 
-The last but the least, you are more than just a musigma friend to me. We have come so far in this journey charith. I always wish the best career, best position, best best wife😂 and good helath. i know you will definitely create that aura wherever you go in future.
+      Moving to 2nd chapter after Varsha left, though people made me the face of rewards but its always you who is the captain of the ship.<br><br>
 
-All the very best for you future endeavours. Keep pushing your limits and raise high....",
+      Do you remember the time whenever Sahil used assign any new adhocs we used to try to hide in his eyes so that we could escape from the work.<br><br>
 
+      Keeping the fun aside, I know you are one of those hardworking, inquisitive and well mannered men I have ever met in my life. I always admire the things like the way you work, the way you deal with stakeholders, the way you build network. I wish I could steal these qualities from you.<br><br>
+
+      The funniest chapter, I miss all those fun and memorable moments that we spent together. The dinner party, the Coorg trip, Mini Lepakshi trip and I really hope and pray to continue these trips in future.<br><br>
+
+      I will never forget the days spent by you, me and Teja during my last days in Musigma. And yes, the badminton hours — how can we forget this Charith.<br><br>
+
+      The last but not the least, you are more than just a Musigma friend to me. We have come so far in this journey Charith.<br><br>
+
+      I always wish the best career, best position, best wife 😂 and good health. I know you will definitely create that aura wherever you go in future.<br><br>
+
+      All the very best for your future endeavours. Keep pushing your limits and rise high.`
   },
 
+
   {
-   
     image: "",
     tags: [
       "Thank You",
       "Friends"
     ],
-        name: "That Reckless Guy",
+    name: "That Reckless Guy",
     message:
-      "Hey Charith Anna 😀,
-I still remember you being the first person in LP to approach me and Pavan after noticing us sitting alone in the corner, completely left out 😂. You are the one who taught me the business from start to end, helped me master SQL, pushed me to speak in front of clients, scolded me to learn more, and most importantly, protected me from the stupid things I did 😂. You were not just a senior; you were someone who genuinely wanted to see me grow and succeed professionally. 
+      `Hey Charith Anna 😀,<br><br>
 
-I'll always remember our moments at Club Cubana, all the crazy drawings of yours in Scribble 🎨, every dance move in Bellandur Social🕺 and every smash we smashed on the badminton court 🏸💥. I genuinely don't think my career would have had such a smooth start without you, Vaishnavi akka and of course Teja anna. Thank you for every piece of knowledge, every motivation, every scolding, and every time you stood by me. ❤️ I hope you're going somewhere where your talent is truly valued and where you get the space you deserve… rather than being forced to work in toxic environment. I'll genuinely miss having you around, Anna. Wishing you nothing but the best for your next chapter! 🫂 Don't forgot to invite us for your marriage🕺
- 
-Keep teaching, keep motivating and keep encouraging ",
+      I still remember you being the first person in LP to approach me and Pavan after noticing us sitting alone in the corner, completely left out 😂.<br><br>
+
+      You are the one who taught me the business from start to end, helped me master SQL, pushed me to speak in front of clients, scolded me to learn more, and most importantly, protected me from the stupid things I did 😂.<br><br>
+
+      You were not just a senior; you were someone who genuinely wanted to see me grow and succeed professionally.<br><br>
+
+      I'll always remember our moments at Club Cubana, all the crazy drawings of yours in Scribble 🎨, every dance move in Bellandur Social 🕺 and every smash we smashed on the badminton court 🏸💥.<br><br>
+
+      I genuinely don't think my career would have had such a smooth start without you, Vaishnavi akka and of course Teja anna.<br><br>
+
+      Thank you for every piece of knowledge, every motivation, every scolding, and every time you stood by me. ❤️<br><br>
+
+      I hope you're going somewhere where your talent is truly valued and where you get the space you deserve… rather than being forced to work in toxic environment.<br><br>
+
+      I'll genuinely miss having you around, Anna. Wishing you nothing but the best for your next chapter! 🫂<br><br>
+
+      Don't forget to invite us for your marriage 🕺<br><br>
+
+      Keep teaching, keep motivating and keep encouraging.`
   },
 
+
   {
-    
     image: "",
     tags: [
       "Journey",
       "Memories"
     ],
-       name: "Yesssss! Meeru Anukuntunna valle (Naatu guntala Gang)",
+    name: "Yesssss! Meeru Anukuntunna valle (Naatu guntala Gang)",
     message:
-      "Thank you for being such a wonderful colleague and for the support, dedication, and positivity you brought to the team every day(with that smile all the time 😊). Your presence has made a meaningful impact, and it has truly been a pleasure working alongside you. While it is difficult to say goodbye, we are excited for the new opportunities and experiences that await you.
+      `Thank you for being such a wonderful colleague and for the support, dedication, and positivity you brought to the team every day (with that smile all the time 😊).<br><br>
 
-As you move forward in your journey, may you continue to achieve great success, grow both professionally and personally, and find happiness in all that you do. We are grateful for the memories (Specially we will miss the phone ringtone😂), collaboration, and moments we've shared
+      Your presence has made a meaningful impact, and it has truly been a pleasure working alongside you.<br><br>
 
-Wishing you the very best for the future, endless success in your endeavors, and fulfillment in every step you take. May this new chapter bring you exciting challenges, rewarding experiences, and countless reasons to celebrate. Good luck, stay in touch anna, and take care. You'll always be remembered fondly, and we wish you nothing but the very best ahead.
+      While it is difficult to say goodbye, we are excited for the new opportunities and experiences that await you.<br><br>
 
-Next Company lo kuda employees ni ikkada yela Prioritize chesaro ala chyali ani korukuntunam.",
-   
+      As you move forward in your journey, may you continue to achieve great success, grow both professionally and personally, and find happiness in all that you do.<br><br>
+
+      We are grateful for the memories (specially we will miss the phone ringtone 😂), collaboration, and moments we've shared.<br><br>
+
+      Wishing you the very best for the future, endless success in your endeavors, and fulfillment in every step you take.<br><br>
+
+      May this new chapter bring you exciting challenges, rewarding experiences, and countless reasons to celebrate.<br><br>
+
+      Good luck, stay in touch anna, and take care. You'll always be remembered fondly, and we wish you nothing but the very best ahead.<br><br>
+
+      Next Company lo kuda employees ni ikkada yela Prioritize chesaro ala chyali ani korukuntunam.`
   },
 
+
   {
-   
     image: "",
     tags: [
       "Laughter",
       "Together"
     ],
-      name: "4 AM Partner",
+    name: "4 AM Partner",
     message:
-      "Cherry Anna aka Lokesh Yadav 🍒😎
-Time to pull those numbers Gopi has been patiently waiting for! 😂📊
-Huge thanks for always being there and for helping me survive the Velocity error — definitely wouldn’t have been the same without your support! 🙌
-Keep smiling, keep rocking, and keep spreading those good vibes wherever you go! 😄✨
-Congratulations on the next chapter! 🎉Wishing you loads of success, happiness, and fewer errors on your new journey! 😂
-It’s been great working with you, See you soon at Woolworths! 🥳
-All the very best, Cherry Anna! 🍒🚀",
-    
+      `Cherry Anna aka Lokesh Yadav 🍒😎<br><br>
+
+      Time to pull those numbers Gopi has been patiently waiting for! 😂📊<br><br>
+
+      Huge thanks for always being there and for helping me survive the Velocity error — definitely wouldn’t have been the same without your support! 🙌<br><br>
+
+      Keep smiling, keep rocking, and keep spreading those good vibes wherever you go! 😄✨<br><br>
+
+      Congratulations on the next chapter! 🎉<br><br>
+
+      Wishing you loads of success, happiness, and fewer errors on your new journey! 😂<br><br>
+
+      It’s been great working with you. See you soon at Woolworths! 🥳<br><br>
+
+      All the very best, Cherry Anna! 🍒🚀`
   },
 
+
   {
-    
     image: "",
     tags: [
       "Story",
       "Friendship"
     ],
-       name: "Aparna",
+    name: "Aparna",
     message:
-      "Hey Cheritheshh! 😄❤️
+      `Hey Cheritheshh! 😄❤️<br><br>
 
-Your entry with that 100-volt bulb smile was enough to brighten up the whole place! 😂✨
-And then comes your legendary ringtone! 🤣 One ringtone from you could erase all our bad moods and turn any serious moment into a comedy scene!
-And Cherithesh, one important thing before you leave — DON’T FORGET YOUR MAKEUP POUCH! 😂👜 Always carry it with you. It’s basically part of your personality now! 
+      Your entry with that 100-volt bulb smile was enough to brighten up the whole place! 😂✨<br><br>
 
-Jokes apart, you were our reward father ❤️🥹 Your KTs, funny talks, random conversations have given us so many beautiful memories.
+      And then comes your legendary ringtone! 🤣 One ringtone from you could erase all our bad moods and turn any serious moment into a comedy scene!<br><br>
 
-Thank you so much for everything, Cherithesh! ❤️ We’re gonna miss you ",
-   
+      And Cherithesh, one important thing before you leave — DON'T FORGET YOUR MAKEUP POUCH! 😂👜 Always carry it with you. It’s basically part of your personality now!<br><br>
+
+      Jokes apart, you were our reward father ❤️🥹 Your KTs, funny talks, random conversations have given us so many beautiful memories.<br><br>
+
+      Thank you so much for everything, Cherithesh! ❤️ We’re gonna miss you.`
   },
 
+
   {
-    
     image: "",
     tags: [
       "Beautiful Times",
       "Memories"
     ],
-       name: "kshitij,
+    name: "Kshitij",
     message:
-      "bye bye sai charith call me also after sometime there we will work together",
+      `Bye bye Sai Charith. Call me also after sometime there we will work together.`
   },
 
+
   {
-    
     image: "",
     tags: [
       "Friendship",
       "Moments"
     ],
-     name: "Haresh",
+    name: "Haresh",
     message:
-      "Bye and good luck — may your future be filled with happiness and success. 
-🎶 Dancing Star 🌟 ",
-   
+      `Bye and good luck — may your future be filled with happiness and success.<br><br>
+      🎶 Dancing Star 🌟`
   },
 
+
   {
-    
     image: "",
     tags: [
       "Journey",
       "Together"
     ],
-       name: "Bala",
+    name: "Bala",
     message:
-      "All the best for your next journey! It was great working with you. Wishing you lots of success ahead. 
+      `All the best for your next journey! It was great working with you. Wishing you lots of success ahead.<br><br>
 
-Take care and stay in touch! Bye and Good Luck
-",
-   
+      Take care and stay in touch! Bye and Good Luck`
   },
 
+
   {
-   
     image: "",
     tags: [
       "Thank You",
       "Memories"
     ],
-        name: "Shashank",
+    name: "Shashank",
     message:
-      "Hi Anna,
+      `Hi Anna,<br><br>
 
-You have been an Awesome mentor. 
+      You have been an Awesome mentor.<br><br>
 
-Good luck in your next journey.
-Regards,
-Shashank
-",
-   
+      Good luck in your next journey.<br><br>
+
+      Regards,<br>
+      Shashank`
   },
 
+
   {
-    
     image: "",
     tags: [
       "Next Chapter",
       "Forever"
     ],
-       name: "CHAYA",
+    name: "CHAYA",
     message:
-      "Hey Saicharith bro! 🤗
+      `Hey Saicharith bro! 🤗<br><br>
 
-I honestly haven’t known you for a very long time, but from whatever I’ve seen, you’re a really friendly, cheerful, and caring person who’s always ready to support and encourage your buddies. And somehow, you manage to do it all with that smiling face of yours! 😄
+      I honestly haven’t known you for a very long time, but from whatever I’ve seen, you’re a really friendly, cheerful, and caring person who’s always ready to support and encourage your buddies. And somehow, you manage to do it all with that smiling face of yours! 😄<br><br>
 
-It was genuinely nice knowing you, bro. Will definitely miss having you around, especially for our rangoli competitions, random selfies, pics, and all the fun moments! 😂📸🎨
+      It was genuinely nice knowing you, bro. Will definitely miss having you around, especially for our rangoli competitions, random selfies, pics, and all the fun moments! 😂📸🎨<br><br>
 
-Keep that positive and encouraging spirit wherever you go. Wishing you the very best for everything ahead, bro! Take care and keep smiling! 🤝✨",
- 
+      Keep that positive and encouraging spirit wherever you go. Wishing you the very best for everything ahead, bro! Take care and keep smiling! 🤝✨`
   },
 
+
   {
-    
     image: "",
     tags: [
       "Until Next Time",
       "Forever"
     ],
-       name: "You know",
+    name: "You know",
     message:
-      "All the best for your future. May you have a happy life.
+      `All the best for your future. May you have a happy life.<br><br>
 
-A ringtone volume taggi bro",
-    
+      A ringtone volume taggi bro`
   }
 
 ];
@@ -2035,12 +2089,9 @@ function openBook() {
 
   animating = true;
 
-
   currentSpread = 0;
 
-
   renderSpread(0);
-
 
   document.body.classList.remove(
     "closed"
@@ -2193,9 +2244,7 @@ function turnSpread(direction) {
   animating = true;
 
 
-  /* =======================================================
-     NEXT
-  ====================================================== */
+  /* NEXT */
 
   if (
     direction === 1
@@ -2238,9 +2287,7 @@ function turnSpread(direction) {
   }
 
 
-  /* =======================================================
-     PREVIOUS
-  ====================================================== */
+  /* PREVIOUS */
 
   else {
 
@@ -2281,9 +2328,7 @@ function turnSpread(direction) {
   }
 
 
-  /* =======================================================
-     FINISH
-  ====================================================== */
+  /* FINISH */
 
   setTimeout(() => {
 
@@ -2339,8 +2384,7 @@ function nextSpread() {
 
 
   /*
-    Person 15 is the last spread.
-    Next physically closes the book.
+    Last spread automatically closes the book.
   */
 
   if (
