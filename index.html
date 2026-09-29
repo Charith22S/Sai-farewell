@@ -487,17 +487,10 @@ body {
   z-index: 2;
 }
 
-.person-name {
 
-  margin-top:
-    clamp(12px, 2vw, 30px);
-
-  font-size:
-    clamp(15px, 3vw, 38px);
-
-  letter-spacing:
-    clamp(1px, .3vw, 2px);
-}
+/* =========================================================
+   PERSON DIVIDER
+========================================================= */
 
 .person-divider {
 
@@ -509,8 +502,13 @@ body {
   background: var(--gold);
 
   margin:
-    clamp(7px, 1.5vw, 15px) auto;
+    clamp(10px, 2vw, 20px) auto;
 }
+
+
+/* =========================================================
+   TAGS
+========================================================= */
 
 .tags {
 
@@ -553,7 +551,14 @@ body {
   align-items: center;
 
   min-height: 0;
+
+  overflow: hidden;
 }
+
+
+/* =========================================================
+   MESSAGE TITLE
+========================================================= */
 
 .message-title {
 
@@ -576,16 +581,22 @@ body {
 
   text-align: center;
 
+  overflow-wrap: anywhere;
+
   word-break: break-word;
 }
 
 
-/*
-   MESSAGE AREA
+/* =========================================================
+   MESSAGE
+========================================================= */
 
-   The message is now a FLEXIBLE, CONSTRAINED area.
-   JavaScript automatically reduces its font size when
-   the message is too large.
+/*
+   The message itself scrolls.
+
+   The book page does NOT scroll.
+   Only this area gets a vertical scrollbar
+   when the message is longer than the available space.
 */
 
 .message {
@@ -594,11 +605,13 @@ body {
 
   max-width: 420px;
 
-  flex: 0 1 62%;
+  flex: 1 1 auto;
 
   min-height: 0;
 
-  overflow: hidden;
+  overflow-y: auto;
+
+  overflow-x: hidden;
 
   font-size: 18px;
 
@@ -607,13 +620,54 @@ body {
   color: #40342d;
 
   padding:
-    0 3px;
+    0 10px 0 3px;
 
   text-align: left;
 
-  overflow-wrap: break-word;
+  overflow-wrap: anywhere;
 
   word-wrap: break-word;
+
+  scrollbar-width: thin;
+
+  scrollbar-color:
+    #b49a78
+    rgba(180,154,120,.12);
+}
+
+
+/* =========================================================
+   MESSAGE SCROLLBAR - CHROME / EDGE / SAFARI
+========================================================= */
+
+.message::-webkit-scrollbar {
+
+  width: 7px;
+}
+
+.message::-webkit-scrollbar-track {
+
+  background:
+    rgba(120,90,60,.08);
+
+  border-radius: 10px;
+}
+
+.message::-webkit-scrollbar-thumb {
+
+  background:
+    #b49a78;
+
+  border-radius: 10px;
+
+  border:
+    1px solid rgba(255,255,255,.25);
+}
+
+.message::-webkit-scrollbar-thumb:hover {
+
+  background:
+    #967b5c;
 }
 
 
@@ -1084,11 +1138,11 @@ body.closed .controls {
 
   .message {
 
-    flex-basis: 64%;
+    font-size: 14px;
 
     line-height: 1.45;
 
-    font-size: 14px;
+    padding-right: 8px;
   }
 
   .message-title {
@@ -1158,7 +1212,7 @@ body.closed .controls {
 
     line-height: 1.35;
 
-    flex-basis: 66%;
+    padding-right: 7px;
   }
 
   .message-title {
@@ -1169,11 +1223,6 @@ body.closed .controls {
   .polaroid {
 
     width: 80px;
-  }
-
-  .person-name {
-
-    font-size: 13px;
   }
 
   .tag {
@@ -1331,7 +1380,7 @@ body.closed .controls {
 
 
     <div id="spreadCounter">
-      Spread 1 of 15
+      Spread 1 of 16
     </div>
 
 
@@ -1734,109 +1783,6 @@ let animating = false;
 
 
 /* =========================================================
-   MESSAGE FONT FITTING
-========================================================= */
-
-/*
-   This automatically makes long messages smaller.
-
-   Normal desktop size:
-   18px
-
-   Minimum size:
-   7px
-
-   The function checks the REAL rendered height
-   of the message and keeps reducing the font until
-   all text fits inside the available message area.
-*/
-
-function fitMessageText() {
-
-  const messages =
-    document.querySelectorAll(".message");
-
-
-  messages.forEach(message => {
-
-    /*
-       Reset first.
-       This is important when moving from a long
-       message to a short message.
-    */
-
-    let fontSize = 18;
-
-    let lineHeight = 1.55;
-
-
-    message.style.fontSize =
-      fontSize + "px";
-
-    message.style.lineHeight =
-      lineHeight;
-
-
-    /*
-       Reduce font size until the complete
-       message fits.
-    */
-
-    while (
-      message.scrollHeight >
-      message.clientHeight &&
-      fontSize > 7
-    ) {
-
-      fontSize -= 0.5;
-
-
-      /*
-         Slightly tighten line spacing as the
-         text gets smaller.
-      */
-
-      lineHeight =
-        Math.max(
-          1.25,
-          1.55 -
-          ((18 - fontSize) * 0.015)
-        );
-
-
-      message.style.fontSize =
-        fontSize + "px";
-
-      message.style.lineHeight =
-        lineHeight;
-    }
-
-  });
-
-}
-
-
-/*
-   Run fitting after the browser has calculated
-   the actual page dimensions.
-*/
-
-function fitMessagesAfterRender() {
-
-  requestAnimationFrame(() => {
-
-    requestAnimationFrame(() => {
-
-      fitMessageText();
-
-    });
-
-  });
-
-}
-
-
-/* =========================================================
    INTRO
 ========================================================= */
 
@@ -1897,6 +1843,7 @@ function createIntroRight() {
 
 /* =========================================================
    PERSON LEFT
+   NAME REMOVED
 ========================================================= */
 
 function createPersonLeft(person) {
@@ -1938,13 +1885,6 @@ function createPersonLeft(person) {
       </div>
 
 
-      <div class="person-name">
-
-        ${person.name}
-
-      </div>
-
-
       <div class="person-divider"></div>
 
 
@@ -1962,6 +1902,7 @@ function createPersonLeft(person) {
 
 /* =========================================================
    PERSON RIGHT
+   NAME IS THE HEADING
 ========================================================= */
 
 function createPersonRight(person) {
@@ -2093,13 +2034,6 @@ function renderSpread(index) {
   }
 
 
-  /*
-     Automatically fit the new message.
-  */
-
-  fitMessagesAfterRender();
-
-
   updateNavigation();
 
 }
@@ -2166,8 +2100,6 @@ function openBook() {
     animating = false;
 
     updateNavigation();
-
-    fitMessagesAfterRender();
 
   }, 950);
 
@@ -2324,14 +2256,6 @@ function turnSpread(direction) {
       "rotateY(0deg)";
 
 
-    /*
-       Fit the message on the physical
-       turning page too.
-    */
-
-    fitMessagesAfterRender();
-
-
     void pageLeaf.offsetWidth;
 
 
@@ -2373,9 +2297,6 @@ function turnSpread(direction) {
 
     pageLeaf.style.transform =
       "rotateY(0deg)";
-
-
-    fitMessagesAfterRender();
 
 
     void pageLeaf.offsetWidth;
@@ -2429,9 +2350,6 @@ function turnSpread(direction) {
 
     updateNavigation();
 
-
-    fitMessagesAfterRender();
-
   }, 800);
 
 }
@@ -2452,10 +2370,6 @@ function nextSpread() {
 
   }
 
-
-  /*
-     Last spread automatically closes the book.
-  */
 
   if (
     currentSpread >=
@@ -2604,25 +2518,6 @@ document.addEventListener(
       closeBook();
 
     }
-
-  }
-);
-
-
-/* =========================================================
-   RESIZE
-========================================================= */
-
-/*
-   If the browser/window size changes, the available
-   message area changes too. Re-fit the text.
-*/
-
-window.addEventListener(
-  "resize",
-  () => {
-
-    fitMessagesAfterRender();
 
   }
 );
