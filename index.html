@@ -599,13 +599,6 @@ body {
 
   max-width: 420px;
 
-  /*
-     FIXED READING WINDOW
-
-     Long messages stay inside this box
-     and scroll vertically.
-  */
-
   height: 300px;
 
   max-height: 300px;
@@ -632,7 +625,6 @@ body {
 
   word-wrap: break-word;
 
-  /* Firefox */
   scrollbar-width: thin;
 
   scrollbar-color:
@@ -643,7 +635,6 @@ body {
 
 /* =========================================================
    MESSAGE SCROLLBAR
-   CHROME / EDGE / SAFARI
 ========================================================= */
 
 .message::-webkit-scrollbar {
@@ -988,6 +979,7 @@ body {
 
 /* =========================================================
    CONTROLS
+   NO SPREAD COUNTER
 ========================================================= */
 
 .controls {
@@ -1077,19 +1069,6 @@ body {
   cursor: default;
 }
 
-#spreadCounter {
-
-  min-width:
-    clamp(65px, 10vw, 110px);
-
-  text-align: center;
-
-  color: #d7c5aa;
-
-  font-size:
-    clamp(7px, 1vw, 12px);
-}
-
 
 /* =========================================================
    CLOSED STATE
@@ -1142,10 +1121,6 @@ body.closed .controls {
 
   .message {
 
-    /*
-       Smaller reading window on phones
-    */
-
     height: 180px;
 
     max-height: 180px;
@@ -1178,7 +1153,7 @@ body.closed .controls {
 
   .controls {
 
-    width: 96vw;
+    width: auto;
 
     border-radius: 18px;
   }
@@ -1268,11 +1243,6 @@ body.closed .controls {
       6px 7px;
 
     font-size: 8px;
-  }
-
-  #spreadCounter {
-
-    min-width: 58px;
   }
 }
 
@@ -1387,6 +1357,7 @@ body.closed .controls {
 
 
   <!-- NAVIGATION -->
+  <!-- NO SPREAD COUNTER -->
 
   <div
     class="controls"
@@ -1407,11 +1378,6 @@ body.closed .controls {
     >
       Close Book
     </button>
-
-
-    <div id="spreadCounter">
-      Spread 1 of 18
-    </div>
 
 
     <button
@@ -1727,6 +1693,8 @@ Sukruth.`
 
       Keep that positive and encouraging spirit wherever you go. Wishing you the very best for everything ahead, bro! Take care and keep smiling! 🤝✨`
   },
+
+
   {
     image: "",
     tags: [
@@ -1783,9 +1751,8 @@ Sukruth.`
 ];
 
 
-
 /* =========================================================
-   SPREADS
+   SPREAD DATA
 ========================================================= */
 
 const spreads = [
@@ -1820,9 +1787,6 @@ const nextButton =
 
 const closeButton =
   document.getElementById("closeButton");
-
-const spreadCounter =
-  document.getElementById("spreadCounter");
 
 const leftPage =
   document.getElementById("leftPage");
@@ -1912,7 +1876,6 @@ function createIntroRight() {
 
 /* =========================================================
    PERSON LEFT
-   NAME REMOVED
 ========================================================= */
 
 function createPersonLeft(person) {
@@ -1971,7 +1934,6 @@ function createPersonLeft(person) {
 
 /* =========================================================
    PERSON RIGHT
-   NAME IS THE HEADING
 ========================================================= */
 
 function createPersonRight(person) {
@@ -2109,7 +2071,7 @@ function renderSpread(index) {
 
 
 /* =========================================================
-   OPEN
+   OPEN BOOK
 ========================================================= */
 
 function openBook() {
@@ -2176,7 +2138,7 @@ function openBook() {
 
 
 /* =========================================================
-   CLOSE
+   CLOSE BOOK
 ========================================================= */
 
 function closeBook() {
@@ -2488,18 +2450,11 @@ function previousSpread() {
 
 
 /* =========================================================
-   NAVIGATION UI
+   NAVIGATION
+   NO SPREAD COUNTER
 ========================================================= */
 
 function updateNavigation() {
-
-  spreadCounter.textContent =
-    `Spread ${
-      currentSpread + 1
-    } of ${
-      spreads.length
-    }`;
-
 
   previousButton.disabled =
     !bookOpen ||
